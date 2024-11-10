@@ -124,9 +124,9 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 12.25)
                 .build();
 
-        myBot4.runAction(myBot4.getDrive().actionBuilder(new Pose2d(-8, 61.75, Math.toRadians(270)))
+        myBot4.runAction(myBot4.getDrive().actionBuilder(new Pose2d(-8, 61.75, Math.toRadians(90)))
 
-                .strafeToConstantHeading(new Vector2d(-8, 37.75))
+                .strafeToConstantHeading(new Vector2d(-8, 32.75))
                 .waitSeconds(2.0)
                 .strafeToConstantHeading(new Vector2d(-8, 39.75))
                 .splineToConstantHeading(new Vector2d(-34.5, 10.1), Math.toRadians(273))
@@ -151,10 +151,10 @@ public class MeepMeepTesting {
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-                .addEntity(myBot1)
+//                .addEntity(myBot1)
 //                .addEntity(myBot2)
 //                .addEntity(myBot3)
-//                .addEntity(myBot4)
+                .addEntity(myBot4)
                 .start();
     }
 }
