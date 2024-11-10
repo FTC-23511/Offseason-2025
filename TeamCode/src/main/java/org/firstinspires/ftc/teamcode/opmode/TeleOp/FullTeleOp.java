@@ -156,7 +156,6 @@ public class FullTeleOp extends CommandOpMode {
 
         if (gamepad2.options) {
             robot.deposit.setSlideTarget(HIGH_SPECIMEN_ATTACH_HEIGHT);
-            buttonTimer.reset();
         }
 
         operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(

@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystem.commands;
 
-import static org.firstinspires.ftc.teamcode.subsystem.Intake.IntakePivotState;
-import static org.firstinspires.ftc.teamcode.subsystem.Intake.WristState;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
-import org.firstinspires.ftc.teamcode.subsystem.Intake;
 
 public class setDeposit extends CommandBase {
     Deposit deposit;
@@ -44,14 +42,15 @@ public class setDeposit extends CommandBase {
 
     @Override
     public void execute() {
-        if ((timer.milliseconds() > 450) && !finished) {
-            finished = true;
+        if ((deposit.getDepositSlidePosition() >= SLIDES_PIVOT_READY_EXTENSION) && (deposit.target >= SLIDES_PIVOT_READY_EXTENSION) && !finished) {
             deposit.setPivot(state);
+            timer.reset();
+            finished = true;
         }
     }
 
     @Override
     public boolean isFinished() {
-        return (timer.milliseconds() > 500) && finished;
+        return (timer.milliseconds() > 300) && finished;
     }
 }

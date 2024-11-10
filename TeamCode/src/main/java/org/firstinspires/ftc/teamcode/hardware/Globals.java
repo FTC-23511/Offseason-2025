@@ -79,7 +79,7 @@ public class Globals {
 //    public static double LOW_SPECIMEN_HEIGHT = 0; // Encoder ticks
 //    public static double LOW_SPECIMEN_ATTACH_HEIGHT = 0; // Encoder ticks
     public static double HIGH_SPECIMEN_HEIGHT = 650; // Encoder ticks
-    public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1100; // Encoder ticks
+    public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1050; // Encoder ticks
     public static double AUTO_HANG_HEIGHT = 700; // Encoder ticks
     public static double ENDGAME_HANG_HEIGHT = 800; // Encoder ticks
 }

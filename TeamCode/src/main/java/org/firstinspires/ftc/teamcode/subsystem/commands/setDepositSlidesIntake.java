@@ -32,7 +32,7 @@ public class setDepositSlidesIntake extends CommandBase {
             earlyFinished = true;
             timer.reset();
         }
-        if (timer.milliseconds() > 300 && earlyFinished) {
+        if (timer.milliseconds() > 400 && earlyFinished) {
             deposit.setClawOpen(true);
             finished = true;
         }
