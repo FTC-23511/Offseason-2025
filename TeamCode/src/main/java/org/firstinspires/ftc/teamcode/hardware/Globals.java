@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.hardware;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 
+import kotlin.jvm.Transient;
+
 @Config
 public class Globals {
     public enum OpModeType {
@@ -55,16 +57,13 @@ public class Globals {
     public static double TRAY_CLOSE_POS = 0.35;
 
     // Deposit
-    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.0;
-    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.63;
-    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.775;
+    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.55;
+    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.9;
+    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.2;
     public static double DEPOSIT_PIVOT_SCORING_POS = 1.0;
     public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.24;
     public static double DEPOSIT_CLAW_OUTSIDE_OPEN_POS = 0.625;
     public static double DEPOSIT_CLAW_OUTSIDE_CLOSE_POS = 0.4;
-
-
-    // TODO: TUNE ALL OF THESE
     // Extendo
     public static double MAX_EXTENDO_EXTENSION = 480; // Encoder ticks
     public static double AUTON_EXTENDO_EXTENSION; // Encoder ticks

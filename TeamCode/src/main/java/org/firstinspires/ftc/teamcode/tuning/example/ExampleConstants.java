@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 @Config
 public class ExampleConstants {
 
+    public static double CENTER_SERVO_POS = 0.50;
     public static double LEFT_SERVO_POS = 0.50;
 
     public static double RIGHT_SERVO_POS = 0.50;

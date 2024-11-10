@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystem.vision;
 
+import static org.firstinspires.ftc.teamcode.hardware.System.round;
+
 import com.acmerobotics.dashboard.config.Config;
 
 import org.opencv.calib3d.Calib3d;
@@ -73,8 +75,7 @@ public class SampleDetectionPipelinePNP extends OpenCvPipeline {
 
     static final int CONTOUR_LINE_THICKNESS = 2;
 
-    static class AnalyzedStone
-    {
+    static class AnalyzedStone {
         double angle;
         String color;
         Mat rvec;
@@ -93,8 +94,7 @@ public class SampleDetectionPipelinePNP extends OpenCvPipeline {
     /*
      * Some stuff to handle returning our various buffers
      */
-    enum Stage
-    {
+    enum Stage {
         FINAL,
         YCrCb,
         MASKS,
@@ -107,8 +107,7 @@ public class SampleDetectionPipelinePNP extends OpenCvPipeline {
     // Keep track of what stage the viewport is showing
     int stageNum = 0;
 
-    public SampleDetectionPipelinePNP()
-    {
+    public SampleDetectionPipelinePNP() {
         // Initialize camera parameters
         // Replace these values with your actual camera calibration parameters
 
@@ -130,8 +129,7 @@ public class SampleDetectionPipelinePNP extends OpenCvPipeline {
     }
 
     @Override
-    public void onViewportTapped()
-    {
+    public void onViewportTapped() {
         int nextStageNum = stageNum + 1;
 
         if(nextStageNum >= stages.length)
@@ -143,8 +141,7 @@ public class SampleDetectionPipelinePNP extends OpenCvPipeline {
     }
 
     @Override
-    public Mat processFrame(Mat input)
-    {
+    public Mat processFrame(Mat input) {
         // We'll be updating this with new data below
         internalStoneList.clear();
 
@@ -195,13 +192,11 @@ public class SampleDetectionPipelinePNP extends OpenCvPipeline {
         return input;
     }
 
-    public ArrayList<AnalyzedStone> getDetectedStones()
-    {
+    public ArrayList<AnalyzedStone> getDetectedStones() {
         return clientStoneList;
     }
 
-    void findContours(Mat input)
-    {
+    void findContours(Mat input) {
         // Convert the input image to YCrCb color space
         Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);
 
@@ -236,18 +231,15 @@ public class SampleDetectionPipelinePNP extends OpenCvPipeline {
         Imgproc.findContours(morphedYellowThreshold, yellowContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         // Now analyze the contours
-        for(MatOfPoint contour : blueContoursList)
-        {
+        for(MatOfPoint contour : blueContoursList) {
             analyzeContour(contour, input, "Blue");
         }
 
-        for(MatOfPoint contour : redContoursList)
-        {
+        for(MatOfPoint contour : redContoursList) {
             analyzeContour(contour, input, "Red");
         }
 
-        for(MatOfPoint contour : yellowContoursList)
-        {
+        for(MatOfPoint contour : yellowContoursList) {
             analyzeContour(contour, input, "Yellow");
         }
     }
@@ -289,7 +281,7 @@ public class SampleDetectionPipelinePNP extends OpenCvPipeline {
         // Prepare object points and image points for solvePnP
 
         // Define the 3D coordinates of the object corners in the object coordinate space
-        MatOfPoint3f objectPoints = new MatOfPoint3f(
+        MatOfPoint3f objectPoints = new MatOfPoint3f (
                 new Point3(-objectWidth / 2, -objectHeight / 2, 0),
                 new Point3(objectWidth / 2, -objectHeight / 2, 0),
                 new Point3(objectWidth / 2, objectHeight / 2, 0),
@@ -309,7 +301,7 @@ public class SampleDetectionPipelinePNP extends OpenCvPipeline {
         Mat rvec = new Mat();
         Mat tvec = new Mat();
 
-        boolean success = Calib3d.solvePnP(
+        boolean success = Calib3d.solvePnP (
                 objectPoints, // Object points in 3D
                 imagePoints,  // Corresponding image points
                 cameraMatrix,
@@ -318,8 +310,7 @@ public class SampleDetectionPipelinePNP extends OpenCvPipeline {
                 tvec
         );
 
-        if (success)
-        {
+        if (success) {
             // Draw the coordinate axes on the image
             drawAxis(input, rvec, tvec, cameraMatrix, distCoeffs);
 
@@ -423,22 +414,20 @@ public class SampleDetectionPipelinePNP extends OpenCvPipeline {
         return index;
     }
 
-    static void drawTagText(RotatedRect rect, String text, Mat mat, String color)
-    {
+    static void drawTagText(RotatedRect rect, String text, Mat mat, String color) {
         Scalar colorScalar = getColorScalar(color);
 
         Imgproc.putText(
                 mat, // The buffer we're drawing on
-                text, // The text we're drawing
+                (Math.ceil(rect.size.width) + ", " + Math.ceil(rect.size.height)), // The text we're drawing
                 new Point( // The anchor point for the text
                         rect.center.x - 50,  // x anchor point
                         rect.center.y + 25), // y anchor point
                 Imgproc.FONT_HERSHEY_PLAIN, // Font
-                1, // Font size
+                3, // Font size
                 colorScalar, // Font color
-                1); // Font thickness
+                5); // Font thickness
     }
-
     static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color) {
         /*
          * Draws a rotated rect by drawing each of the 4 lines individually

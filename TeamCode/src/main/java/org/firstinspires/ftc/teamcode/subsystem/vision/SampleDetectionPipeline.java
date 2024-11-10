@@ -13,10 +13,11 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import static org.firstinspires.ftc.teamcode.hardware.System.round;
+
 import java.util.ArrayList;
 
-public class SampleDetectionPipeline extends OpenCvPipeline
-{
+public class SampleDetectionPipeline extends OpenCvPipeline {
     /*
      * Working image buffers
      */
@@ -244,13 +245,12 @@ public class SampleDetectionPipeline extends OpenCvPipeline
         internalStoneList.add(analyzedStone);
     }
 
-    static void drawTagText(RotatedRect rect, String text, Mat mat, String color)
-    {
-        Scalar colorScalar = getColorScalar(color);
+    static void drawTagText(RotatedRect rect, String text, Mat mat, String color) {
+        Scalar colorScalar = getColorScalar("Blue");
 
         Imgproc.putText(
                 mat, // The buffer we're drawing on
-                text, // The text we're drawing
+                (Math.ceil(rect.size.height) + ", " + Math.ceil(rect.size.height)), // The text we're drawing
                 new Point( // The anchor point for the text
                         rect.center.x - 50,  // x anchor point
                         rect.center.y + 25), // y anchor point
@@ -270,23 +270,21 @@ public class SampleDetectionPipeline extends OpenCvPipeline
 
         Scalar colorScalar = getColorScalar(color);
 
-        if (rect.size.width == 100 && rect.size.height == 2000) {
             for (int i = 0; i < 4; ++i) {
                 Imgproc.line(drawOn, points[i], points[(i + 1) % 4], colorScalar, 2);
             }
-        }
+
     }
 
-    static Scalar getColorScalar(String color)
-    {
-        switch (color)
-        {
+    static Scalar getColorScalar(String color) {
+        switch (color) {
             case "Blue":
                 return BLUE;
             case "Yellow":
                 return YELLOW;
             default:
                 return RED;
+                // TODO: on blue side: returns blue
         }
     }
 }
