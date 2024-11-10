@@ -116,8 +116,8 @@ public class FullTeleOp extends CommandOpMode {
 //        }
 
         // OTOS Field Centric robot.Drive Code
-        robot.drive.updatePoseEstimate();
-        robot.drive.setFieldCentricDrivePowers(new PoseVelocity2d(
+        robot.drive.sparkFunOTOSDrive.updatePoseEstimate();
+        robot.drive.sparkFunOTOSDrive.setFieldCentricDrivePowers(new PoseVelocity2d(
                         new Vector2d(
                                 (gamepad1.left_stick_y),
                                 (gamepad1.left_stick_x)
@@ -125,12 +125,12 @@ public class FullTeleOp extends CommandOpMode {
                         gamepad1.right_stick_x
                 ),
                 gamepad1.left_trigger,
-                (robot.drive.pose.heading.toDouble() - offset)
+                (robot.drive.sparkFunOTOSDrive.pose.heading.toDouble() - offset)
         );
 
         // Reset IMU for field centric
         if (gamepad1.x) {
-            offset = robot.drive.pose.heading.toDouble();
+            offset = robot.drive.sparkFunOTOSDrive.pose.heading.toDouble();
         }
 
         // Driver Gamepad controls

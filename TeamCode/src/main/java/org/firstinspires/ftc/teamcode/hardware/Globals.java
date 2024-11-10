@@ -57,11 +57,11 @@ public class Globals {
     public static double TRAY_CLOSE_POS = 0.35;
 
     // Deposit
-    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.55;
-    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.9;
-    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.2;
+    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.57;
+    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.89;
+    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.12;
     public static double DEPOSIT_PIVOT_SCORING_POS = 1.0;
-    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.24;
+    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.69;
     public static double DEPOSIT_CLAW_OUTSIDE_OPEN_POS = 0.625;
     public static double DEPOSIT_CLAW_OUTSIDE_CLOSE_POS = 0.4;
     // Extendo
@@ -78,8 +78,8 @@ public class Globals {
 
 //    public static double LOW_SPECIMEN_HEIGHT = 0; // Encoder ticks
 //    public static double LOW_SPECIMEN_ATTACH_HEIGHT = 0; // Encoder ticks
-    public static double HIGH_SPECIMEN_HEIGHT = 750; // Encoder ticks
-    public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 480; // Encoder ticks
+    public static double HIGH_SPECIMEN_HEIGHT = 650; // Encoder ticks
+    public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1100; // Encoder ticks
     public static double AUTO_HANG_HEIGHT = 700; // Encoder ticks
     public static double ENDGAME_HANG_HEIGHT = 800; // Encoder ticks
 }

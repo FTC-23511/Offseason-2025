@@ -192,16 +192,4 @@ public class Intake extends SubsystemBase {
     public void periodic() {
         autoUpdateExtendo();
     }
-
-    public class periodicAction implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            autoUpdateExtendo();
-            return extendoReached;
-        }
-    }
-
-    public Action periodicAction() {
-        return new periodicAction();
-    }
 }

@@ -37,7 +37,7 @@ public class doubleDepositPivotTester extends OpMode {
 
         robot.leftDepositPivot.setPosition(CENTER_SERVO_POS);
         robot.rightDepositPivot.setPosition(CENTER_SERVO_POS);
-        robot.depositClaw.setPosition(DEPOSIT_CLAW_OUTSIDE_OPEN_POS);
+        robot.depositClaw.setPosition(CLAW_SERVO_POS);
     }
 
     @Override
@@ -45,6 +45,8 @@ public class doubleDepositPivotTester extends OpMode {
 
         robot.leftDepositPivot.setPosition(CENTER_SERVO_POS);
         robot.rightDepositPivot.setPosition(CENTER_SERVO_POS);
+
+        robot.depositClaw.setPosition(CLAW_SERVO_POS);
 
         CENTER_SERVO_POS = Math.max(Math.min(CENTER_SERVO_POS, 1), 0);
         CLAW_SERVO_POS = Math.max(Math.min(CLAW_SERVO_POS, 1), 0);

@@ -88,19 +88,19 @@ public class TestTeleOp extends CommandOpMode {
         TelemetryPacket packet = new TelemetryPacket();
 
         // OTOS Field Centric robot.Drive Code
-        robot.drive.updatePoseEstimate();
-        robot.drive.setFieldCentricDrivePowers(
+        robot.drive.sparkFunOTOSDrive.updatePoseEstimate();
+        robot.drive.sparkFunOTOSDrive.setFieldCentricDrivePowers(
             new PoseVelocity2d(
                 new Vector2d((driver.getLeftY()), (driver.getLeftX())),
                 driver.getRightX()),
                 driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER),
-                robot.drive.pose.heading.toDouble()
+                robot.drive.sparkFunOTOSDrive.pose.heading.toDouble()
         );
 
         // Reset IMU for field centric
         driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
                 new InstantCommand(() ->
-                        robot.drive.pose = new Pose2d(0, 0,0)));
+                        robot.drive.sparkFunOTOSDrive.pose = new Pose2d(0, 0,0)));
 
         // All command testing stuff
         driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(

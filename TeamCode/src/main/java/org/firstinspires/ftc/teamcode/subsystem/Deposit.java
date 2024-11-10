@@ -13,7 +13,8 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 public class Deposit extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
-    private static final PIDFController slidePIDF = new PIDFController(0.009,0,0.0002, 0.00016);
+
+    private static final PIDFController slidePIDF = new PIDFController(0.01,0,0.0002, 0.00018);
 
     // Between open and closed
     public boolean clawOpen;
@@ -78,6 +79,10 @@ public class Deposit extends SubsystemBase {
         slidesRetracted = (target <= 0) && slidesReached;
     }
 
+    public int getDepositSlidePosition() {
+        return robot.liftEncoder.getPosition();
+    }
+
     public void setClawOpen(boolean open) {
         if (open) {
             robot.depositClaw.setPosition(DEPOSIT_CLAW_OUTSIDE_OPEN_POS);
@@ -118,17 +123,5 @@ public class Deposit extends SubsystemBase {
     @Override
     public void periodic() {
         autoUpdateSlides();
-    }
-
-    public class periodicAction implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            autoUpdateSlides();
-            return slidesReached;
-        }
-    }
-
-    public Action periodicAction() {
-        return new periodicAction();
     }
 }

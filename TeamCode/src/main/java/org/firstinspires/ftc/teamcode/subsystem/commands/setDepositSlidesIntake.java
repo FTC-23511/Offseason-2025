@@ -27,7 +27,7 @@ public class setDepositSlidesIntake extends CommandBase {
 
     @Override
     public void execute() {
-        if (deposit.slidesReached && !earlyFinished && !deposit.slidesRetracted) {
+        if (deposit.getDepositSlidePosition() >= SLIDES_PIVOT_READY_EXTENSION && !earlyFinished && !deposit.slidesRetracted) {
             deposit.setPivot(Deposit.DepositPivotState.INTAKE);
             earlyFinished = true;
             timer.reset();

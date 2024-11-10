@@ -47,10 +47,10 @@ public class LeftAuto extends OpMode {
             timer = new ElapsedTime();
             robot.deposit.setSlideTarget(HIGH_SPECIMEN_HEIGHT);
 
-            robot.drive.leftBack.setPower(motorSpeeds);
-            robot.drive.leftFront.setPower(motorSpeeds);
-            robot.drive.rightBack.setPower(motorSpeeds);
-            robot.drive.rightFront.setPower(motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.leftBack.setPower(motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.leftFront.setPower(motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.rightBack.setPower(motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.rightFront.setPower(motorSpeeds);
 
             robot.colorSensor.enableLed(true);
             if (index == 0) {
@@ -64,10 +64,10 @@ public class LeftAuto extends OpMode {
         telemetry.update();
 
         if (timer.milliseconds() >= stopTimer && index == 1) {
-            robot.drive.leftBack.setPower(0);
-            robot.drive.leftFront.setPower(0);
-            robot.drive.rightBack.setPower(0);
-            robot.drive.rightFront.setPower(0);
+            robot.drive.sparkFunOTOSDrive.leftBack.setPower(0);
+            robot.drive.sparkFunOTOSDrive.leftFront.setPower(0);
+            robot.drive.sparkFunOTOSDrive.rightBack.setPower(0);
+            robot.drive.sparkFunOTOSDrive.rightFront.setPower(0);
 
             index = 2;
         }
@@ -83,37 +83,37 @@ public class LeftAuto extends OpMode {
 
             sleep(500);
 
-            robot.drive.leftBack.setPower(-motorSpeeds);
-            robot.drive.leftFront.setPower(-motorSpeeds);
-            robot.drive.rightBack.setPower(-motorSpeeds);
-            robot.drive.rightFront.setPower(-motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.leftBack.setPower(-motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.leftFront.setPower(-motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.rightBack.setPower(-motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.rightFront.setPower(-motorSpeeds);
 
             timer.reset();
             index = 4;
         }
 
         if (timer.milliseconds() >= (stopTimer - 300) && index == 4) {
-            robot.drive.leftBack.setPower(0);
-            robot.drive.leftFront.setPower(0);
-            robot.drive.rightBack.setPower(0);
-            robot.drive.rightFront.setPower(0);
+            robot.drive.sparkFunOTOSDrive.leftBack.setPower(0);
+            robot.drive.sparkFunOTOSDrive.leftFront.setPower(0);
+            robot.drive.sparkFunOTOSDrive.rightBack.setPower(0);
+            robot.drive.sparkFunOTOSDrive.rightFront.setPower(0);
 
             CommandScheduler.getInstance().schedule(new depositSafeRetracted(robot.deposit));
 
-            robot.drive.leftBack.setPower(+motorSpeeds);
-            robot.drive.leftFront.setPower(-motorSpeeds);
-            robot.drive.rightBack.setPower(-motorSpeeds);
-            robot.drive.rightFront.setPower(+motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.leftBack.setPower(+motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.leftFront.setPower(-motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.rightBack.setPower(-motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.rightFront.setPower(+motorSpeeds);
 
             timer.reset();
             index = 5;
         }
 
         if (timer.milliseconds() >= stopTimer * 2 && index == 5) {
-            robot.drive.leftBack.setPower(0);
-            robot.drive.leftFront.setPower(0);
-            robot.drive.rightBack.setPower(0);
-            robot.drive.rightFront.setPower(0);
+            robot.drive.sparkFunOTOSDrive.leftBack.setPower(0);
+            robot.drive.sparkFunOTOSDrive.leftFront.setPower(0);
+            robot.drive.sparkFunOTOSDrive.rightBack.setPower(0);
+            robot.drive.sparkFunOTOSDrive.rightFront.setPower(0);
             index = 6;
         }
 

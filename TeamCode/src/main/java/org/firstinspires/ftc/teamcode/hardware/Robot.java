@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.hardware.caching.SolversMotor;
 import org.firstinspires.ftc.teamcode.hardware.caching.SolversServo;
 import org.firstinspires.ftc.teamcode.roadrunner.SparkFunOTOSDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
+import org.firstinspires.ftc.teamcode.subsystem.Drive;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 
 import java.lang.System;
@@ -58,7 +59,7 @@ public class Robot {
 
     public Deposit deposit;
     public Intake intake;
-    public SparkFunOTOSDrive drive;
+    public Drive drive;
 
     private static Robot instance = new Robot();
     public boolean enabled;
@@ -145,8 +146,8 @@ public class Robot {
         deposit = new Deposit();
 
         // OTOS stuff leave it alone
-        drive = new SparkFunOTOSDrive(hardwareMap, startingPose);
-        drive.calibrateOTOSimu();
+        drive = new Drive(hardwareMap, startingPose);
+        drive.sparkFunOTOSDrive.calibrateOTOSimu();
         otos.setOffset(PARAMS.offset);
         System.out.println("OTOS calibration beginning!");
         System.out.println(otos.setLinearScalar(PARAMS.linearScalar));
