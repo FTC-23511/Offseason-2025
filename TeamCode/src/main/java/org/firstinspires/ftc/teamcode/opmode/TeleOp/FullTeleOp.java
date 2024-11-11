@@ -15,12 +15,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.roadrunner.SparkFunOTOSDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
-import org.firstinspires.ftc.teamcode.subsystem.commands.depositSafeRetracted;
-import org.firstinspires.ftc.teamcode.subsystem.commands.intakeFullExtendo;
-import org.firstinspires.ftc.teamcode.subsystem.commands.realTransfer;
-import org.firstinspires.ftc.teamcode.subsystem.commands.setDepositScoring;
-import org.firstinspires.ftc.teamcode.subsystem.commands.setDepositSlidesIntake;
-import org.firstinspires.ftc.teamcode.subsystem.commands.setIntake;
+import org.firstinspires.ftc.teamcode.subsystem.commands.*;
 
 @TeleOp
 public class FullTeleOp extends CommandOpMode {
@@ -73,47 +68,49 @@ public class FullTeleOp extends CommandOpMode {
             gamepad2.rumble(500);
         }
 
-//        if (Objects.equals(Intake.IntakePivotState.READY_INTAKE, Intake.intakePivotState) || Objects.equals(Intake.IntakePivotState.INTAKE, Intake.intakePivotState)) {
-//            int red = robot.colorSensor.red();
-//            int green = robot.colorSensor.green();
-//            int blue = robot.colorSensor.blue();
-//
-//            double distance = robot.colorSensor.getDistance(DistanceUnit.CM);
-//            if (green < 2500) {
-//                if (distance < 1.5) {
-//                    if (red >= green && red >= blue) {
-//                        currentSample = SampleDetected.RED;
-//                    } else if (green >= red && green >= blue) {
-//                        currentSample = SampleDetected.YELLOW;
-//                    } else {
-//                        currentSample = SampleDetected.BLUE;
-//                    }
-//                } else {
-//                    currentSample = SampleDetected.NONE;
-//                }
-//            } else {
-//                currentSample = SampleDetected.NONE;
-//            }
-//
-//            telemetry.addData("RGB", "(" + red + ", " + green + ", " + blue + ")");
-//        }
-//
-//        telemetry.update();
-//
-//        // Gamepad Lights (untested)
-//        if (currentSample.equals(RED)) {
-//            gamepad1.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
-//            gamepad2.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
-//        } else if (currentSample.equals(BLUE)) {
-//            gamepad1.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
-//            gamepad2.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
-//        } else if (currentSample.equals(YELLOW)) {
-//            gamepad1.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
-//            gamepad2.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
-//        } else {
-//            gamepad1.setLedColor(0, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
-//            gamepad2.setLedColor(0, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
-//        }
+/* Color Sensor Code (Works, but drivers don't want it tho)
+        if (Objects.equals(Intake.IntakePivotState.READY_INTAKE, Intake.intakePivotState) || Objects.equals(Intake.IntakePivotState.INTAKE, Intake.intakePivotState)) {
+            int red = robot.colorSensor.red();
+            int green = robot.colorSensor.green();
+            int blue = robot.colorSensor.blue();
+
+            double distance = robot.colorSensor.getDistance(DistanceUnit.CM);
+            if (green < 2500) {
+                if (distance < 1.5) {
+                    if (red >= green && red >= blue) {
+                        currentSample = SampleDetected.RED;
+                    } else if (green >= red && green >= blue) {
+                        currentSample = SampleDetected.YELLOW;
+                    } else {
+                        currentSample = SampleDetected.BLUE;
+                    }
+                } else {
+                    currentSample = SampleDetected.NONE;
+                }
+            } else {
+                currentSample = SampleDetected.NONE;
+            }
+
+            telemetry.addData("RGB", "(" + red + ", " + green + ", " + blue + ")");
+        }
+
+        telemetry.update();
+
+        // Gamepad Lights (untested)
+        if (currentSample.equals(RED)) {
+            gamepad1.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+            gamepad2.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        } else if (currentSample.equals(BLUE)) {
+            gamepad1.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
+            gamepad2.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
+        } else if (currentSample.equals(YELLOW)) {
+            gamepad1.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
+            gamepad2.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        } else {
+            gamepad1.setLedColor(0, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+            gamepad2.setLedColor(0, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        }
+*/
 
         // OTOS Field Centric robot.Drive Code
         robot.drive.sparkFunOTOSDrive.updatePoseEstimate();
@@ -154,9 +151,8 @@ public class FullTeleOp extends CommandOpMode {
             buttonTimer.reset();
         }
 
-        if (gamepad2.options) {
-            robot.deposit.setSlideTarget(HIGH_SPECIMEN_ATTACH_HEIGHT);
-        }
+        operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
+                new attachSpecimen(robot.deposit));
 
         operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
                 new setIntake(robot.intake, Intake.IntakePivotState.INTAKE));

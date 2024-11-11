@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.subsystem.commands;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
