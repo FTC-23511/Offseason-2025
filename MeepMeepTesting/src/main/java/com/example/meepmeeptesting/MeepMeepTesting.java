@@ -18,14 +18,40 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 12.25)
                 .build();
 
-        myBot1.runAction(myBot1.getDrive().actionBuilder(new Pose2d(-8, -61.75, Math.toRadians(270)))
+        // for 1+3 red bucket change Math.toRadians(180) to Math.toRadians(270)
+        myBot1.runAction(myBot1.getDrive().actionBuilder(new Pose2d(-8, -61.75, Math.toRadians(180)))
 
 
                 // 1+3 red bucket
-                .strafeToConstantHeading(new Vector2d(-8, -37.75))
+//                .strafeToConstantHeading(new Vector2d(-8, -37.75))
+//                .waitSeconds(2.0)
+//                .setReversed(true)
+//                .strafeToConstantHeading(new Vector2d(-47.1, -46.5))
+//                .waitSeconds(2.0)
+//                .setReversed(false)
+//                .turnTo(Math.toRadians((225)))
+//                .waitSeconds(2.0)
+//                .turnTo(Math.toRadians((270)))
+//                .strafeToConstantHeading(new Vector2d(-58.8, -46.5))
+//                .waitSeconds(2.0)
+//                .strafeToConstantHeading(new Vector2d(-52.1, -46.5))
+//                .turnTo(Math.toRadians(320))
+//                .waitSeconds(2.0)
+//                .turnTo(Math.toRadians(225))
+//                .waitSeconds(2.0)
+//                .setReversed(true)
+//                .splineToLinearHeading(new Pose2d(-28.2, -15, Math.toRadians(0)), Math.toRadians(45))
+//                .waitSeconds(1.0)
+//                .setReversed(false)
+//                .strafeToConstantHeading(new Vector2d(-26.2, -15))
+
+
+                // 0+4 red bucket
+                .strafeToConstantHeading(new Vector2d(-45.5, -61.75))
                 .waitSeconds(2.0)
                 .setReversed(true)
                 .strafeToConstantHeading(new Vector2d(-47.1, -46.5))
+                .turnTo(Math.toRadians(270))
                 .waitSeconds(2.0)
                 .setReversed(false)
                 .turnTo(Math.toRadians((225)))
@@ -52,14 +78,39 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 12.25)
                 .build();
 
-        myBot3.runAction(myBot3.getDrive().actionBuilder(new Pose2d(8, 61.75, Math.toRadians(90)))
+        // for 1+3 blue bucket change Math.toRadians(0) to Math.toRadians(90)
+        myBot3.runAction(myBot3.getDrive().actionBuilder(new Pose2d(8, 61.75, Math.toRadians(0)))
 
 
                // 1+3 blue bucket
-                .strafeToConstantHeading(new Vector2d(8, 37.75))
+//                .strafeToConstantHeading(new Vector2d(8, 37.75))
+//                .waitSeconds(2.0)
+//                .setReversed(true)
+//                .strafeToConstantHeading(new Vector2d(47.1, 46.5))
+//                .waitSeconds(2.0)
+//                .setReversed(false)
+//                .turnTo(Math.toRadians(45))
+//                .waitSeconds(2)
+//                .turnTo(Math.toRadians(90))
+//                .strafeToConstantHeading(new Vector2d(58.8, 46.5))
+//                .waitSeconds(2.0)
+//                .strafeToConstantHeading(new Vector2d(52.1, 46.5))
+//                .turnTo(Math.toRadians(140))
+//                .waitSeconds(2.0)
+//                .turnTo(Math.toRadians(45))
+//                .waitSeconds(2.0)
+//                .setReversed(true)
+//                .splineToLinearHeading(new Pose2d(28.2, 15, Math.toRadians(180)), Math.toRadians(225))
+//                .waitSeconds(1.0)
+//                .setReversed(false)
+//                .strafeToConstantHeading(new Vector2d(26.2, 15))
+
+                // 0+4 blue bucket
+                .strafeToConstantHeading(new Vector2d(45.5, 61.75))
                 .waitSeconds(2.0)
                 .setReversed(true)
                 .strafeToConstantHeading(new Vector2d(47.1, 46.5))
+                .turnTo(Math.toRadians(90))
                 .waitSeconds(2.0)
                 .setReversed(false)
                 .turnTo(Math.toRadians(45))
@@ -157,10 +208,10 @@ public class MeepMeepTesting {
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-                .addEntity(myBot1)
-                .addEntity(myBot2)
+//                .addEntity(myBot1)
+//                .addEntity(myBot2)
                 .addEntity(myBot3)
-                .addEntity(myBot4)
+//                .addEntity(myBot4)
                 .start();
     }
 }
