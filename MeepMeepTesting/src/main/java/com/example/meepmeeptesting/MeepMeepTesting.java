@@ -18,12 +18,14 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 12.25)
                 .build();
 
-        myBot1.runAction(myBot1.getDrive().actionBuilder(new Pose2d(-8, -61.75, Math.toRadians(90)))
+        myBot1.runAction(myBot1.getDrive().actionBuilder(new Pose2d(-8, -61.75, Math.toRadians(270)))
 
+
+                // 1+3 red bucket
                 .strafeToConstantHeading(new Vector2d(-8, -37.75))
                 .waitSeconds(2.0)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-47.1, -46.5, Math.toRadians(270)), Math.toRadians(180))
+                .strafeToConstantHeading(new Vector2d(-47.1, -46.5))
                 .waitSeconds(2.0)
                 .setReversed(false)
                 .turnTo(Math.toRadians((225)))
@@ -50,11 +52,14 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 12.25)
                 .build();
 
-        myBot3.runAction(myBot3.getDrive().actionBuilder(new Pose2d(8, 61.75, Math.toRadians(270)))
+        myBot3.runAction(myBot3.getDrive().actionBuilder(new Pose2d(8, 61.75, Math.toRadians(90)))
+
+
+               // 1+3 blue bucket
                 .strafeToConstantHeading(new Vector2d(8, 37.75))
                 .waitSeconds(2.0)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(47.1, 46.5, Math.toRadians(90)), Math.toRadians(60))
+                .strafeToConstantHeading(new Vector2d(47.1, 46.5))
                 .waitSeconds(2.0)
                 .setReversed(false)
                 .turnTo(Math.toRadians(45))
@@ -82,8 +87,10 @@ public class MeepMeepTesting {
 
                 .build();
 
-        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(8, -61.75, Math.toRadians(90)))
+        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(8, -61.75, Math.toRadians(270)))
 
+
+                // 4+0 red
                 .strafeToConstantHeading(new Vector2d(8, -37.75))
                 .waitSeconds(1.0)
                 .strafeToConstantHeading(new Vector2d(8, -39.75))
@@ -94,23 +101,18 @@ public class MeepMeepTesting {
                 .strafeToConstantHeading(new Vector2d(53, -10.1))
                 .strafeToConstantHeading(new Vector2d(53, -50.1))
                 .waitSeconds(1.0)
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(5, -39.75, Math.toRadians(90)), Math.toRadians(93))
+                .strafeToConstantHeading(new Vector2d(5, -39.75))
                 .waitSeconds(1.0)
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(61, -10.1, Math.toRadians(270)), Math.toRadians(30))
+                .strafeToConstantHeading(new Vector2d(5, -47.75))
+                .strafeToConstantHeading(new Vector2d(61, -10.1))
                 .strafeToConstantHeading(new Vector2d(61, -54.5))
                 .strafeToConstantHeading(new Vector2d(53, -50.1))
                 .waitSeconds(1.0)
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(3, -39.75, Math.toRadians(90)), Math.toRadians(93))
+                .strafeToConstantHeading(new Vector2d(3, -39.75))
                 .waitSeconds(1.0)
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(53, -50.1, Math.toRadians(270)), Math.toRadians(267))
+                .strafeToConstantHeading(new Vector2d(53, -50.1))
                 .waitSeconds(1.0)
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(6.5, -39.75, Math.toRadians(90)), Math.toRadians(93))
-
+                .strafeToConstantHeading(new Vector2d(6.5, -39.75))
                 .build());
 
 
@@ -122,22 +124,30 @@ public class MeepMeepTesting {
 
         myBot4.runAction(myBot4.getDrive().actionBuilder(new Pose2d(-8, 61.75, Math.toRadians(90)))
 
-                .strafeToConstantHeading(new Vector2d(-8, 32.75))
-                .waitSeconds(2.0)
+
+                // 4+0 blue
+                .strafeToConstantHeading(new Vector2d(-8, 37.75))
+                .waitSeconds(1.0)
                 .strafeToConstantHeading(new Vector2d(-8, 39.75))
                 .splineToConstantHeading(new Vector2d(-34.5, 10.1), Math.toRadians(273))
-                .waitSeconds(0.5)
                 .strafeToConstantHeading(new Vector2d(-46, 10.1))
-                .waitSeconds(0.5)
                 .strafeToConstantHeading(new Vector2d(-46, 50.1))
-                .waitSeconds(0.5)
                 .strafeToConstantHeading(new Vector2d(-46, 10.1))
                 .strafeToConstantHeading(new Vector2d(-53, 10.1))
                 .strafeToConstantHeading(new Vector2d(-53, 50.1))
-                .waitSeconds(0.5)
-                .strafeToConstantHeading(new Vector2d(-53, 10.1))
+                .waitSeconds(1.0)
+                .strafeToConstantHeading(new Vector2d(-5, 39.75))
+                .waitSeconds(1.0)
+                .strafeToConstantHeading(new Vector2d(-5, 47.75))
                 .strafeToConstantHeading(new Vector2d(-61, 10.1))
                 .strafeToConstantHeading(new Vector2d(-61, 54.5))
+                .strafeToConstantHeading(new Vector2d(-53, 50.1))
+                .waitSeconds(1.0)
+                .strafeToConstantHeading(new Vector2d(-3, 39.75))
+                .waitSeconds(1.0)
+                .strafeToConstantHeading(new Vector2d(-53, 50.1))
+                .waitSeconds(1.0)
+                .strafeToConstantHeading(new Vector2d(-6.5, 39.75))
                 .build());
 
 
@@ -147,9 +157,9 @@ public class MeepMeepTesting {
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-//                .addEntity(myBot1)
-//                .addEntity(myBot2)
-//                .addEntity(myBot3)
+                .addEntity(myBot1)
+                .addEntity(myBot2)
+                .addEntity(myBot3)
                 .addEntity(myBot4)
                 .start();
     }
