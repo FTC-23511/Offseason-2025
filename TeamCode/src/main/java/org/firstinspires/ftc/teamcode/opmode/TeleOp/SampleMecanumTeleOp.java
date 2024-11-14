@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@TeleOp
+//@TeleOp
 public class SampleMecanumTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

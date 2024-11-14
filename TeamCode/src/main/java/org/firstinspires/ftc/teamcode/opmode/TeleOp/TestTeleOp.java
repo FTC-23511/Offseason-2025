@@ -36,7 +36,7 @@ import org.firstinspires.ftc.teamcode.subsystem.commands.testCommand;
 import org.firstinspires.ftc.teamcode.subsystem.commands.transferReady;
 import org.firstinspires.ftc.teamcode.subsystem.commands.transferToDeposit;
 
-@TeleOp
+//@TeleOp
 public class TestTeleOp extends CommandOpMode {
     public GamepadEx driver;
     public GamepadEx operator;
@@ -86,6 +86,8 @@ public class TestTeleOp extends CommandOpMode {
         }
 
         TelemetryPacket packet = new TelemetryPacket();
+
+        robot.depositClaw.getPosition();
 
         // OTOS Field Centric robot.Drive Code
         robot.drive.sparkFunOTOSDrive.updatePoseEstimate();

@@ -123,6 +123,8 @@ public class Robot {
 
         colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
 
+        colorSensor.enableLed(true);
+
         otos = hardwareMap.get(SparkFunOTOSCorrected.class,"sensor_otos");
 
         otos.setLinearUnit(DistanceUnit.INCH);
@@ -179,6 +181,7 @@ public class Robot {
     }
 
     public void initHasMovement() {
+        // Color Sensor to detect sample in intake
         deposit.init();
         intake.init();
     }

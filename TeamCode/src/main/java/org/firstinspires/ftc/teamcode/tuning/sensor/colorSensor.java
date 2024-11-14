@@ -19,7 +19,7 @@ public class colorSensor extends LinearOpMode {
     @SuppressLint("DefaultLocale")
     @Override
     public void runOpMode() {
-        RevColorSensorV3 colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("color");
+        RevColorSensorV3 colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         ElapsedTime timer = new ElapsedTime();
