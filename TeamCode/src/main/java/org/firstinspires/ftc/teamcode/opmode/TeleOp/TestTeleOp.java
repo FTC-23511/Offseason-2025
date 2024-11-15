@@ -31,10 +31,6 @@ import org.firstinspires.ftc.teamcode.subsystem.commands.depositSafeRetracted;
 import org.firstinspires.ftc.teamcode.subsystem.commands.intakeFullExtendo;
 import org.firstinspires.ftc.teamcode.subsystem.commands.realTransfer;
 import org.firstinspires.ftc.teamcode.subsystem.commands.setDepositScoring;
-import org.firstinspires.ftc.teamcode.subsystem.commands.setIntake;
-import org.firstinspires.ftc.teamcode.subsystem.commands.testCommand;
-import org.firstinspires.ftc.teamcode.subsystem.commands.transferReady;
-import org.firstinspires.ftc.teamcode.subsystem.commands.transferToDeposit;
 
 //@TeleOp
 public class TestTeleOp extends CommandOpMode {

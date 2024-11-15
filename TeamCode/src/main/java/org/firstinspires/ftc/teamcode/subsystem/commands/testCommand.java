@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystem.commands;
 
-import static org.firstinspires.ftc.teamcode.subsystem.Intake.IntakePivotState;
-import static org.firstinspires.ftc.teamcode.subsystem.Intake.WristState;
-
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
 

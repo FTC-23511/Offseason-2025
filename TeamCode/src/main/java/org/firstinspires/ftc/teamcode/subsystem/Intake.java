@@ -8,6 +8,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
@@ -19,7 +20,6 @@ public class Intake extends SubsystemBase {
     // Between retracted and extended
     public boolean extendoRetracted;
     // Between transfer and intake position
-    public int wristIndex = 4;
     // Whether the claw is open or not in the current state of the claw
     public boolean clawOpen = true;
 
@@ -36,21 +36,13 @@ public class Intake extends SubsystemBase {
         TRANSFER,
         MIDDLE_HOLD
     }
-    public enum WristState {
-        INTAKE,
-        TRANSFER,
-        ROTATED
-    }
 
 
     public static IntakePivotState intakePivotState;
-    public static WristState wristState;
-
     private static final PIDFController extendoPIDF = new PIDFController(0.023,0,0, 0.001);
 
     public void init() {
         setClawState(ClawState.OUTER);
-        setWrist(WristState.INTAKE);
         setPivot(IntakePivotState.MIDDLE_HOLD);
         setExtendoTarget(0);
         extendoPIDF.setTolerance(15);
@@ -132,6 +124,7 @@ public class Intake extends SubsystemBase {
         this.clawOpen = open;
     }
 
+/* Wrist Code:
     public void setWrist(WristState wristState) {
         switch (wristState) {
             case TRANSFER:
@@ -158,7 +151,7 @@ public class Intake extends SubsystemBase {
             robot.trayServo.setPosition(TRAY_CLOSE_POS);
         }
     }
-
+*/
     public SampleDetected sampleDetected() {
         robot.colorSensor.enableLed(true);
 
@@ -182,10 +175,10 @@ public class Intake extends SubsystemBase {
         }
     }
 
-    public double colorSensorDistance() {
-        robot.colorSensor.enableLed(true);
+    public double colorSensorDistance(RevColorSensorV3 colorSensor) {
+        colorSensor.enableLed(true);
 
-        return(robot.colorSensor.getDistance(DistanceUnit.CM));
+        return(colorSensor.getDistance(DistanceUnit.CM));
     }
 
     @Override

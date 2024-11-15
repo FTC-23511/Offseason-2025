@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -115,14 +116,14 @@ public class FullTeleOp extends CommandOpMode {
         // OTOS Field Centric robot.Drive Code
         robot.drive.sparkFunOTOSDrive.updatePoseEstimate();
         robot.drive.sparkFunOTOSDrive.setFieldCentricDrivePowers(new PoseVelocity2d(
-                        new Vector2d(
-                                (gamepad1.left_stick_y),
-                                (gamepad1.left_stick_x)
-                        ),
-                        gamepad1.right_stick_x
-                ),
-                gamepad1.left_trigger,
-                (robot.drive.sparkFunOTOSDrive.pose.heading.toDouble() - offset)
+                    new Vector2d(
+                        (gamepad1.left_stick_y),
+                        (gamepad1.left_stick_x)
+                    ),
+                gamepad1.right_stick_x
+            ),
+            gamepad1.left_trigger,
+            (robot.drive.sparkFunOTOSDrive.pose.heading.toDouble() - offset)
         );
 
         // Reset IMU for field centric
@@ -155,10 +156,10 @@ public class FullTeleOp extends CommandOpMode {
                 new attachSpecimen(robot.deposit));
 
         operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
-                new setIntake(robot.intake, Intake.IntakePivotState.INTAKE));
+                new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)));
 
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
-                new setIntake(robot.intake, Intake.IntakePivotState.READY_INTAKE));
+                new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.READY_INTAKE)));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new setDepositScoring(robot.deposit, HIGH_BUCKET_HEIGHT, Deposit.DepositPivotState.SCORING));
@@ -171,26 +172,6 @@ public class FullTeleOp extends CommandOpMode {
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
                 new setDepositSlidesIntake(robot.deposit));
-
-        if (gamepad2.left_bumper && buttonTimer.milliseconds() >= 200 &&
-                (Intake.intakePivotState == Intake.IntakePivotState.READY_INTAKE || Intake.intakePivotState == Intake.IntakePivotState.INTAKE)) {
-//            robot.intake.setWristIndex(robot.intake.wristIndex + 1);
-//            robot.intake.setWrist(Intake.WristState.ROTATED);
-
-            robot.wrist.setPosition(Math.max(robot.wrist.getPosition() - 0.125, 0));
-
-            buttonTimer.reset();
-        }
-
-        if (gamepad2.right_bumper && buttonTimer.milliseconds() >= 200 &&
-                (Intake.intakePivotState == Intake.IntakePivotState.READY_INTAKE || Intake.intakePivotState == Intake.IntakePivotState.INTAKE)) {
-//            robot.intake.setWristIndex(robot.intake.wristIndex - 1);
-//            robot.intake.setWrist(Intake.WristState.ROTATED);
-
-            robot.wrist.setPosition(Math.min(robot.wrist.getPosition() + 0.125, 1));
-
-            buttonTimer.reset();
-        }
 
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();
