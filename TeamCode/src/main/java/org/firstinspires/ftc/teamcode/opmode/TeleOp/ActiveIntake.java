@@ -62,7 +62,7 @@ public class ActiveIntake extends LinearOpMode {
                     green = colorSensor.green();
                     blue = colorSensor.blue();
 
-                    color = sampleDetected(red, green, blue);
+                    color = sampleDetected(colorSensor.red(), colorSensor.green(), colorSensor.blue());
                     telemetry.addData("color", color);
 
                     if (color.equals("RED")) {  // replace with blue for red side teleop
@@ -88,7 +88,6 @@ public class ActiveIntake extends LinearOpMode {
         telemetry.update();
         }
     }
-
 
     public static String sampleDetected(int red, int green, int blue) {
         if ((blue + green + red) >= 900) {

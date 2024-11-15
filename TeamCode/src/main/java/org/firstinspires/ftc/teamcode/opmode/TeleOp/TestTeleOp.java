@@ -1,14 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.TeleOp;
 
-import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_SPECIMEN_HEIGHT;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.SampleDetected;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.SampleDetected.BLUE;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.SampleDetected.RED;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.SampleDetected.YELLOW;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.currentSample;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.startingPose;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -19,15 +11,10 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
-import org.firstinspires.ftc.teamcode.subsystem.Intake;
-import org.firstinspires.ftc.teamcode.subsystem.commands.depositSafeRetracted;
 import org.firstinspires.ftc.teamcode.subsystem.commands.intakeFullExtendo;
 import org.firstinspires.ftc.teamcode.subsystem.commands.realTransfer;
 import org.firstinspires.ftc.teamcode.subsystem.commands.setDepositScoring;

@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+
+import static org.firstinspires.ftc.teamcode.hardware.Globals.PoseLocation.*;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 
-import kotlin.jvm.Transient;
+import java.util.HashMap;
+import java.util.Map;
 
 @Config
 public class Globals {
@@ -12,20 +16,26 @@ public class Globals {
         TELEOP
     }
 
+    public enum PoseLocation {
+        BLUE_BUCKET,
+        BLUE_OBSERVATION,
+        RED_BUCKET,
+        RED_OBSERVATION
+    }
+
+    public static final Map<PoseLocation, Pose2d> STARTING_POSES = new HashMap<PoseLocation, Pose2d>() {{
+        put(BLUE_BUCKET, new Pose2d(8, 61.75, Math.toRadians(90)));
+        put(BLUE_OBSERVATION, new Pose2d(-8, 61.75, Math.toRadians(90)));
+        put(RED_BUCKET, new Pose2d(-8, -61.75, Math.toRadians(270)));
+        put(RED_OBSERVATION, new Pose2d(8, -61.75, Math.toRadians(270)));
+    }};
+
     public static OpModeType opModeType;
 
     public static Pose2d startingPose = new Pose2d(0, 0, 0);
-
-    public enum SampleDetected {
-        RED,
-        BLUE,
-        YELLOW,
-        NONE
-    }
+    public static PoseLocation poseLocation;
 
     public static double offset = 0;
-
-    public static SampleDetected currentSample = SampleDetected.NONE;
 
     // Robot Width and Length (in inches)
     public static double ROBOT_WIDTH = 11.5;
@@ -39,22 +49,12 @@ public class Globals {
 
     // Intake
 
-    // wrist perpendicular to tray pos: 0.53
-
-    public static double WRIST_INNER_TRANSFER_POS = 0.25;
-    public static double WRIST_OUTER_TRANSFER_POS = 0.48;
-    public static double WRIST_INTAKE_POS = 0.48;
-    public static double[] WRIST_POSITIONS = {0, 0.125, 0.25, 0.4, 0.52}; // TODO: TUNE. Note that 5th item or 4th with 0-index is always the default (intake pos)
+    public static double INTAKE_FORWARD_SPEED = 1.0;
+    public static double INTAKE_REVERSE_SPEED = -0.32;
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.32;
     public static double INTAKE_PIVOT_HOLD_POS = 0.4;
     public static double INTAKE_PIVOT_PICKUP_POS = 0.525;
     public static double INTAKE_PIVOT_READY_PICKUP_POS = 0.48;
-    public static double INTAKE_CLAW_INNER_OPEN_POS = 0.85;
-    public static double INTAKE_CLAW_INNER_CLOSE_POS = 0.6;
-    public static double INTAKE_CLAW_OUTER_OPEN_POS = 0.6;
-    public static double INTAKE_CLAW_OUTER_CLOSE_POS = 0.85;
-    public static double TRAY_OPEN_POS = 1.0;
-    public static double TRAY_CLOSE_POS = 0.35;
 
     // Deposit
     public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.57;
@@ -75,11 +75,8 @@ public class Globals {
     public static double HIGH_BUCKET_HEIGHT = 1800; // Encoder ticks
 
     public static double SPECIMEN_INTAKE_HEIGHT = 0;
-
-//    public static double LOW_SPECIMEN_HEIGHT = 0; // Encoder ticks
-//    public static double LOW_SPECIMEN_ATTACH_HEIGHT = 0; // Encoder ticks
     public static double HIGH_SPECIMEN_HEIGHT = 650; // Encoder ticks
     public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1050; // Encoder ticks
-    public static double AUTO_HANG_HEIGHT = 700; // Encoder ticks
-    public static double ENDGAME_HANG_HEIGHT = 800; // Encoder ticks
+    public static double AUTO_ASCENT_HEIGHT = 700; // Encoder ticks
+    public static double ENDGAME_ASCENT_HEIGHT = 800; // Encoder ticks
 }

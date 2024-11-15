@@ -142,11 +142,6 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
                 new depositSafeRetracted(robot.deposit));
 
-        if (gamepad2.a && buttonTimer.milliseconds() >= 200) {
-            robot.intake.setClawOpen(!robot.intake.clawOpen);
-            buttonTimer.reset();
-        }
-
         if (gamepad2.x && buttonTimer.milliseconds() >= 200) {
             robot.deposit.setClawOpen(!robot.deposit.clawOpen);
             buttonTimer.reset();

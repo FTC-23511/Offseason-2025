@@ -20,8 +20,6 @@ public class MeepMeepTesting {
 
         // for 1+3 red bucket change Math.toRadians(180) to Math.toRadians(270)
         myBot1.runAction(myBot1.getDrive().actionBuilder(new Pose2d(-8, -61.75, Math.toRadians(180)))
-
-
                 // 1+3 red bucket
 //                .strafeToConstantHeading(new Vector2d(-8, -37.75))
 //                .waitSeconds(2.0)
@@ -79,7 +77,7 @@ public class MeepMeepTesting {
                 .build();
 
         // for 1+3 blue bucket change Math.toRadians(0) to Math.toRadians(90)
-        myBot3.runAction(myBot3.getDrive().actionBuilder(new Pose2d(8, 61.75, Math.toRadians(0)))
+        myBot3.runAction(myBot3.getDrive().actionBuilder(new Pose2d(8, 61.75, Math.toRadians(90)))
 
 
                // 1+3 blue bucket
@@ -139,7 +137,6 @@ public class MeepMeepTesting {
                 .build();
 
         myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(8, -61.75, Math.toRadians(270)))
-
 
                 // 4+0 red
                 .strafeToConstantHeading(new Vector2d(8, -37.75))
@@ -208,10 +205,10 @@ public class MeepMeepTesting {
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-//                .addEntity(myBot1)
-//                .addEntity(myBot2)
+                .addEntity(myBot1)
+                .addEntity(myBot2)
                 .addEntity(myBot3)
-//                .addEntity(myBot4)
+                .addEntity(myBot4)
                 .start();
     }
 }

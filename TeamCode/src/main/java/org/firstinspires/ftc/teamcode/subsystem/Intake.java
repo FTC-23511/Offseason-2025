@@ -13,7 +13,7 @@ import com.qualcomm.hardware.rev.RevColorSensorV3;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-public class Intake extends SubsystemBase {
+public class    Intake extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
     private double target;
     public boolean extendoReached;
@@ -37,12 +37,18 @@ public class Intake extends SubsystemBase {
         MIDDLE_HOLD
     }
 
+    public enum IntakeMotorState {
+        REVERSE,
+        STOP,
+        FORWARD
+    }
 
+    public static String sampleColor = "NONE";
     public static IntakePivotState intakePivotState;
+    public static IntakeMotorState intakeMotorState;
     private static final PIDFController extendoPIDF = new PIDFController(0.023,0,0, 0.001);
 
     public void init() {
-        setClawState(ClawState.OUTER);
         setPivot(IntakePivotState.MIDDLE_HOLD);
         setExtendoTarget(0);
         extendoPIDF.setTolerance(15);
@@ -98,91 +104,48 @@ public class Intake extends SubsystemBase {
         Intake.intakePivotState = intakePivotState;
     }
 
-    public void setClawState(ClawState clawState) {
-        this.clawState = clawState;
-        setClawOpen(clawOpen);
-    }
-
-    public void setClawOpen(boolean open) {
-        switch (clawState) {
-            case INNER:
-                if (open) {
-                    robot.intakeClaw.setPosition(INTAKE_CLAW_INNER_OPEN_POS);
-                } else {
-                    robot.intakeClaw.setPosition(INTAKE_CLAW_INNER_CLOSE_POS);
-                }
-                break;
-            case OUTER:
-                if (open) {
-                    robot.intakeClaw.setPosition(INTAKE_CLAW_OUTER_OPEN_POS);
-                } else {
-                    robot.intakeClaw.setPosition(INTAKE_CLAW_OUTER_CLOSE_POS);
-                }
-                break;
-        }
-
-        this.clawOpen = open;
-    }
-
-/* Wrist Code:
-    public void setWrist(WristState wristState) {
-        switch (wristState) {
-            case TRANSFER:
-                robot.wrist.setPosition(WRIST_OUTER_TRANSFER_POS);
-                break;
-            case ROTATED:
-                robot.wrist.setPosition(WRIST_POSITIONS[Math.max(Math.min(wristIndex, 4), 0)]);
-                break;
-            case INTAKE:
-                robot.wrist.setPosition(WRIST_INTAKE_POS);
-                break;
-        }
-        Intake.wristState = wristState;
-    }
-
-    public void setWristIndex(int index) {
-        this.wristIndex = index;
-    }
-
-    public void setTrayOpen(boolean open) {
-        if (open) {
-            robot.trayServo.setPosition(TRAY_OPEN_POS);
-        } else {
-            robot.trayServo.setPosition(TRAY_CLOSE_POS);
-        }
-    }
-*/
-    public SampleDetected sampleDetected() {
-        robot.colorSensor.enableLed(true);
-
-        int red = robot.colorSensor.red();
-        int green = robot.colorSensor.green();
-        int blue = robot.colorSensor.blue();
-
-        double distance = robot.colorSensor.getDistance(DistanceUnit.CM);
-
-        if (distance < 1.5) {
-            if (red >= green && red >= blue) {
-                return SampleDetected.RED;
-            } else if (green >= red && green >= blue) {
-                return SampleDetected.YELLOW;
+    public static String sampleDetected(int red, int green, int blue) {
+        if ((blue + green + red) >= 900) {
+            if (blue >= green && blue >= red) {
+                return "BLUE";
+            } else if (green >= red) {
+                return "YELLOW";
             } else {
-                return SampleDetected.BLUE;
+                return "RED";
             }
         }
         else {
-            return SampleDetected.NONE;
+            return "NONE";
         }
     }
 
-    public double colorSensorDistance(RevColorSensorV3 colorSensor) {
-        colorSensor.enableLed(true);
+    public void setIntakeMotor(IntakeMotorState intakeMotorState) {
+        switch (intakeMotorState) {
+            case FORWARD:
+                robot.intakeMotor.setPower(1);
+            case REVERSE:
+                robot.intakeMotor.setPower(-1);
+            case STOP:
+                robot.intakeMotor.setPower(0);
+        }
 
-        return(colorSensor.getDistance(DistanceUnit.CM));
+        Intake.intakeMotorState = intakeMotorState;
     }
+
 
     @Override
     public void periodic() {
         autoUpdateExtendo();
+        if (intakeMotorState.equals(IntakeMotorState.FORWARD)) {
+            if (robot.colorSensor.getDistance(DistanceUnit.CM) < 2.15) {
+                Intake.sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
+            }
+
+            if (Intake.sampleColor.equals("RED")) {
+
+            } else if (Intake.sampleColor.equals("BLUE") || Intake.sampleColor.equals("YELLOW")) {  // replace with red & yellow for red side teleop
+
+            }
+        }
     }
 }
