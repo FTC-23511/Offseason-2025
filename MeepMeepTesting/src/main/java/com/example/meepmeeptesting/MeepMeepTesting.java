@@ -29,7 +29,7 @@ public class MeepMeepTesting {
 //                .setReversed(false)
 //                .turnTo(Math.toRadians((225)))
 //                .waitSeconds(2.0)
-//                .turnTo(Math.toRadians((270)))
+//                .turnTo(Math.toRadians((270)))z
 //                .strafeToConstantHeading(new Vector2d(-58.8, -46.5))
 //                .waitSeconds(2.0)
 //                .strafeToConstantHeading(new Vector2d(-52.1, -46.5))
@@ -108,7 +108,7 @@ public class MeepMeepTesting {
                 .waitSeconds(2.0)
                 .setReversed(true)
                 .strafeToConstantHeading(new Vector2d(47.1, 46.5))
-                .turnTo(Math.toRadians(90))
+//                .turnTo(Math.toRadians(90))
                 .waitSeconds(2.0)
                 .setReversed(false)
                 .turnTo(Math.toRadians(45))

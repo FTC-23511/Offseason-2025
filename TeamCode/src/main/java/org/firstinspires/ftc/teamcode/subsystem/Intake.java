@@ -1,14 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.startingPoseName;
 
-import androidx.annotation.NonNull;
-
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
-import com.qualcomm.hardware.rev.RevColorSensorV3;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
@@ -104,6 +100,38 @@ public class    Intake extends SubsystemBase {
         Intake.intakePivotState = intakePivotState;
     }
 
+    public void setActiveIntake(IntakeMotorState intakeMotorState) {
+        switch (intakeMotorState) {
+            case FORWARD:
+                robot.intakeMotor.setPower(1);
+            case REVERSE:
+                robot.intakeMotor.setPower(-1);
+            case STOP:
+                robot.intakeMotor.setPower(0);
+        }
+
+        Intake.intakeMotorState = intakeMotorState;
+    }
+
+    public void autoUpdateActiveIntake(IntakeMotorState intakeMotorState) {
+        switch (intakeMotorState) {
+            case FORWARD:
+                if (robot.colorSensor.getDistance(DistanceUnit.CM) < SAMPLE_DISTANCE_THRESHOLD) {
+                    sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
+                    if (correctSampleDetected(sampleColor, startingPoseName)) {
+                        robot.intakeMotor.setPower(0);
+                    } else if (!sampleColor.equals("NONE")) {
+                        robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
+                        Intake.intakeMotorState = IntakeMotorState.REVERSE;
+                    }
+                }
+            case REVERSE:
+                robot.intakeMotor.setPower(-1);
+            case STOP:
+                robot.intakeMotor.setPower(0);
+        }
+    }
+
     public static String sampleDetected(int red, int green, int blue) {
         if ((blue + green + red) >= 900) {
             if (blue >= green && blue >= red) {
@@ -119,33 +147,13 @@ public class    Intake extends SubsystemBase {
         }
     }
 
-    public void setIntakeMotor(IntakeMotorState intakeMotorState) {
-        switch (intakeMotorState) {
-            case FORWARD:
-                robot.intakeMotor.setPower(1);
-            case REVERSE:
-                robot.intakeMotor.setPower(-1);
-            case STOP:
-                robot.intakeMotor.setPower(0);
-        }
-
-        Intake.intakeMotorState = intakeMotorState;
+    public static boolean correctSampleDetected(String sampleColor, PoseLocation startingPoseName) {
+        return (((sampleColor.equals("BLUE") && (startingPoseName.equals(PoseLocation.BLUE_BUCKET) || startingPoseName.equals(PoseLocation.BLUE_OBSERVATION))) || (sampleColor.equals("RED") && (startingPoseName.equals(PoseLocation.RED_BUCKET) || startingPoseName.equals(PoseLocation.RED_OBSERVATION)))) || sampleColor.equals("YELLOW"));
     }
-
 
     @Override
     public void periodic() {
         autoUpdateExtendo();
-        if (intakeMotorState.equals(IntakeMotorState.FORWARD)) {
-            if (robot.colorSensor.getDistance(DistanceUnit.CM) < 2.15) {
-                Intake.sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
-            }
-
-            if (Intake.sampleColor.equals("RED")) {
-
-            } else if (Intake.sampleColor.equals("BLUE") || Intake.sampleColor.equals("YELLOW")) {  // replace with red & yellow for red side teleop
-
-            }
-        }
+        autoUpdateActiveIntake(intakeMotorState);
     }
 }

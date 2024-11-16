@@ -33,7 +33,7 @@ public class Globals {
     public static OpModeType opModeType;
 
     public static Pose2d startingPose = new Pose2d(0, 0, 0);
-    public static PoseLocation poseLocation;
+    public static PoseLocation startingPoseName;
 
     public static double offset = 0;
 
@@ -48,9 +48,10 @@ public class Globals {
     // TODO: TUNE. 9.99 or other sus numbers (like 10,000) generally means not tuned!
 
     // Intake
-
     public static double INTAKE_FORWARD_SPEED = 1.0;
     public static double INTAKE_REVERSE_SPEED = -0.32;
+    public static final double SAMPLE_DISTANCE_THRESHOLD = 2.15;
+
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.32;
     public static double INTAKE_PIVOT_HOLD_POS = 0.4;
     public static double INTAKE_PIVOT_PICKUP_POS = 0.525;

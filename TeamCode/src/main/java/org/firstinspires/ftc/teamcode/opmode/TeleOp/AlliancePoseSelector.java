@@ -25,23 +25,23 @@ public class AlliancePoseSelector extends LinearOpMode {
 
         while (opModeIsActive()) {
             if (gamepad1.cross) {
-                poseLocation = BLUE_BUCKET;
+                startingPoseName = BLUE_BUCKET;
             } else if (gamepad1.circle) {
-                poseLocation = BLUE_OBSERVATION;
+                startingPoseName = BLUE_OBSERVATION;
             } else if (gamepad1.square) {
-                poseLocation = RED_BUCKET;
+                startingPoseName = RED_BUCKET;
             } else if (gamepad1.triangle) {
-                poseLocation = RED_OBSERVATION;
+                startingPoseName = RED_OBSERVATION;
             }
 
-            startingPose = STARTING_POSES.get(poseLocation);
+            startingPose = STARTING_POSES.get(startingPoseName);
 
             telemetry.addData("Cross", "Blue Bucket (left)");
             telemetry.addData("Circle", "Blue Observation (right)");
             telemetry.addData("Square", "Red Bucket (left)");
             telemetry.addData("Triangle", "Red Observation (right)");
 
-            telemetry.addData("Current Pose", poseLocation);
+            telemetry.addData("Current Pose", startingPoseName);
             telemetry.addData("startingPose", startingPose);
 
             telemetry.update();
