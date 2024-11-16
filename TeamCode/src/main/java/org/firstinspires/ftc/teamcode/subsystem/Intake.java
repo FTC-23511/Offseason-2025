@@ -27,10 +27,9 @@ public class    Intake extends SubsystemBase {
     public ClawState clawState;
 
     public enum IntakePivotState {
-        READY_INTAKE,
+
         INTAKE,
-        TRANSFER,
-        MIDDLE_HOLD
+        TRANSFER
     }
 
     public enum IntakeMotorState {
@@ -45,7 +44,7 @@ public class    Intake extends SubsystemBase {
     private static final PIDFController extendoPIDF = new PIDFController(0.023,0,0, 0.001);
 
     public void init() {
-        setPivot(IntakePivotState.MIDDLE_HOLD);
+        setPivot(IntakePivotState.TRANSFER);
         setExtendoTarget(0);
         extendoPIDF.setTolerance(15);
     }
@@ -79,18 +78,12 @@ public class    Intake extends SubsystemBase {
 
     public void setPivot(IntakePivotState intakePivotState) {
         switch (intakePivotState) {
-            case READY_INTAKE:
-                robot.leftIntakePivot.setPosition(INTAKE_PIVOT_READY_PICKUP_POS);
-                robot.rightIntakePivot.setPosition(INTAKE_PIVOT_READY_PICKUP_POS);
-                break;
+
             case TRANSFER:
                 robot.leftIntakePivot.setPosition(INTAKE_PIVOT_TRANSFER_POS);
                 robot.rightIntakePivot.setPosition(INTAKE_PIVOT_TRANSFER_POS);
                 break;
-            case MIDDLE_HOLD:
-                robot.leftIntakePivot.setPosition(INTAKE_PIVOT_HOLD_POS);
-                robot.rightIntakePivot.setPosition(INTAKE_PIVOT_HOLD_POS);
-                break;
+
             case INTAKE:
                 robot.leftIntakePivot.setPosition(INTAKE_PIVOT_PICKUP_POS);
                 robot.rightIntakePivot.setPosition(INTAKE_PIVOT_PICKUP_POS);
@@ -124,10 +117,12 @@ public class    Intake extends SubsystemBase {
                         setActiveIntake(IntakeMotorState.REVERSE);
                     }
                 }
+                break;
             case REVERSE:
                 if (robot.colorSensor.getDistance(DistanceUnit.CM) > SAMPLE_DISTANCE_THRESHOLD) {
                     setActiveIntake(IntakeMotorState.STOP);
                 }
+                break;
         }
     }
 

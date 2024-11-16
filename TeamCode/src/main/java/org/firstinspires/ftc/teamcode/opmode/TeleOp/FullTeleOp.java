@@ -136,7 +136,7 @@ public class FullTeleOp extends CommandOpMode {
                 new intakeFullExtendo(robot.intake));
 
         // Operator Gamepad controls
-        operator.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
+        driver.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
                 new realTransfer(robot.deposit, robot.intake));
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
@@ -150,11 +150,12 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
                 new attachSpecimen(robot.deposit));
 
-        operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
+        driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)));
+        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
+                new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
 
-        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
-                new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.READY_INTAKE)));
+
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new setDepositScoring(robot.deposit, HIGH_BUCKET_HEIGHT, Deposit.DepositPivotState.SCORING));

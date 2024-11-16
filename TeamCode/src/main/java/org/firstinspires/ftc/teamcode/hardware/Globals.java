@@ -16,6 +16,11 @@ public class Globals {
         TELEOP
     }
 
+    public enum AllianceColor {
+        RED,
+        BlUE
+    }
+
     public enum PoseLocation {
         BLUE_BUCKET,
         BLUE_OBSERVATION,
@@ -34,6 +39,8 @@ public class Globals {
 
     public static Pose2d startingPose = new Pose2d(0, 0, 0);
     public static PoseLocation startingPoseName;
+
+    public static AllianceColor color;
 
     public static double offset = 0;
 
