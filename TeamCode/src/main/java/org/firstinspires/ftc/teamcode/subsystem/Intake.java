@@ -121,14 +121,13 @@ public class    Intake extends SubsystemBase {
                     if (correctSampleDetected(sampleColor, startingPoseName)) {
                         robot.intakeMotor.setPower(0);
                     } else if (!sampleColor.equals("NONE")) {
-                        robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
-                        Intake.intakeMotorState = IntakeMotorState.REVERSE;
+                        setActiveIntake(IntakeMotorState.REVERSE);
                     }
                 }
             case REVERSE:
-                robot.intakeMotor.setPower(-1);
-            case STOP:
-                robot.intakeMotor.setPower(0);
+                if (robot.colorSensor.getDistance(DistanceUnit.CM) > SAMPLE_DISTANCE_THRESHOLD) {
+                    setActiveIntake(IntakeMotorState.STOP);
+                }
         }
     }
 
