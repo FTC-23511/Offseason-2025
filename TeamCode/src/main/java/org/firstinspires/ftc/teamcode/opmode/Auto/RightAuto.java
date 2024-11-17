@@ -11,7 +11,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.subsystem.commands.depositSafeRetracted;
+import org.firstinspires.ftc.teamcode.subsystem.Deposit;
+import org.firstinspires.ftc.teamcode.subsystem.commands.setDeposit;
 
 @Config
 @Autonomous
@@ -98,7 +99,7 @@ public class RightAuto extends OpMode {
             robot.drive.sparkFunOTOSDrive.rightBack.setPower(0);
             robot.drive.sparkFunOTOSDrive.rightFront.setPower(0);
 
-            CommandScheduler.getInstance().schedule(new depositSafeRetracted(robot.deposit));
+            CommandScheduler.getInstance().schedule(new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0));
 
             robot.drive.sparkFunOTOSDrive.leftBack.setPower(-motorSpeeds);
             robot.drive.sparkFunOTOSDrive.leftFront.setPower(+motorSpeeds);

@@ -88,8 +88,8 @@ public class Intake extends SubsystemBase {
                 break;
 
             case INTAKE:
-                robot.leftIntakePivot.setPosition(INTAKE_PIVOT_PICKUP_POS);
-                robot.rightIntakePivot.setPosition(INTAKE_PIVOT_PICKUP_POS);
+                robot.leftIntakePivot.setPosition(INTAKE_PIVOT_INTAKE_POS);
+                robot.rightIntakePivot.setPosition(INTAKE_PIVOT_INTAKE_POS);
                 break;
         }
 

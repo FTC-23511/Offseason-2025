@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.tuning.servo;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
-import static org.firstinspires.ftc.teamcode.hardware.System.checkButton;
 import static org.firstinspires.ftc.teamcode.hardware.System.round;
+import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.CENTER_SERVO_POS;
 import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.CLAW_SERVO_POS;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -13,13 +13,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.tuning.example.ExampleRobot;
+import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 @Config
 @TeleOp
-public class wristTester extends OpMode {
-    public static boolean USE_DASHBOARD = false;
-    private final ExampleRobot robot = ExampleRobot.getInstance();
+public class doubleIntakePivotTester extends OpMode {
+    private final Robot robot = Robot.getInstance();
+
     Gamepad currentGamepad1 = new Gamepad();
 
     @Override
@@ -30,33 +30,23 @@ public class wristTester extends OpMode {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        robot.wrist.setPosition(CLAW_SERVO_POS);
+        robot.leftIntakePivot.setPosition(CENTER_SERVO_POS);
+        robot.rightIntakePivot.setPosition(CENTER_SERVO_POS);
     }
 
     @Override
     public void loop() {
-        if (USE_DASHBOARD) {
-            robot.wrist.setPosition(CLAW_SERVO_POS);
-        } else if (gamepad1.dpad_up  && checkButton(currentGamepad1, "dpad_up")) {
-            CLAW_SERVO_POS += 0.01;
-        } else if (gamepad1.dpad_down && checkButton(currentGamepad1, "dpad_down")) {
-            CLAW_SERVO_POS -= 0.01;
-        } else if (gamepad1.dpad_right  && checkButton(currentGamepad1, "dpad_right")) {
-            CLAW_SERVO_POS += 0.01;
-        } else if (gamepad1.dpad_left && checkButton(currentGamepad1, "dpad_left")) {
-            CLAW_SERVO_POS -= 0.01;
-        }
 
-        if (gamepad1.square || gamepad1.cross || gamepad1.triangle || gamepad1.circle) {
-            robot.wrist.setPosition(CLAW_SERVO_POS);
-        }
+        robot.leftIntakePivot.setPosition(CENTER_SERVO_POS);
+        robot.rightIntakePivot.setPosition(CENTER_SERVO_POS);
 
-        CLAW_SERVO_POS = Math.max(Math.min(CLAW_SERVO_POS, 1), 0);
+        CENTER_SERVO_POS = Math.max(Math.min(CENTER_SERVO_POS, 1), 0);
 
         currentGamepad1.copy(gamepad1);
 
-        telemetry.addData("centerServo getPosition", robot.wrist.getPosition());
-        telemetry.addData("centerServoPos", round(CLAW_SERVO_POS, 2));
+        telemetry.addData("leftIntakePivot getPosition", robot.leftIntakePivot.getPosition());
+        telemetry.addData("rightDepositPivot getPosition",robot.rightDepositPivot.getPosition());
+        telemetry.addData("servoPos", round(CENTER_SERVO_POS, 2));
         telemetry.update();
 
         // DO NOT REMOVE! Removing this will return stale data since bulk caching is on Manual mode

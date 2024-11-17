@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 public class Deposit extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
 
-    private static final PIDFController slidePIDF = new PIDFController(0.01,0,0.0002, 0.00018);
+    private static final PIDFController slidePIDF = new PIDFController(0.01,0,0.0002, 0.00016);
 
     // Between open and closed
     public boolean clawOpen;

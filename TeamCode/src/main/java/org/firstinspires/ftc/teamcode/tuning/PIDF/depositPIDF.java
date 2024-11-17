@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.tuning.PIDF;
 
+import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -9,19 +11,20 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.hardware.Globals;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.tuning.example.ExampleRobot;
 
 @Config
 @TeleOp
 public class depositPIDF extends OpMode {
-    public static double p = 0.009;
+    public static double p = 0.01;
     public static double i = 0;
     public static double d = 0.0002;
     public static double f = 0.00016;
 
     public static int setPoint = 0;
-    public static double maxPowerConstant = 0.8;
+    public static double maxPowerConstant = 1.0;
 
     private static final PIDFController slidePIDF = new PIDFController(p,i,d, f);
     private final Robot robot = Robot.getInstance();
@@ -32,6 +35,8 @@ public class depositPIDF extends OpMode {
 
     @Override
     public void init() {
+        opModeType = Globals.OpModeType.TELEOP;
+
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         robot.init(hardwareMap);
         slidePIDF.setTolerance(5, 10);

@@ -12,45 +12,67 @@ public class setDeposit extends CommandBase {
     Deposit.DepositPivotState state;
     // Timer to give claw time to close/open
     ElapsedTime timer = new ElapsedTime();
+    private boolean armMoved = false;
+    private double target;
+    private boolean armReadyToMove = false;
+    private boolean secondSlideMoveCompleted = true;
     private boolean finished = false;
 
-    public setDeposit(Deposit deposit, Deposit.DepositPivotState state) {
+    public setDeposit(Deposit deposit, Deposit.DepositPivotState state, double target) {
         this.deposit = deposit;
         this.state = state;
+        this.target = target;
 
         addRequirements(deposit);
     }
 
     @Override
     public void initialize() {
-        switch (state) {
-            case MIDDLE_HOLD:
-                deposit.setClawOpen(true);
-                break;
-            case SCORING:
-                deposit.setClawOpen(false);
-                break;
-            case SPECIMEN_SCORING:
-                deposit.setClawOpen(false);
-                break;
-            case TRANSFER:
-                deposit.setClawOpen(true);
-                break;
+        deposit.setClawOpen(false);
+
+        if (target >= SLIDES_PIVOT_READY_EXTENSION) {
+            deposit.setSlideTarget(target);
+            armReadyToMove = true;
+        } else {
+            deposit.setSlideTarget(SLIDES_PIVOT_READY_EXTENSION + 50);
+            secondSlideMoveCompleted = false;
         }
+
         timer.reset();
     }
 
     @Override
     public void execute() {
-        if ((deposit.getDepositSlidePosition() >= SLIDES_PIVOT_READY_EXTENSION) && (deposit.target >= SLIDES_PIVOT_READY_EXTENSION) && !finished) {
+        if (armReadyToMove) {
             deposit.setPivot(state);
             timer.reset();
+            armMoved = true;
+        } else if (armMoved && timer.milliseconds() > 300) {
+            if (!secondSlideMoveCompleted) {
+                deposit.setSlideTarget(target);
+            }
+
+            switch (state) {
+                case INTAKE:
+                    deposit.setClawOpen(true);
+                    break;
+                case TRANSFER:
+                    deposit.setClawOpen(true);
+                    break;
+                case MIDDLE_HOLD:
+                    deposit.setClawOpen(true);
+                    break;
+            }
+
             finished = true;
+
+        } else if (deposit.slidesReached) {
+            armReadyToMove = true;
         }
     }
 
     @Override
     public boolean isFinished() {
-        return (timer.milliseconds() > 300) && finished;
+        return deposit.slidesReached && finished;
     }
 }

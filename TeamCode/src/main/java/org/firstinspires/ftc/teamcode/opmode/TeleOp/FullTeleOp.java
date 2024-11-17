@@ -140,7 +140,7 @@ public class FullTeleOp extends CommandOpMode {
                 new realTransfer(robot.deposit, robot.intake));
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
-                new depositSafeRetracted(robot.deposit));
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0));
 
         if (gamepad2.x && buttonTimer.milliseconds() >= 200) {
             robot.deposit.setClawOpen(!robot.deposit.clawOpen);
@@ -156,16 +156,16 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
-                new setDepositScoring(robot.deposit, HIGH_BUCKET_HEIGHT, Deposit.DepositPivotState.SCORING));
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
-                new setDepositScoring(robot.deposit, HIGH_SPECIMEN_HEIGHT, Deposit.DepositPivotState.SPECIMEN_SCORING));
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
-                new setDepositScoring(robot.deposit, LOW_BUCKET_HEIGHT, Deposit.DepositPivotState.SPECIMEN_SCORING));
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, LOW_BUCKET_HEIGHT));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
-                new setDepositSlidesIntake(robot.deposit));
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.INTAKE, 0));
 
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(Intake.SampleColorTarget.ANY_COLOR)));

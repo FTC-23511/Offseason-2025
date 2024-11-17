@@ -11,7 +11,7 @@ public class transferReady extends SequentialCommandGroup {
         addCommands(
                 new InstantCommand(() -> intake.setPivot(Intake.IntakePivotState.TRANSFER)),
                 new InstantCommand(() -> intake.setExtendoTarget(0)),
-                new depositSafeRetracted(deposit)
+                new setDeposit(deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0)
         );
         addRequirements(deposit, intake);
     }

@@ -59,10 +59,8 @@ public class Globals {
     public static double INTAKE_REVERSE_SPEED = -0.50;
     public static final double SAMPLE_DISTANCE_THRESHOLD = 2.15;
 
-    public static double INTAKE_PIVOT_TRANSFER_POS = 0.32;
-    public static double INTAKE_PIVOT_HOLD_POS = 0.4;
-    public static double INTAKE_PIVOT_PICKUP_POS = 0.525;
-    public static double INTAKE_PIVOT_READY_PICKUP_POS = 0.48;
+    public static double INTAKE_PIVOT_TRANSFER_POS = 0.21;
+    public static double INTAKE_PIVOT_INTAKE_POS = 0.8;
 
     // Deposit
     public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.57;

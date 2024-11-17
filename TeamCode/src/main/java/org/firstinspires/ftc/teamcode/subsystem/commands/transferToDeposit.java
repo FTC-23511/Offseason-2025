@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.subsystem.Intake;
 public class transferToDeposit extends SequentialCommandGroup {
     public transferToDeposit(Deposit deposit, Intake intake) {
         addCommands(
-                new setDeposit(deposit, Deposit.DepositPivotState.TRANSFER),
+                new setDeposit(deposit, Deposit.DepositPivotState.TRANSFER, 0),
                 new InstantCommand(() -> deposit.setClawOpen(false))
         );
         addRequirements(deposit, intake);

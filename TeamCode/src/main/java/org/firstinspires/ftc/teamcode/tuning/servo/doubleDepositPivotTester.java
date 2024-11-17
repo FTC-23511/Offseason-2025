@@ -1,15 +1,8 @@
 package org.firstinspires.ftc.teamcode.tuning.servo;
 
-import static org.firstinspires.ftc.teamcode.hardware.Globals.DEPOSIT_CLAW_OUTSIDE_OPEN_POS;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
-import static org.firstinspires.ftc.teamcode.hardware.System.checkButton;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 import static org.firstinspires.ftc.teamcode.hardware.System.round;
-import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.CENTER_MOTOR_POWER;
-import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.CENTER_SERVO_POS;
-import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.CLAW_SERVO_POS;
-import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.LEFT_SERVO_POS;
-import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.RIGHT_SERVO_POS;
+import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.*;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
