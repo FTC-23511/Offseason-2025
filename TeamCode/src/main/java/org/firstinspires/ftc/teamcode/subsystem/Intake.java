@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
+import static org.firstinspires.ftc.teamcode.subsystem.Intake.IntakePivotState.*;
 import static org.firstinspires.ftc.teamcode.subsystem.Intake.SampleColorDetected.*;
+import static org.firstinspires.ftc.teamcode.subsystem.Intake.SampleColorTarget.*;
+import static org.firstinspires.ftc.teamcode.subsystem.Intake.IntakeMotorState.*;
 
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -42,13 +45,13 @@ public class Intake extends SubsystemBase {
         NONE
     }
     public static SampleColorDetected sampleColor = NONE;
-    public static SampleColorTarget sampleColorTarget;
+    public static SampleColorTarget sampleColorTarget = ANY_COLOR;
     public static IntakePivotState intakePivotState;
     public static IntakeMotorState intakeMotorState;
     private static final PIDFController extendoPIDF = new PIDFController(0.023,0,0, 0.001);
 
     public void init() {
-        setPivot(IntakePivotState.TRANSFER);
+        setPivot(TRANSFER);
         setExtendoTarget(0);
         extendoPIDF.setTolerance(15);
     }
@@ -109,13 +112,13 @@ public class Intake extends SubsystemBase {
         Intake.intakeMotorState = intakeMotorState;
     }
 
-    public void toggleActiveIntake(SampleColorTarget colorTarget) {
+    public void toggleActiveIntake(SampleColorTarget sampleColorTarget) {
         if (intakeMotorState.equals(IntakeMotorState.FORWARD)) {
             intakeMotorState = IntakeMotorState.STOP;
         } else if (intakeMotorState.equals(IntakeMotorState.STOP)) {
             intakeMotorState = IntakeMotorState.FORWARD;
         }
-        sampleColorTarget = colorTarget;
+        Intake.sampleColorTarget = sampleColorTarget;
     }
 
     public void autoUpdateActiveIntake(IntakeMotorState intakeMotorState) {
@@ -124,16 +127,16 @@ public class Intake extends SubsystemBase {
                 if (robot.colorSensor.getDistance(DistanceUnit.CM) < SAMPLE_DISTANCE_THRESHOLD) {
                     sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
                     if (correctSampleDetected()) {
-                        setActiveIntake(IntakeMotorState.STOP);
+                        setActiveIntake(STOP);
                         CommandScheduler.getInstance().schedule(new realTransfer(robot.deposit, robot.intake));
                     } else if (!sampleColor.equals(NONE)) {
-                        setActiveIntake(IntakeMotorState.REVERSE);
+                        setActiveIntake(REVERSE);
                     }
                 }
                 break;
             case REVERSE:
                 if (robot.colorSensor.getDistance(DistanceUnit.CM) > SAMPLE_DISTANCE_THRESHOLD) {
-                    setActiveIntake(IntakeMotorState.FORWARD);
+                    setActiveIntake(FORWARD);
                 }
                 break;
 
@@ -146,13 +149,13 @@ public class Intake extends SubsystemBase {
             if (blue >= green && blue >= red) {
                 return BLUE;
             } else if (green >= red) {
-                return SampleColorDetected.YELLOW;
+                return YELLOW;
             } else {
                 return RED;
             }
         }
         else {
-            return SampleColorDetected.NONE;
+            return NONE;
         }
     }
 
