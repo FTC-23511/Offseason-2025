@@ -69,7 +69,7 @@ public class FullTeleOp extends CommandOpMode {
             gamepad2.rumble(500);
         }
 
-/* Color Sensor Code (Works, but drivers don't want it tho)
+/* Color Sensor Code
         if (Objects.equals(Intake.IntakePivotState.READY_INTAKE, Intake.intakePivotState) || Objects.equals(Intake.IntakePivotState.INTAKE, Intake.intakePivotState)) {
             int red = robot.colorSensor.red();
             int green = robot.colorSensor.green();
@@ -168,7 +168,10 @@ public class FullTeleOp extends CommandOpMode {
                 new setDepositSlidesIntake(robot.deposit));
 
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
-                new InstantCommand(() -> robot.intake.toggleActiveIntake()));
+                new InstantCommand(() -> robot.intake.toggleActiveIntake(Intake.SampleColorTarget.ANY_COLOR)));
+
+        operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(
+                new InstantCommand(() -> robot.intake.toggleActiveIntake(Intake.SampleColorTarget.ALLIANCE_ONLY)));
 
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();

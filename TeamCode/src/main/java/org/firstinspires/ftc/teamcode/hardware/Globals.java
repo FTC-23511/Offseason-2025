@@ -40,7 +40,7 @@ public class Globals {
     public static Pose2d startingPose = new Pose2d(0, 0, 0);
     public static PoseLocation startingPoseName;
 
-    public static AllianceColor color;
+    public static AllianceColor allianceColor;
 
     public static double offset = 0;
 
@@ -56,7 +56,7 @@ public class Globals {
 
     // Intake
     public static double INTAKE_FORWARD_SPEED = 1.0;
-    public static double INTAKE_REVERSE_SPEED = -0.32;
+    public static double INTAKE_REVERSE_SPEED = -0.50;
     public static final double SAMPLE_DISTANCE_THRESHOLD = 2.15;
 
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.32;

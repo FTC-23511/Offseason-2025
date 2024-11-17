@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.startingPoseName;
+import static org.firstinspires.ftc.teamcode.subsystem.Intake.SampleColorDetected.*;
 
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -9,7 +9,6 @@ import com.arcrobotics.ftclib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.subsystem.commands.depositSafeRetracted;
 import org.firstinspires.ftc.teamcode.subsystem.commands.realTransfer;
 
 public class Intake extends SubsystemBase {
@@ -20,15 +19,6 @@ public class Intake extends SubsystemBase {
     public boolean extendoRetracted;
     // Between transfer and intake position
     // Whether the claw is open or not in the current state of the claw
-    public boolean clawOpen = true;
-
-    public enum ClawState {
-        INNER,
-        OUTER
-    }
-
-    public ClawState clawState;
-
     public enum IntakePivotState {
 
         INTAKE,
@@ -41,7 +31,18 @@ public class Intake extends SubsystemBase {
         FORWARD
     }
 
-    public static String sampleColor = "NONE";
+    public enum SampleColorTarget {
+        ALLIANCE_ONLY,
+        ANY_COLOR
+    }
+    public enum SampleColorDetected {
+        RED,
+        BLUE,
+        YELLOW,
+        NONE
+    }
+    public static SampleColorDetected sampleColor = NONE;
+    public static SampleColorTarget sampleColorTarget;
     public static IntakePivotState intakePivotState;
     public static IntakeMotorState intakeMotorState;
     private static final PIDFController extendoPIDF = new PIDFController(0.023,0,0, 0.001);
@@ -81,7 +82,6 @@ public class Intake extends SubsystemBase {
 
     public void setPivot(IntakePivotState intakePivotState) {
         switch (intakePivotState) {
-
             case TRANSFER:
                 robot.leftIntakePivot.setPosition(INTAKE_PIVOT_TRANSFER_POS);
                 robot.rightIntakePivot.setPosition(INTAKE_PIVOT_TRANSFER_POS);
@@ -99,9 +99,9 @@ public class Intake extends SubsystemBase {
     public void setActiveIntake(IntakeMotorState intakeMotorState) {
         switch (intakeMotorState) {
             case FORWARD:
-                robot.intakeMotor.setPower(1);
+                robot.intakeMotor.setPower(INTAKE_FORWARD_SPEED);
             case REVERSE:
-                robot.intakeMotor.setPower(-1);
+                robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
             case STOP:
                 robot.intakeMotor.setPower(0);
         }
@@ -109,12 +109,13 @@ public class Intake extends SubsystemBase {
         Intake.intakeMotorState = intakeMotorState;
     }
 
-    public void toggleActiveIntake() {
+    public void toggleActiveIntake(SampleColorTarget colorTarget) {
         if (intakeMotorState.equals(IntakeMotorState.FORWARD)) {
             intakeMotorState = IntakeMotorState.STOP;
         } else if (intakeMotorState.equals(IntakeMotorState.STOP)) {
             intakeMotorState = IntakeMotorState.FORWARD;
         }
+        sampleColorTarget = colorTarget;
     }
 
     public void autoUpdateActiveIntake(IntakeMotorState intakeMotorState) {
@@ -122,17 +123,17 @@ public class Intake extends SubsystemBase {
             case FORWARD:
                 if (robot.colorSensor.getDistance(DistanceUnit.CM) < SAMPLE_DISTANCE_THRESHOLD) {
                     sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
-                    if (correctSampleDetected(sampleColor)) {
-                        robot.intakeMotor.setPower(0);
+                    if (correctSampleDetected()) {
+                        setActiveIntake(IntakeMotorState.STOP);
                         CommandScheduler.getInstance().schedule(new realTransfer(robot.deposit, robot.intake));
-                    } else if (!sampleColor.equals("NONE")) {
+                    } else if (!sampleColor.equals(NONE)) {
                         setActiveIntake(IntakeMotorState.REVERSE);
                     }
                 }
                 break;
             case REVERSE:
                 if (robot.colorSensor.getDistance(DistanceUnit.CM) > SAMPLE_DISTANCE_THRESHOLD) {
-                    setActiveIntake(IntakeMotorState.STOP);
+                    setActiveIntake(IntakeMotorState.FORWARD);
                 }
                 break;
 
@@ -140,25 +141,38 @@ public class Intake extends SubsystemBase {
         }
     }
 
-    public static String sampleDetected(int red, int green, int blue) {
+    public static SampleColorDetected sampleDetected(int red, int green, int blue) {
         if ((blue + green + red) >= 900) {
             if (blue >= green && blue >= red) {
-                return "BLUE";
+                return BLUE;
             } else if (green >= red) {
-                return "YELLOW";
+                return SampleColorDetected.YELLOW;
             } else {
-                return "RED";
+                return RED;
             }
         }
         else {
-            return "NONE";
+            return SampleColorDetected.NONE;
         }
     }
 
-    public static boolean correctSampleDetected(String sampleColor) {
-        return (sampleColor.equals("BLUE") && color.equals(AllianceColor.BlUE) ||
-                sampleColor.equals("RED") && color.equals(AllianceColor.RED))
-             || sampleColor.equals("YELLOW");
+    public static boolean correctSampleDetected() {
+        switch (sampleColorTarget) {
+            case ANY_COLOR:
+                if (sampleColor.equals(YELLOW) ||
+                   (sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BlUE) ||
+                    sampleColor.equals(RED) && allianceColor.equals(AllianceColor.RED))) {
+                    return true;
+                }
+                break;
+            case ALLIANCE_ONLY:
+                if (sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BlUE) ||
+                    sampleColor.equals(RED) && allianceColor.equals(AllianceColor.RED)) {
+                    return true;
+                }
+                break;
+        }
+        return false;
     }
 
     @Override
