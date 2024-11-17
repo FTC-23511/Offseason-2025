@@ -3,11 +3,14 @@ package org.firstinspires.ftc.teamcode.subsystem;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.startingPoseName;
 
+import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
+import org.firstinspires.ftc.teamcode.subsystem.commands.depositSafeRetracted;
+import org.firstinspires.ftc.teamcode.subsystem.commands.realTransfer;
 
 public class Intake extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
@@ -106,6 +109,14 @@ public class Intake extends SubsystemBase {
         Intake.intakeMotorState = intakeMotorState;
     }
 
+    public void toggleActiveIntake() {
+        if (intakeMotorState.equals(IntakeMotorState.FORWARD)) {
+            intakeMotorState = IntakeMotorState.STOP;
+        } else if (intakeMotorState.equals(IntakeMotorState.STOP)) {
+            intakeMotorState = IntakeMotorState.FORWARD;
+        }
+    }
+
     public void autoUpdateActiveIntake(IntakeMotorState intakeMotorState) {
         switch (intakeMotorState) {
             case FORWARD:
@@ -113,6 +124,7 @@ public class Intake extends SubsystemBase {
                     sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
                     if (correctSampleDetected(sampleColor)) {
                         robot.intakeMotor.setPower(0);
+                        CommandScheduler.getInstance().schedule(new realTransfer(robot.deposit, robot.intake));
                     } else if (!sampleColor.equals("NONE")) {
                         setActiveIntake(IntakeMotorState.REVERSE);
                     }
@@ -123,6 +135,8 @@ public class Intake extends SubsystemBase {
                     setActiveIntake(IntakeMotorState.STOP);
                 }
                 break;
+
+            // No point of setting intakeMotor to 0 again
         }
     }
 

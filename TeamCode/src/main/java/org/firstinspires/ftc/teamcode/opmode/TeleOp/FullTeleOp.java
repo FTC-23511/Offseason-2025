@@ -167,10 +167,8 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
                 new setDepositSlidesIntake(robot.deposit));
 
-        operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(
-                new InstantCommand(() -> robot.intake.setActiveIntake(Intake.IntakeMotorState.FORWARD)));
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
-                new InstantCommand(() -> robot.intake.setActiveIntake(Intake.IntakeMotorState.REVERSE)));
+                new InstantCommand(() -> robot.intake.toggleActiveIntake()));
 
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();
