@@ -9,7 +9,7 @@ import com.arcrobotics.ftclib.controller.PIDFController;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-public class    Intake extends SubsystemBase {
+public class Intake extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
     private double target;
     public boolean extendoReached;
@@ -111,7 +111,7 @@ public class    Intake extends SubsystemBase {
             case FORWARD:
                 if (robot.colorSensor.getDistance(DistanceUnit.CM) < SAMPLE_DISTANCE_THRESHOLD) {
                     sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
-                    if (correctSampleDetected(sampleColor, startingPoseName)) {
+                    if (correctSampleDetected(sampleColor)) {
                         robot.intakeMotor.setPower(0);
                     } else if (!sampleColor.equals("NONE")) {
                         setActiveIntake(IntakeMotorState.REVERSE);
@@ -141,8 +141,10 @@ public class    Intake extends SubsystemBase {
         }
     }
 
-    public static boolean correctSampleDetected(String sampleColor, PoseLocation startingPoseName) {
-        return (((sampleColor.equals("BLUE") && (startingPoseName.equals(PoseLocation.BLUE_BUCKET) || startingPoseName.equals(PoseLocation.BLUE_OBSERVATION))) || (sampleColor.equals("RED") && (startingPoseName.equals(PoseLocation.RED_BUCKET) || startingPoseName.equals(PoseLocation.RED_OBSERVATION)))) || sampleColor.equals("YELLOW"));
+    public static boolean correctSampleDetected(String sampleColor) {
+        return (sampleColor.equals("BLUE") && color.equals(AllianceColor.BlUE) ||
+                sampleColor.equals("RED") && color.equals(AllianceColor.RED))
+             || sampleColor.equals("YELLOW");
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.TeleOp;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.AllianceColor.*;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.PoseLocation.*;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -26,12 +27,16 @@ public class AlliancePoseSelector extends LinearOpMode {
         while (opModeIsActive()) {
             if (gamepad1.cross) {
                 startingPoseName = BLUE_BUCKET;
+                color = BlUE;
             } else if (gamepad1.circle) {
                 startingPoseName = BLUE_OBSERVATION;
+                color = BlUE;
             } else if (gamepad1.square) {
                 startingPoseName = RED_BUCKET;
+                color = RED;
             } else if (gamepad1.triangle) {
                 startingPoseName = RED_OBSERVATION;
+                color = RED;
             }
 
             startingPose = STARTING_POSES.get(startingPoseName);
@@ -42,6 +47,7 @@ public class AlliancePoseSelector extends LinearOpMode {
             telemetry.addData("Triangle", "Red Observation (right)");
 
             telemetry.addData("Current Pose", startingPoseName);
+            telemetry.addData("Alliance Color", color);
             telemetry.addData("startingPose", startingPose);
 
             telemetry.update();

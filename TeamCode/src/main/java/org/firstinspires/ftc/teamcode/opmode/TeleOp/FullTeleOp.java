@@ -155,8 +155,6 @@ public class FullTeleOp extends CommandOpMode {
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
 
-
-
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new setDepositScoring(robot.deposit, HIGH_BUCKET_HEIGHT, Deposit.DepositPivotState.SCORING));
 
@@ -168,6 +166,11 @@ public class FullTeleOp extends CommandOpMode {
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
                 new setDepositSlidesIntake(robot.deposit));
+
+        operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(
+                new InstantCommand(() -> robot.intake.setActiveIntake(Intake.IntakeMotorState.FORWARD)));
+        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
+                new InstantCommand(() -> robot.intake.setActiveIntake(Intake.IntakeMotorState.REVERSE)));
 
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();
