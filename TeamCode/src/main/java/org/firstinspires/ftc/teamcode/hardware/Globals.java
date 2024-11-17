@@ -59,29 +59,29 @@ public class Globals {
     public static double INTAKE_REVERSE_SPEED = -0.50;
     public static final double SAMPLE_DISTANCE_THRESHOLD = 2.15;
 
-    public static double INTAKE_PIVOT_TRANSFER_POS = 90;
+    public static double INTAKE_PIVOT_TRANSFER_POS = 0.21;
     public static double INTAKE_PIVOT_INTAKE_POS = 0.8;
 
     // Deposit
-    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.57;
-    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.89;
-    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.12;
-    public static double DEPOSIT_PIVOT_SCORING_POS = 1.0;
-    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.69;
-    public static double DEPOSIT_CLAW_OUTSIDE_OPEN_POS = 0.625;
-    public static double DEPOSIT_CLAW_OUTSIDE_CLOSE_POS = 0.4;
+    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.37;
+    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.75;
+    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.0;
+    public static double DEPOSIT_PIVOT_SCORING_POS = 0.95;
+    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.55;
+    public static double DEPOSIT_CLAW_OPEN_POS = 0.625;
+    public static double DEPOSIT_CLAW_CLOSE_POS = 0.4;
     // Extendo
     public static double MAX_EXTENDO_EXTENSION = 480; // Encoder ticks
     public static double AUTON_EXTENDO_EXTENSION; // Encoder ticks
 
     // Slides
-    public static double MAX_SLIDES_EXTENSION = 1800; // Encoder ticks
+    public static double MAX_SLIDES_EXTENSION = 1950; // Encoder ticks
     public static double SLIDES_PIVOT_READY_EXTENSION = 200; // Encoder ticks
-    public static double LOW_BUCKET_HEIGHT = 900; // Encoder ticks
-    public static double HIGH_BUCKET_HEIGHT = 1800; // Encoder ticks
+    public static double LOW_BUCKET_HEIGHT = 1000; // Encoder ticks
+    public static double HIGH_BUCKET_HEIGHT = 1950; // Encoder ticks
 
     public static double SPECIMEN_INTAKE_HEIGHT = 0;
-    public static double HIGH_SPECIMEN_HEIGHT = 650; // Encoder ticks
+    public static double HIGH_SPECIMEN_HEIGHT = 900; // Encoder ticks
     public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1050; // Encoder ticks
     public static double AUTO_ASCENT_HEIGHT = 700; // Encoder ticks
     public static double ENDGAME_ASCENT_HEIGHT = 800; // Encoder ticks

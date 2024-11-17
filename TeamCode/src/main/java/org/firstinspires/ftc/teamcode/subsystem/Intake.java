@@ -109,9 +109,8 @@ public class Intake extends SubsystemBase {
                 case STOP:
                     robot.intakeMotor.setPower(0);
             }
+            Intake.intakeMotorState = intakeMotorState;
         }
-
-        Intake.intakeMotorState = intakeMotorState;
     }
 
     public void toggleActiveIntake(SampleColorTarget sampleColorTarget) {
