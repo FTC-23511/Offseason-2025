@@ -23,7 +23,6 @@ public class Intake extends SubsystemBase {
     // Between transfer and intake position
     // Whether the claw is open or not in the current state of the claw
     public enum IntakePivotState {
-
         INTAKE,
         TRANSFER
     }
@@ -38,6 +37,7 @@ public class Intake extends SubsystemBase {
         ALLIANCE_ONLY,
         ANY_COLOR
     }
+
     public enum SampleColorDetected {
         RED,
         BLUE,
@@ -46,8 +46,8 @@ public class Intake extends SubsystemBase {
     }
     public static SampleColorDetected sampleColor = NONE;
     public static SampleColorTarget sampleColorTarget = ANY_COLOR;
-    public static IntakePivotState intakePivotState;
-    public static IntakeMotorState intakeMotorState;
+    public static IntakePivotState intakePivotState; //  = TRANSFER
+    public static IntakeMotorState intakeMotorState = STOP;
     private static final PIDFController extendoPIDF = new PIDFController(0.023,0,0, 0.001);
 
     public void init() {
@@ -100,47 +100,53 @@ public class Intake extends SubsystemBase {
     }
 
     public void setActiveIntake(IntakeMotorState intakeMotorState) {
-        switch (intakeMotorState) {
-            case FORWARD:
-                robot.intakeMotor.setPower(INTAKE_FORWARD_SPEED);
-            case REVERSE:
-                robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
-            case STOP:
-                robot.intakeMotor.setPower(0);
+        if (intakePivotState.equals(INTAKE)) {
+            switch (intakeMotorState) {
+                case FORWARD:
+                    robot.intakeMotor.setPower(INTAKE_FORWARD_SPEED);
+                case REVERSE:
+                    robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
+                case STOP:
+                    robot.intakeMotor.setPower(0);
+            }
         }
 
         Intake.intakeMotorState = intakeMotorState;
     }
 
     public void toggleActiveIntake(SampleColorTarget sampleColorTarget) {
-        if (intakeMotorState.equals(IntakeMotorState.FORWARD)) {
-            intakeMotorState = IntakeMotorState.STOP;
-        } else if (intakeMotorState.equals(IntakeMotorState.STOP)) {
-            intakeMotorState = IntakeMotorState.FORWARD;
+        if (intakePivotState.equals(INTAKE)) {
+            if (intakeMotorState.equals(IntakeMotorState.FORWARD)) {
+                intakeMotorState = IntakeMotorState.STOP;
+            } else if (intakeMotorState.equals(IntakeMotorState.STOP)) {
+                intakeMotorState = IntakeMotorState.FORWARD;
+            }
         }
         Intake.sampleColorTarget = sampleColorTarget;
     }
 
     public void autoUpdateActiveIntake(IntakeMotorState intakeMotorState) {
-        switch (intakeMotorState) {
-            case FORWARD:
-                if (robot.colorSensor.getDistance(DistanceUnit.CM) < SAMPLE_DISTANCE_THRESHOLD) {
-                    sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
-                    if (correctSampleDetected()) {
-                        setActiveIntake(STOP);
-                        CommandScheduler.getInstance().schedule(new realTransfer(robot.deposit, robot.intake));
-                    } else if (!sampleColor.equals(NONE)) {
-                        setActiveIntake(REVERSE);
+        if (intakePivotState.equals(INTAKE)) {
+            switch (intakeMotorState) {
+                case FORWARD:
+                    if (robot.colorSensor.getDistance(DistanceUnit.CM) < SAMPLE_DISTANCE_THRESHOLD) {
+                        sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
+                        if (correctSampleDetected()) {
+                            setActiveIntake(STOP);
+                            CommandScheduler.getInstance().schedule(new realTransfer(robot.deposit, robot.intake));
+                        } else if (!sampleColor.equals(NONE)) {
+                            setActiveIntake(REVERSE);
+                        }
                     }
-                }
-                break;
-            case REVERSE:
-                if (robot.colorSensor.getDistance(DistanceUnit.CM) > SAMPLE_DISTANCE_THRESHOLD) {
-                    setActiveIntake(FORWARD);
-                }
-                break;
+                    break;
+                case REVERSE:
+                    if (robot.colorSensor.getDistance(DistanceUnit.CM) > SAMPLE_DISTANCE_THRESHOLD) {
+                        setActiveIntake(FORWARD);
+                    }
+                    break;
 
-            // No point of setting intakeMotor to 0 again
+                // No point of setting intakeMotor to 0 again
+            }
         }
     }
 
