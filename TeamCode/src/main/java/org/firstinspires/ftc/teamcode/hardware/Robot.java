@@ -39,9 +39,6 @@ public class Robot {
 
     public SolversServo leftIntakePivot;
     public SolversServo rightIntakePivot;
-    public SolversServo intakeClaw;
-    public SolversServo trayServo;
-    public SolversServo wrist;
 
     public SolversServo leftDepositPivot;
     public SolversServo rightDepositPivot;
@@ -78,7 +75,7 @@ public class Robot {
         liftBottom = new SolversMotor((hardwareMap.get(DcMotor.class, "liftBottom")), 0.01);
         liftTop = new SolversMotor(hardwareMap.get(DcMotor.class, "liftTop"), 0.01);
         extension = new SolversMotor(hardwareMap.get(DcMotor.class, "extension"), 0.01);
-        intakeMotor = new SolversMotor(hardwareMap.get(DcMotor.class, "extension"), 0.01);
+        intakeMotor = new SolversMotor(hardwareMap.get(DcMotor.class, "intakeMotor"), 0.01);
 
         frontLeftMotor = new SolversMotor(hardwareMap.get(DcMotor.class, "FL"), 0.01);
         frontRightMotor = new SolversMotor(hardwareMap.get(DcMotor.class, "FR"), 0.01);
@@ -105,6 +102,7 @@ public class Robot {
         liftTop.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         liftEncoder = new Motor(hardwareMap, "liftTop").encoder;
         extensionEncoder = new Motor(hardwareMap, "extension").encoder;

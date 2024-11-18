@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 public class Deposit extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
 
-    private static final PIDFController slidePIDF = new PIDFController(0.01,0,0.0002, 0.00016);
+    private static final PIDFController slidePIDF = new PIDFController(0.011,0,0.0002, 0.00016);
 
     // Between open and closed
     public boolean clawOpen;
@@ -59,11 +59,6 @@ public class Deposit extends SubsystemBase {
     public void setSlideTarget(double target) {
         this.target = Math.max(Math.min(target, MAX_SLIDES_EXTENSION), 0);
         slidePIDF.setSetPoint(target);
-    }
-
-    public void stopSlide() {
-        robot.liftTop.setPower(0);
-        robot.liftBottom.setPower(0);
     }
 
     public void autoUpdateSlides() {

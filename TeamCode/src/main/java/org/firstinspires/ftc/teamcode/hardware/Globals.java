@@ -56,7 +56,7 @@ public class Globals {
 
     // Intake
     public static double INTAKE_FORWARD_SPEED = 1.0;
-    public static double INTAKE_REVERSE_SPEED = -0.50;
+    public static double INTAKE_REVERSE_SPEED = -1.0;
     public static final double SAMPLE_DISTANCE_THRESHOLD = 2.15;
 
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.21;

@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
@@ -20,7 +21,6 @@ public class resetEncoders extends CommandOpMode {
     private FtcDashboard dash = FtcDashboard.getInstance();
 
     public ElapsedTime timer;
-    public ElapsedTime buttonTimer;
 
     private final Robot robot = Robot.getInstance();
 
@@ -49,8 +49,11 @@ public class resetEncoders extends CommandOpMode {
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();
 
-        robot.liftEncoder.reset();
-        robot.extensionEncoder.reset();
+        robot.liftTop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.liftTop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        robot.extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.extension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         telemetry.addData("liftEncoder", robot.liftEncoder.getPosition());
         telemetry.addData("extensionEncoder", robot.extensionEncoder.getPosition());

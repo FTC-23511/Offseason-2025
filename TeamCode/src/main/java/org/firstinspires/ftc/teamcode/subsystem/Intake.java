@@ -46,9 +46,9 @@ public class Intake extends SubsystemBase {
     }
     public static SampleColorDetected sampleColor = NONE;
     public static SampleColorTarget sampleColorTarget = ANY_COLOR;
-    public static IntakePivotState intakePivotState; //  = TRANSFER
+    public static IntakePivotState intakePivotState = TRANSFER;
     public static IntakeMotorState intakeMotorState = STOP;
-    private static final PIDFController extendoPIDF = new PIDFController(0.023,0,0, 0.001);
+    private static final PIDFController extendoPIDF = new PIDFController(0.0245,0,0.0003, 0);
 
     public void init() {
         setPivot(TRANSFER);
@@ -79,10 +79,6 @@ public class Intake extends SubsystemBase {
         extendoPIDF.setSetPoint(this.target);
     }
 
-    public void stopSlide() {
-        robot.extension.setPower(0);
-    }
-
     public void setPivot(IntakePivotState intakePivotState) {
         switch (intakePivotState) {
             case TRANSFER:
@@ -104,10 +100,13 @@ public class Intake extends SubsystemBase {
             switch (intakeMotorState) {
                 case FORWARD:
                     robot.intakeMotor.setPower(INTAKE_FORWARD_SPEED);
+                    break;
                 case REVERSE:
                     robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
+                    break;
                 case STOP:
                     robot.intakeMotor.setPower(0);
+                    break;
             }
             Intake.intakeMotorState = intakeMotorState;
         }
@@ -115,16 +114,16 @@ public class Intake extends SubsystemBase {
 
     public void toggleActiveIntake(SampleColorTarget sampleColorTarget) {
         if (intakePivotState.equals(INTAKE)) {
-            if (intakeMotorState.equals(IntakeMotorState.FORWARD)) {
-                intakeMotorState = IntakeMotorState.STOP;
-            } else if (intakeMotorState.equals(IntakeMotorState.STOP)) {
-                intakeMotorState = IntakeMotorState.FORWARD;
+            if (intakeMotorState.equals(FORWARD)) {
+                setActiveIntake(STOP);
+            } else if (intakeMotorState.equals(STOP)) {
+                setActiveIntake(FORWARD);
             }
+            Intake.sampleColorTarget = sampleColorTarget;
         }
-        Intake.sampleColorTarget = sampleColorTarget;
     }
 
-    public void autoUpdateActiveIntake(IntakeMotorState intakeMotorState) {
+    public void autoUpdateActiveIntake() {
         if (intakePivotState.equals(INTAKE)) {
             switch (intakeMotorState) {
                 case FORWARD:
@@ -135,6 +134,8 @@ public class Intake extends SubsystemBase {
                             CommandScheduler.getInstance().schedule(new realTransfer(robot.deposit, robot.intake));
                         } else if (!sampleColor.equals(NONE)) {
                             setActiveIntake(REVERSE);
+                        } else {
+                            setActiveIntake(FORWARD);
                         }
                     }
                     break;
@@ -186,6 +187,6 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
         autoUpdateExtendo();
-        autoUpdateActiveIntake(intakeMotorState);
+        autoUpdateActiveIntake();
     }
 }

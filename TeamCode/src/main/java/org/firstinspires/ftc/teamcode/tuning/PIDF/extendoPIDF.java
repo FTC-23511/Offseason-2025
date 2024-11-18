@@ -14,9 +14,9 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 @Config
 @TeleOp
 public class extendoPIDF extends OpMode {
-    public static double p = 0.023;
+    public static double p = 0.0245;
     public static double i = 0;
-    public static double d = 0;
+    public static double d = 0.0003;
     public static double f = 0;
 
     public static int setPoint = 0;

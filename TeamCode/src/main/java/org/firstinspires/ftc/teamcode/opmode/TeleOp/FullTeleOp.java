@@ -1,17 +1,22 @@
 package org.firstinspires.ftc.teamcode.opmode.TeleOp;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
+import static org.firstinspires.ftc.teamcode.subsystem.Intake.*;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.hardware.Globals;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.roadrunner.SparkFunOTOSDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
@@ -47,6 +52,54 @@ public class FullTeleOp extends CommandOpMode {
 
         driver = new GamepadEx(gamepad1);
         operator = new GamepadEx(gamepad2);
+
+        // Driver Gamepad controls
+        driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
+                new InstantCommand(() -> robot.intake.setExtendoTarget(MAX_EXTENDO_EXTENSION)));
+
+        // Operator Gamepad controls
+        driver.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
+                new realTransfer(robot.deposit, robot.intake));
+
+        operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0));
+
+//        if (gamepad2.x && buttonTimer.milliseconds() >= 200) {
+//            robot.deposit.setClawOpen(!robot.deposit.clawOpen);
+//            buttonTimer.reset();
+//        }
+
+        operator.getGamepadButton(GamepadKeys.Button.X).whenActive(
+                new InstantCommand(() -> robot.deposit.setClawOpen(!robot.deposit.clawOpen)));
+
+        operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
+                new attachSpecimen(robot.deposit));
+
+        driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
+                new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)));
+
+        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
+                new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
+
+        driver.getGamepadButton(GamepadKeys.Button.B).whenPressed(
+                new InstantCommand(() -> robot.intake.toggleActiveIntake(Intake.SampleColorTarget.ANY_COLOR)));
+
+        driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
+                new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ALLIANCE_ONLY)));
+
+        operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT));
+
+        operator.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT));
+
+        operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, LOW_BUCKET_HEIGHT));
+
+        operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.INTAKE, 0));
+
+        super.run();
     }
 
     @Override
@@ -131,51 +184,12 @@ public class FullTeleOp extends CommandOpMode {
             offset = robot.drive.sparkFunOTOSDrive.pose.heading.toDouble();
         }
 
-        // Driver Gamepad controls
-        driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
-                new intakeFullExtendo(robot.intake));
-
-        // Operator Gamepad controls
-        driver.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
-                new realTransfer(robot.deposit, robot.intake));
-
-        operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0));
-
-        if (gamepad2.x && buttonTimer.milliseconds() >= 200) {
-            robot.deposit.setClawOpen(!robot.deposit.clawOpen);
-            buttonTimer.reset();
-        }
-
-        operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
-                new attachSpecimen(robot.deposit));
-
-        driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
-                new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)));
-        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
-                new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
-
-        operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT));
-
-        operator.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT));
-
-        operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, LOW_BUCKET_HEIGHT));
-
-        operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.INTAKE, 0));
-
-        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
-                new InstantCommand(() -> robot.intake.toggleActiveIntake(Intake.SampleColorTarget.ANY_COLOR)));
-
-        operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(
-                new InstantCommand(() -> robot.intake.toggleActiveIntake(Intake.SampleColorTarget.ALLIANCE_ONLY)));
-
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();
 
+        telemetry.addData("slidesReached", robot.deposit.slidesReached);
+        telemetry.addData("getDepositSlidePosition()", robot.deposit.getDepositSlidePosition());
+        telemetry.addData("target", robot.deposit.target);
         telemetry.addData("timer", timer.milliseconds());
 
         // DO NOT REMOVE! Needed for telemetry

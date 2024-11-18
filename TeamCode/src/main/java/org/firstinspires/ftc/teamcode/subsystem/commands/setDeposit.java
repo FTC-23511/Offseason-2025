@@ -11,7 +11,7 @@ public class setDeposit extends CommandBase {
     Deposit deposit;
     Deposit.DepositPivotState state;
     // Timer to give claw time to close/open
-    ElapsedTime timer = new ElapsedTime();
+    ElapsedTime timer;
     private boolean armMoved = false;
     private double target;
     private boolean armReadyToMove = false;
@@ -22,6 +22,7 @@ public class setDeposit extends CommandBase {
         this.deposit = deposit;
         this.state = state;
         this.target = target;
+        this.timer = new ElapsedTime();
 
         addRequirements(deposit);
     }
@@ -47,7 +48,9 @@ public class setDeposit extends CommandBase {
             deposit.setPivot(state);
             timer.reset();
             armMoved = true;
+
         } else if (armMoved && timer.milliseconds() > 300) {
+            deposit.setClawOpen(true);
             if (!secondSlideMoveCompleted) {
                 deposit.setSlideTarget(target);
             }
@@ -57,7 +60,7 @@ public class setDeposit extends CommandBase {
                     deposit.setClawOpen(true);
                     break;
                 case TRANSFER:
-                    deposit.setClawOpen(true);
+                    deposit.setClawOpen(false);
                     break;
                 case MIDDLE_HOLD:
                     deposit.setClawOpen(true);
