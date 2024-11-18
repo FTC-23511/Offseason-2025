@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp
 public class AlliancePoseSelector extends LinearOpMode {
-
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Cross", "Blue Bucket (left)");
@@ -26,16 +25,16 @@ public class AlliancePoseSelector extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            if (gamepad1.cross) {
+            if (gamepad1.cross || gamepad2.cross) {
                 startingPoseName = BLUE_BUCKET;
                 allianceColor = BlUE;
-            } else if (gamepad1.circle) {
+            } else if (gamepad1.circle || gamepad2.circle) {
                 startingPoseName = BLUE_OBSERVATION;
                 allianceColor = BlUE;
-            } else if (gamepad1.square) {
+            } else if (gamepad1.square || gamepad2.square) {
                 startingPoseName = RED_BUCKET;
                 allianceColor = RED;
-            } else if (gamepad1.triangle) {
+            } else if (gamepad1.triangle || gamepad2.triangle) {
                 startingPoseName = RED_OBSERVATION;
                 allianceColor = RED;
             }

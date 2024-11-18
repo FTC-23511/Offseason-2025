@@ -28,6 +28,13 @@ public class Globals {
         RED_OBSERVATION
     }
 
+    public enum GamepadColor {
+        GAMEPAD_BLUE,
+        GAMEPAD_RED,
+        GAMEPAD_YELLOW,
+        GAMEPAD_OFF
+    }
+
     public static final Map<PoseLocation, Pose2d> STARTING_POSES = new HashMap<PoseLocation, Pose2d>() {{
         put(BLUE_BUCKET, new Pose2d(8, 61.75, Math.toRadians(90)));
         put(BLUE_OBSERVATION, new Pose2d(-8, 61.75, Math.toRadians(90)));
@@ -39,8 +46,9 @@ public class Globals {
 
     public static Pose2d startingPose = new Pose2d(0, 0, 0);
     public static PoseLocation startingPoseName;
-
     public static AllianceColor allianceColor;
+
+    public static GamepadColor gamepadColor = GamepadColor.GAMEPAD_OFF;
 
     public static double offset = 0;
 
@@ -80,7 +88,6 @@ public class Globals {
     public static double LOW_BUCKET_HEIGHT = 1000; // Encoder ticks
     public static double HIGH_BUCKET_HEIGHT = 1950; // Encoder ticks
 
-    public static double SPECIMEN_INTAKE_HEIGHT = 0;
     public static double HIGH_SPECIMEN_HEIGHT = 900; // Encoder ticks
     public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1050; // Encoder ticks
     public static double AUTO_ASCENT_HEIGHT = 700; // Encoder ticks
