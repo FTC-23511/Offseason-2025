@@ -56,40 +56,37 @@ public class Globals {
     public static double ROBOT_WIDTH = 11.5;
     public static double ROBOT_LENGTH = 12.25;
 
-    // By default values refer to servo positions, unless otherwise specified
-    // By default for values that control opposite running hardware, the right value of the hardware is used
-    // e.g. for ARM_TRANSFER_POS, it should correspond with the real position of the servo at the transfer
-
-    // TODO: TUNE. 9.99 or other sus numbers (like 10,000) generally means not tuned!
-
-    // Intake
+    // Intake Motor
     public static double INTAKE_FORWARD_SPEED = 1.0;
     public static double INTAKE_REVERSE_SPEED = -1.0;
     public static final double SAMPLE_DISTANCE_THRESHOLD = 2.15;
 
+    // Intake Pivot
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.21;
     public static double INTAKE_PIVOT_INTAKE_POS = 0.8;
 
-    // Deposit
+    // Intake Extendo
+    public static double MAX_EXTENDO_EXTENSION = 480;
+    public static double AUTO_EXTENDO_EXTENSION;
+
+    // Deposit Pivot
     public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.41;
     public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.79;
     public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.04;
     public static double DEPOSIT_PIVOT_SCORING_POS = 0.99;
     public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.59;
+
+    // Deposit Claw
     public static double DEPOSIT_CLAW_OPEN_POS = 0.625;
     public static double DEPOSIT_CLAW_CLOSE_POS = 0.4;
-    // Extendo
-    public static double MAX_EXTENDO_EXTENSION = 480; // Encoder ticks
-    public static double AUTON_EXTENDO_EXTENSION; // Encoder ticks
 
-    // Slides
-    public static double MAX_SLIDES_EXTENSION = 1950; // Encoder ticks
-    public static double SLIDES_PIVOT_READY_EXTENSION = 200; // Encoder ticks
-    public static double LOW_BUCKET_HEIGHT = 1000; // Encoder ticks
-    public static double HIGH_BUCKET_HEIGHT = 1950; // Encoder ticks
-
-    public static double HIGH_SPECIMEN_HEIGHT = 900; // Encoder ticks
-    public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1050; // Encoder ticks
-    public static double AUTO_ASCENT_HEIGHT = 700; // Encoder ticks
-    public static double ENDGAME_ASCENT_HEIGHT = 800; // Encoder ticks
+    // Deposit Slides
+    public static double MAX_SLIDES_EXTENSION = 1950;
+    public static double SLIDES_PIVOT_READY_EXTENSION = 200;
+    public static double LOW_BUCKET_HEIGHT = 1000;
+    public static double HIGH_BUCKET_HEIGHT = 1950;
+    public static double HIGH_SPECIMEN_HEIGHT = 900;
+    public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1050;
+    public static double AUTO_ASCENT_HEIGHT = 700;
+    public static double ENDGAME_ASCENT_HEIGHT = 800;
 }
