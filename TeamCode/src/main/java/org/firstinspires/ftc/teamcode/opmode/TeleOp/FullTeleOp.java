@@ -2,21 +2,18 @@ package org.firstinspires.ftc.teamcode.opmode.TeleOp;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 import static org.firstinspires.ftc.teamcode.subsystem.Intake.*;
+import static org.firstinspires.ftc.teamcode.subsystem.Deposit.DepositPivotState;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.hardware.Globals;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.roadrunner.SparkFunOTOSDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
@@ -183,13 +180,14 @@ public class FullTeleOp extends CommandOpMode {
         if (gamepad1.x) {
             offset = robot.drive.sparkFunOTOSDrive.pose.heading.toDouble();
         }
-
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();
 
         telemetry.addData("slidesReached", robot.deposit.slidesReached);
         telemetry.addData("getDepositSlidePosition()", robot.deposit.getDepositSlidePosition());
         telemetry.addData("target", robot.deposit.target);
+        telemetry.addData("leftGetPos", robot.leftDepositPivot.getPosition());
+        telemetry.addData("rightGetPos", robot.rightDepositPivot.getPosition());
         telemetry.addData("timer", timer.milliseconds());
 
         // DO NOT REMOVE! Needed for telemetry

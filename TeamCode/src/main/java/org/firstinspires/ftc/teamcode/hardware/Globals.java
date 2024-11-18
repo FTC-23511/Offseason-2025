@@ -63,11 +63,11 @@ public class Globals {
     public static double INTAKE_PIVOT_INTAKE_POS = 0.8;
 
     // Deposit
-    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.37;
-    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.75;
-    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.0;
-    public static double DEPOSIT_PIVOT_SCORING_POS = 0.95;
-    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.55;
+    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.41;
+    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.79;
+    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.04;
+    public static double DEPOSIT_PIVOT_SCORING_POS = 0.99;
+    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.59;
     public static double DEPOSIT_CLAW_OPEN_POS = 0.625;
     public static double DEPOSIT_CLAW_CLOSE_POS = 0.4;
     // Extendo

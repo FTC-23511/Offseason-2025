@@ -22,15 +22,6 @@ public class Deposit extends SubsystemBase {
     // Between retracted and extended
     public boolean slidesRetracted;
 
-    public enum SlideState {
-        SCORING,
-        TRANSFER,
-        PIVOT_READY,
-        SPECIMEN_INTAKE
-    }
-
-    public SlideState slideState;
-
     public enum DepositPivotState {
         SCORING,
         SPECIMEN_SCORING,

@@ -3,13 +3,15 @@ package org.firstinspires.ftc.teamcode.subsystem.commands;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 
 public class setDeposit extends CommandBase {
     Deposit deposit;
-    Deposit.DepositPivotState state;
+    public Deposit.DepositPivotState state;
     // Timer to give claw time to close/open
     ElapsedTime timer;
     private boolean armMoved = false;
@@ -44,13 +46,12 @@ public class setDeposit extends CommandBase {
 
     @Override
     public void execute() {
-        if (armReadyToMove) {
+        if (armReadyToMove && !armMoved) {
             deposit.setPivot(state);
             timer.reset();
             armMoved = true;
 
         } else if (armMoved && timer.milliseconds() > 300) {
-            deposit.setClawOpen(true);
             if (!secondSlideMoveCompleted) {
                 deposit.setSlideTarget(target);
             }
@@ -60,7 +61,7 @@ public class setDeposit extends CommandBase {
                     deposit.setClawOpen(true);
                     break;
                 case TRANSFER:
-                    deposit.setClawOpen(false);
+                    deposit.setClawOpen(true);
                     break;
                 case MIDDLE_HOLD:
                     deposit.setClawOpen(true);
