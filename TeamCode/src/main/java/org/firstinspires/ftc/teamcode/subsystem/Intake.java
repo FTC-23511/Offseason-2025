@@ -30,7 +30,8 @@ public class Intake extends SubsystemBase {
     public enum IntakeMotorState {
         REVERSE,
         STOP,
-        FORWARD
+        FORWARD,
+        HOLD
     }
 
     public enum SampleColorTarget {
@@ -54,18 +55,18 @@ public class Intake extends SubsystemBase {
         setPivot(TRANSFER);
         setExtendoTarget(0);
         extendoPIDF.setTolerance(15);
+        robot.colorSensor.enableLed(true);
     }
 
     public void autoUpdateExtendo() {
         double extendoPower = extendoPIDF.calculate(robot.extensionEncoder.getPosition(), this.target);
+        extendoReached = extendoPIDF.atSetPoint();
+        extendoRetracted = (target <= 0) && extendoReached;
 
         // Just make sure it gets to fully retracted if target is 0
         if (target == 0) {
             extendoPower -= 0.1;
         }
-
-        extendoReached = extendoPIDF.atSetPoint();
-        extendoRetracted = (target <= 0) && extendoReached;
 
         if (extendoReached) {
             robot.extension.setPower(0);
@@ -109,6 +110,9 @@ public class Intake extends SubsystemBase {
                     break;
             }
             Intake.intakeMotorState = intakeMotorState;
+        } else if (intakeMotorState.equals(HOLD)) {
+            robot.intakeMotor.setPower(INTAKE_HOLD_SPEED);
+            Intake.intakeMotorState = intakeMotorState;
         }
     }
 
@@ -146,6 +150,16 @@ public class Intake extends SubsystemBase {
                     break;
 
                 // No point of setting intakeMotor to 0 again
+            }
+        }
+
+        if (intakePivotState.equals(TRANSFER)) {
+            if (intakeMotorState.equals(HOLD)) {
+                setActiveIntake(HOLD);
+            }
+        } else {
+            if (intakeMotorState.equals(HOLD)) {
+                setActiveIntake(STOP);
             }
         }
     }

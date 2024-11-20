@@ -181,7 +181,6 @@ public class Robot {
     }
 
     public void initHasMovement() {
-        // Color Sensor to detect sample in intake
         deposit.init();
         intake.init();
     }

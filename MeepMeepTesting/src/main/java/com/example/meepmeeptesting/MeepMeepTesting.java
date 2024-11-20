@@ -10,7 +10,7 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 public class MeepMeepTesting {
     public static void main(String[] args) {
-        MeepMeep meepMeep = new MeepMeep(800);
+        MeepMeep meepMeep = new MeepMeep(600);
 
         RoadRunnerBotEntity myBot1 = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -77,7 +77,7 @@ public class MeepMeepTesting {
                 .build();
 
         // for 1+3 blue bucket change Math.toRadians(0) to Math.toRadians(90)
-        myBot3.runAction(myBot3.getDrive().actionBuilder(new Pose2d(8, 61.75, Math.toRadians(90)))
+        myBot3.runAction(myBot3.getDrive().actionBuilder(new Pose2d(8, 61.75, Math.toRadians(0)))
 
 
                // 1+3 blue bucket
@@ -172,7 +172,6 @@ public class MeepMeepTesting {
 
         myBot4.runAction(myBot4.getDrive().actionBuilder(new Pose2d(-8, 61.75, Math.toRadians(90)))
 
-
                 // 4+0 blue
                 .strafeToConstantHeading(new Vector2d(-8, 37.75))
                 .waitSeconds(1.0)
@@ -205,10 +204,10 @@ public class MeepMeepTesting {
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-                .addEntity(myBot1)
-                .addEntity(myBot2)
-                .addEntity(myBot3)
-                .addEntity(myBot4)
+//                .addEntity(myBot1)
+//                .addEntity(myBot2)
+//                .addEntity(myBot3)
+//                .addEntity(myBot4)
                 .start();
     }
 }

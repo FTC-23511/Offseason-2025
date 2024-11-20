@@ -30,7 +30,7 @@ public class Deposit extends SubsystemBase {
         INTAKE
     }
 
-    public DepositPivotState depositPivotState;
+    public static DepositPivotState depositPivotState;
 
     public void init() {
         slidePIDF.setTolerance(10, 10);
@@ -54,11 +54,23 @@ public class Deposit extends SubsystemBase {
 
     public void autoUpdateSlides() {
         double power = slidePIDF.calculate(robot.liftEncoder.getPosition(), target);
-        robot.liftTop.setPower(power);
-        robot.liftBottom.setPower(power);
-
         slidesReached = slidePIDF.atSetPoint();
         slidesRetracted = (target <= 0) && slidesReached;
+
+        // Just make sure it gets to fully retracted if target is 0
+        if (target == 0 && !slidesReached) {
+            power -= 0.1;
+        } else if (target >= 2000 && !slidesReached) {
+            power += 0.1;
+        }
+
+        if (slidesRetracted) {
+            robot.liftTop.setPower(0);
+            robot.liftBottom.setPower(0);
+        } else {
+            robot.liftTop.setPower(power);
+            robot.liftBottom.setPower(power);
+        }
     }
 
     public int getDepositSlidePosition() {

@@ -59,6 +59,7 @@ public class Globals {
     // Intake Motor
     public static double INTAKE_FORWARD_SPEED = 1.0;
     public static double INTAKE_REVERSE_SPEED = -1.0;
+    public static double INTAKE_HOLD_SPEED = 0.01;
     public static final double SAMPLE_DISTANCE_THRESHOLD = 2.15;
 
     // Intake Pivot
@@ -81,12 +82,12 @@ public class Globals {
     public static double DEPOSIT_CLAW_CLOSE_POS = 0.4;
 
     // Deposit Slides
-    public static double MAX_SLIDES_EXTENSION = 1950;
+    public static double MAX_SLIDES_EXTENSION = 2035;
     public static double SLIDES_PIVOT_READY_EXTENSION = 200;
     public static double LOW_BUCKET_HEIGHT = 1000;
-    public static double HIGH_BUCKET_HEIGHT = 1950;
+    public static double HIGH_BUCKET_HEIGHT = 2035;
     public static double HIGH_SPECIMEN_HEIGHT = 900;
-    public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1050;
+    public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1150;
     public static double AUTO_ASCENT_HEIGHT = 700;
     public static double ENDGAME_ASCENT_HEIGHT = 800;
 }

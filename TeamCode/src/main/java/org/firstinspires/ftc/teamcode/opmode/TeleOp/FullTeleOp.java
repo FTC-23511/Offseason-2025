@@ -61,13 +61,16 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> offset = robot.drive.sparkFunOTOSDrive.pose.heading.toDouble()));
 
         driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
-                new InstantCommand(() -> robot.intake.setExtendoTarget(MAX_EXTENDO_EXTENSION)));
+                new setExtendo(robot.deposit, robot.intake, MAX_EXTENDO_EXTENSION));
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)));
+
+        driver.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
+                new extendoSampleEject(robot.deposit, robot.intake));
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
                 new realTransfer(robot.deposit, robot.intake));
@@ -79,11 +82,11 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT));
 
+        operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, LOW_BUCKET_HEIGHT));
+
         operator.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
                 new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT));
-
-        operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, LOW_BUCKET_HEIGHT));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
                 new setDeposit(robot.deposit, Deposit.DepositPivotState.INTAKE, 0));
@@ -106,9 +109,6 @@ public class FullTeleOp extends CommandOpMode {
 
             timer = new ElapsedTime();
             gameTimer = new ElapsedTime();
-
-            // Color Sensor to detect sample in intake
-            robot.colorSensor.enableLed(true);
         }
         // Endgame/hang rumble after 105 seconds to notify robot.driver to hang
         else if ((gameTimer.seconds() > 105) && (!endgame)) {
@@ -117,23 +117,18 @@ public class FullTeleOp extends CommandOpMode {
             gamepad2.rumble(500);
         }
 
-        // Gamepad Lights (untested)
-        if (sampleColor.equals(SampleColorDetected.RED) && !gamepadColor.equals(GamepadColor.GAMEPAD_RED)) {
+        if (sampleColor.equals(SampleColorDetected.RED)) {
             gamepad1.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
             gamepad2.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
-            gamepadColor = GamepadColor.GAMEPAD_RED;
-        } else if (sampleColor.equals(SampleColorDetected.BLUE) && !gamepadColor.equals(GamepadColor.GAMEPAD_BLUE)) {
+        } else if (sampleColor.equals(SampleColorDetected.BLUE)) {
             gamepad1.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
             gamepad2.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
-            gamepadColor = GamepadColor.GAMEPAD_BLUE;
-        } else if (sampleColor.equals(SampleColorDetected.YELLOW) && !gamepadColor.equals(GamepadColor.GAMEPAD_YELLOW)) {
+        } else if (sampleColor.equals(SampleColorDetected.YELLOW)) {
             gamepad1.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
             gamepad2.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
-            gamepadColor = GamepadColor.GAMEPAD_YELLOW;
-        } else if (!gamepadColor.equals(GamepadColor.GAMEPAD_OFF)) {
+        } else {
             gamepad1.setLedColor(0, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
             gamepad2.setLedColor(0, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
-            gamepadColor = GamepadColor.GAMEPAD_OFF;
         }
 
         // OTOS Field Centric robot.Drive Code
@@ -153,6 +148,10 @@ public class FullTeleOp extends CommandOpMode {
         super.run();
 
         telemetry.addData("timer", timer.milliseconds());
+        telemetry.addData("depositPos", robot.deposit.getDepositSlidePosition());
+        telemetry.addData("target", robot.deposit.target);
+        telemetry.addData("robot.deposit.depositPivotState", Deposit.depositPivotState);
+
         telemetry.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();
         // DO NOT REMOVE! Removing this will return stale data since bulk caching is on Manual mode
