@@ -25,7 +25,7 @@ public class attachSpecimen extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return deposit.slidesReached && timer.milliseconds() >= 600;
+        return deposit.slidesReached && timer.milliseconds() >= 400;
     }
 
     @Override

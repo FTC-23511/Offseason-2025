@@ -7,6 +7,10 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
@@ -17,11 +21,11 @@ import org.firstinspires.ftc.teamcode.subsystem.commands.*;
 public class FTCLibAuto extends CommandOpMode {
     private final Robot robot = Robot.getInstance();
     Action trajectory;
+    Action waitTrajectory;
 
     @Override
     public void initialize() {
         opModeType = OpModeType.AUTO;
-        startingPose = new Pose2d(-8, 61.75, Math.toRadians(90));
 
         // DO NOT REMOVE! Resetting FTCLib Command Scheduler
         super.reset();
@@ -35,25 +39,33 @@ public class FTCLibAuto extends CommandOpMode {
 
         robot.initHasMovement();
 
-        trajectory = robot.drive.sparkFunOTOSDrive.actionBuilder(robot.drive.sparkFunOTOSDrive.pose)
-                .strafeToConstantHeading(new Vector2d(-8, 32.75))
+        trajectory = robot.drive.sparkFunOTOSDrive.actionBuilder(startingPose)
+                .strafeToConstantHeading(new Vector2d(38, 58.75))
+                .strafeToConstantHeading(new Vector2d(48.5, 58.75))
                 .waitSeconds(2.0)
-                .strafeToConstantHeading(new Vector2d(-8, 39.75))
-                .splineToConstantHeading(new Vector2d(-34.5, 10.1), Math.toRadians(273))
-                .waitSeconds(0.5)
-                .strafeToConstantHeading(new Vector2d(-46, 10.1))
-                .waitSeconds(0.5)
-                .strafeToConstantHeading(new Vector2d(-46, 50.1))
-                .waitSeconds(0.5)
-                .strafeToConstantHeading(new Vector2d(-46, 10.1))
-                .strafeToConstantHeading(new Vector2d(-53, 10.1))
-                .strafeToConstantHeading(new Vector2d(-53, 50.1))
-                .waitSeconds(0.5)
-                .strafeToConstantHeading(new Vector2d(-53, 10.1))
-                .strafeToConstantHeading(new Vector2d(-61, 10.1))
-                .strafeToConstantHeading(new Vector2d(-61, 54.5))
                 .build();
-                            
-        schedule(new TrajectoryCommand(trajectory, robot));
+
+        waitTrajectory = robot.drive.sparkFunOTOSDrive.actionBuilder(startingPose)
+                .waitSeconds(5.0)
+                .build();
+
+        schedule(new SequentialCommandGroup(
+            new ParallelCommandGroup(
+                new TrajectoryCommand(trajectory, robot)
+//                new InstantCommand(() -> robot.deposit.setSlideTarget(HIGH_BUCKET_HEIGHT))
+            ),
+            new InstantCommand(() -> robot.deposit.setClawOpen(true))
+        ));
+    }
+
+    @Override
+    public void run() {
+        super.run();
+
+        telemetry.addData("target", robot.deposit.target);
+        telemetry.addData("depositPos", robot.liftEncoder.getPosition());
+        telemetry.addData("liftBottom Motor Power", robot.liftBottom.getPower());
+        telemetry.addData("liftTop Motor Power", robot.liftTop.getPower());
+        telemetry.update();
     }
 }

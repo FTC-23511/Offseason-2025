@@ -10,7 +10,7 @@ public class transferReady extends SequentialCommandGroup {
     public transferReady(Deposit deposit, Intake intake) {
         addCommands(
                 new InstantCommand(() -> intake.setPivot(Intake.IntakePivotState.TRANSFER)),
-                new InstantCommand(() -> intake.setExtendoTarget(0)),
+                new setExtendo(deposit, intake, 0),
                 new setDeposit(deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0)
         );
         addRequirements(deposit, intake);

@@ -19,6 +19,8 @@ public class setDeposit extends CommandBase {
     private boolean waitForClaw = false;
     private boolean armReadyToMove = false;
     private boolean finished = false;
+    private double oldServoPos;
+    private double newServoPos;
 
     public setDeposit(Deposit deposit, Deposit.DepositPivotState state, double target) {
         this.deposit = deposit;
@@ -52,16 +54,50 @@ public class setDeposit extends CommandBase {
     @Override
     public void execute() {
         if (armReadyToMove && !armMoved) {
+            switch (Deposit.depositPivotState) {
+                case INTAKE:
+                    oldServoPos = DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS;
+                    break;
+                case TRANSFER:
+                    oldServoPos = DEPOSIT_PIVOT_TRANSFER_POS;
+                    break;
+                case SCORING:
+                    oldServoPos = DEPOSIT_PIVOT_SCORING_POS;
+                    break;
+                case MIDDLE_HOLD:
+                    oldServoPos = DEPOSIT_PIVOT_MIDDLE_POS;
+                    break;
+                case SPECIMEN_SCORING:
+                    oldServoPos = DEPOSIT_PIVOT_SPECIMEN_SCORING_POS;
+                    break;
+            }
+
             deposit.setPivot(state);
-            timer.reset();
-            armMoved = true;
-        } else if (armMoved && timer.milliseconds() > 500) {
-            deposit.setSlideTarget(target);
 
             switch (state) {
                 case INTAKE:
-                    deposit.setClawOpen(true);
+                    newServoPos = DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS;
                     break;
+                case TRANSFER:
+                    newServoPos = DEPOSIT_PIVOT_TRANSFER_POS;
+                    break;
+                case SCORING:
+                    newServoPos = DEPOSIT_PIVOT_SCORING_POS;
+                    break;
+                case MIDDLE_HOLD:
+                    newServoPos = DEPOSIT_PIVOT_MIDDLE_POS;
+                    break;
+                case SPECIMEN_SCORING:
+                    newServoPos = DEPOSIT_PIVOT_SPECIMEN_SCORING_POS;
+                    break;
+            }
+
+            timer.reset();
+            armMoved = true;
+        } else if (armMoved && timer.milliseconds() > (Math.abs(newServoPos - oldServoPos) * 1250)) {
+            deposit.setSlideTarget(target);
+
+            switch (state) {
                 case TRANSFER:
                     deposit.setClawOpen(true);
                     break;
@@ -71,7 +107,7 @@ public class setDeposit extends CommandBase {
             }
             finished = true;
 
-        } else if (deposit.slidesReached && (timer.milliseconds() > 100 || !waitForClaw)) {
+        } else if (deposit.slidesReached && (timer.milliseconds() > 200 || !waitForClaw)) {
             armReadyToMove = true;
         }
     }
@@ -85,9 +121,6 @@ public class setDeposit extends CommandBase {
     public void end(boolean interruptable) {
         deposit.setPivot(state);
         deposit.setSlideTarget(target);
-
-        if (state.equals(INTAKE)) {
-            deposit.setClawOpen(true);
-        }
     }
 }
+

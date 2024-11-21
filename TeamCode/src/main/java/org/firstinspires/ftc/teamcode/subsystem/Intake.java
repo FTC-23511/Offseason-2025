@@ -65,7 +65,7 @@ public class Intake extends SubsystemBase {
 
         // Just make sure it gets to fully retracted if target is 0
         if (target == 0) {
-            extendoPower -= 0.1;
+            extendoPower -= 0.2;
         }
 
         if ((extendoReached && target > 0) || (robot.extensionEncoder.getPosition() <= 5 && target == 0)) {

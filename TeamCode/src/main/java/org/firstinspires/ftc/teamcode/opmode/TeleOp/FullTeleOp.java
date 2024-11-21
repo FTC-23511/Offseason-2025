@@ -152,7 +152,7 @@ public class FullTeleOp extends CommandOpMode {
 
         if (gamepad1.right_trigger > 0.01 &&
             !Deposit.depositPivotState.equals(Deposit.DepositPivotState.TRANSFER) &&
-            robot.extensionEncoder.getPosition() <= (MAX_EXTENDO_EXTENSION + 5)) {
+            robot.extensionEncoder.getPosition() <= (MAX_EXTENDO_EXTENSION - 5)) {
 
             robot.intake.target += 5;
         }
@@ -161,13 +161,10 @@ public class FullTeleOp extends CommandOpMode {
         super.run();
 
         telemetry.addData("timer", timer.milliseconds());
-        telemetry.addData("depositPos", robot.deposit.getDepositSlidePosition());
-        telemetry.addData("deposit target", robot.deposit.target);
-        telemetry.addData("depositPivotState", Deposit.depositPivotState);
-        telemetry.addData("RIGHT_TRIGGER", gamepad1.right_trigger);
-        telemetry.addData("extensionPos", robot.extensionEncoder.getPosition());
-        telemetry.addData("extension target", robot.intake.target);
-        telemetry.addData("intakeMotorState", intakeMotorState);
+        telemetry.addData("offset", offset);
+        telemetry.addData("offset (double)", robot.drive.sparkFunOTOSDrive.pose.heading.toDouble());
+        telemetry.addData("offset (radian)", robot.drive.sparkFunOTOSDrive.pose.heading);
+
 
         telemetry.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();

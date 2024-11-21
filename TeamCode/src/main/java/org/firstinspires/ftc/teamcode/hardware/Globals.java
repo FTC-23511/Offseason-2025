@@ -29,7 +29,7 @@ public class Globals {
     }
 
     public static final Map<PoseLocation, Pose2d> STARTING_POSES = new HashMap<PoseLocation, Pose2d>() {{
-        put(BLUE_BUCKET, new Pose2d(8, 61.75, Math.toRadians(90)));
+        put(BLUE_BUCKET, new Pose2d(38, 61.75, Math.toRadians(0)));
         put(BLUE_OBSERVATION, new Pose2d(-8, 61.75, Math.toRadians(90)));
         put(RED_BUCKET, new Pose2d(-8, -61.75, Math.toRadians(270)));
         put(RED_OBSERVATION, new Pose2d(8, -61.75, Math.toRadians(270)));
@@ -62,11 +62,11 @@ public class Globals {
     public static double AUTO_EXTENDO_EXTENSION;
 
     // Deposit Pivot
-    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.42;
-    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.81;
-    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.04;
-    public static double DEPOSIT_PIVOT_SCORING_POS = 1.00;
-    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.61;
+    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.37;
+    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.71;
+    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.00;
+    public static double DEPOSIT_PIVOT_SCORING_POS = 0.99;
+    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.55;
 
     // Deposit Claw
     public static double DEPOSIT_CLAW_OPEN_POS = 0.625;

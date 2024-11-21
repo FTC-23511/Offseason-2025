@@ -77,7 +77,7 @@ public class MeepMeepTesting {
                 .build();
 
         // for 1+3 blue bucket change Math.toRadians(0) to Math.toRadians(90)
-        myBot3.runAction(myBot3.getDrive().actionBuilder(new Pose2d(8, 61.75, Math.toRadians(0)))
+        myBot3.runAction(myBot3.getDrive().actionBuilder(new Pose2d(38, 61.75, Math.toRadians(0)))
 
 
                // 1+3 blue bucket
@@ -104,7 +104,9 @@ public class MeepMeepTesting {
 //                .strafeToConstantHeading(new Vector2d(26.2, 15))
 
                 // 0+4 blue bucket
-                .strafeToConstantHeading(new Vector2d(45.5, 61.75))
+                .strafeToConstantHeading(new Vector2d(38, 58.75))
+                .strafeToConstantHeading(new Vector2d(48.5, 58.75))
+
                 .waitSeconds(2.0)
                 .setReversed(true)
                 .strafeToConstantHeading(new Vector2d(47.1, 46.5))
@@ -206,7 +208,7 @@ public class MeepMeepTesting {
                 .setBackgroundAlpha(0.95f)
 //                .addEntity(myBot1)
 //                .addEntity(myBot2)
-//                .addEntity(myBot3)
+                .addEntity(myBot3)
 //                .addEntity(myBot4)
                 .start();
     }

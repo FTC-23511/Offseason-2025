@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 public class Deposit extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
 
-    private static final PIDFController slidePIDF = new PIDFController(0.011,0,0.0002, 0.00016);
+    private static final PIDFController slidePIDF = new PIDFController(0.0125,0,0.0002, 0.00016);
 
     // Between open and closed
     public boolean clawOpen;
@@ -38,7 +38,11 @@ public class Deposit extends SubsystemBase {
 
         // OpMode specific initializations
         if (opModeType.equals(OpModeType.AUTO)) {
-            setPivot(DepositPivotState.SPECIMEN_SCORING);
+            if (startingPoseName.equals(PoseLocation.BLUE_BUCKET) || startingPoseName.equals(PoseLocation.RED_BUCKET))
+                setPivot(DepositPivotState.SCORING);
+            else {
+                setPivot(DepositPivotState.SPECIMEN_SCORING);
+            }
             setClawOpen(false);
 
         } else if (opModeType.equals(OpModeType.TELEOP)) {
