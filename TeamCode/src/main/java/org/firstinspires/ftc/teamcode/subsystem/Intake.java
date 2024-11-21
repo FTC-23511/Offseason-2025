@@ -175,13 +175,13 @@ public class Intake extends SubsystemBase {
         switch (sampleColorTarget) {
             case ANY_COLOR:
                 if (sampleColor.equals(YELLOW) ||
-                   (sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BlUE) ||
+                   (sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BLUE) ||
                     sampleColor.equals(RED) && allianceColor.equals(AllianceColor.RED))) {
                     return true;
                 }
                 break;
             case ALLIANCE_ONLY:
-                if (sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BlUE) ||
+                if (sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BLUE) ||
                     sampleColor.equals(RED) && allianceColor.equals(AllianceColor.RED)) {
                     return true;
                 }

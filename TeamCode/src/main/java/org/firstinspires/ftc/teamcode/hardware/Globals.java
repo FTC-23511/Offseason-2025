@@ -18,7 +18,7 @@ public class Globals {
 
     public enum AllianceColor {
         RED,
-        BlUE
+        BLUE
     }
 
     public enum PoseLocation {

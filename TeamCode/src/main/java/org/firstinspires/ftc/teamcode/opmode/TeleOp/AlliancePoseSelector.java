@@ -27,10 +27,10 @@ public class AlliancePoseSelector extends LinearOpMode {
         while (opModeIsActive()) {
             if (gamepad1.cross || gamepad2.cross) {
                 startingPoseName = BLUE_BUCKET;
-                allianceColor = BlUE;
+                allianceColor = BLUE;
             } else if (gamepad1.circle || gamepad2.circle) {
                 startingPoseName = BLUE_OBSERVATION;
-                allianceColor = BlUE;
+                allianceColor = BLUE;
             } else if (gamepad1.square || gamepad2.square) {
                 startingPoseName = RED_BUCKET;
                 allianceColor = RED;

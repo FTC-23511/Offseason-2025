@@ -30,10 +30,11 @@ public class Auto1Plus0 extends OpMode {
     public void init() {
         if (Objects.equals(startingPoseName, null)) {
             throw new RuntimeException("Please set your alliance side + position in AlliancePoseSelector");
-        } else {
-            opModeType = OpModeType.AUTO;
-            startingPose = STARTING_POSES.get(startingPoseName);
         }
+
+        opModeType = OpModeType.AUTO;
+        startingPose = STARTING_POSES.get(startingPoseName);
+
 
         CommandScheduler.getInstance().enable();
 
