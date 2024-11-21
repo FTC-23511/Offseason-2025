@@ -1,8 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystem.commands;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
-import static org.firstinspires.ftc.teamcode.subsystem.Deposit.DepositPivotState.MIDDLE_HOLD;
-import static org.firstinspires.ftc.teamcode.subsystem.Deposit.DepositPivotState.TRANSFER;
+import static org.firstinspires.ftc.teamcode.subsystem.Deposit.DepositPivotState.*;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -12,14 +11,13 @@ import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 public class setDeposit extends CommandBase {
     Deposit deposit;
     public Deposit.DepositPivotState state;
-    // Timer to give claw time to close/open
-    ElapsedTime timer;
+
+    ElapsedTime timer; // Timer to give claw time to close/open
 
     private boolean armMoved = false;
-    private double target;
+    private final double target;
     private boolean waitForClaw = false;
     private boolean armReadyToMove = false;
-    private boolean secondSlideMoveCompleted = true;
     private boolean finished = false;
 
     public setDeposit(Deposit deposit, Deposit.DepositPivotState state, double target) {
@@ -36,6 +34,8 @@ public class setDeposit extends CommandBase {
         if (state.equals(MIDDLE_HOLD) && Deposit.depositPivotState.equals(TRANSFER)) {
             deposit.setClawOpen(true);
             waitForClaw = true;
+        } else if (state.equals(SPECIMEN_SCORING) && Deposit.depositPivotState.equals(INTAKE)) {
+            waitForClaw = true;
         } else {
             deposit.setClawOpen(false);
         }
@@ -45,7 +45,6 @@ public class setDeposit extends CommandBase {
             armReadyToMove = true;
         } else {
             deposit.setSlideTarget(SLIDES_PIVOT_READY_EXTENSION + 50);
-            secondSlideMoveCompleted = false;
         }
         timer.reset();
     }
@@ -56,10 +55,8 @@ public class setDeposit extends CommandBase {
             deposit.setPivot(state);
             timer.reset();
             armMoved = true;
-        } else if (armMoved && timer.milliseconds() > 600) {
-            if (!secondSlideMoveCompleted) {
-                deposit.setSlideTarget(target);
-            }
+        } else if (armMoved && timer.milliseconds() > 500) {
+            deposit.setSlideTarget(target);
 
             switch (state) {
                 case INTAKE:
@@ -87,5 +84,10 @@ public class setDeposit extends CommandBase {
     @Override
     public void end(boolean interruptable) {
         deposit.setPivot(state);
+        deposit.setSlideTarget(target);
+
+        if (state.equals(INTAKE)) {
+            deposit.setClawOpen(true);
+        }
     }
 }

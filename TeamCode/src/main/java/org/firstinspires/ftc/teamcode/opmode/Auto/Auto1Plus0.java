@@ -4,7 +4,6 @@ import static android.os.SystemClock.sleep;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -12,11 +11,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
+import org.firstinspires.ftc.teamcode.subsystem.commands.attachSpecimen;
 import org.firstinspires.ftc.teamcode.subsystem.commands.setDeposit;
 
-//@Config
-//@Autonomous
-public class RightAuto extends OpMode {
+import java.util.Objects;
+
+@Config
+@Autonomous
+public class Auto1Plus0 extends OpMode {
     private final Robot robot = Robot.getInstance();
     public static int index = 0;
     public static double motorSpeeds = 0.3;
@@ -26,8 +28,12 @@ public class RightAuto extends OpMode {
 
     @Override
     public void init() {
-        opModeType = OpModeType.AUTO;
-        startingPose = new Pose2d(0, 0, 0);
+        if (Objects.equals(startingPoseName, null)) {
+            throw new RuntimeException("Please set your alliance side + position in AlliancePoseSelector");
+        } else {
+            opModeType = OpModeType.AUTO;
+            startingPose = STARTING_POSES.get(startingPoseName);
+        }
 
         CommandScheduler.getInstance().enable();
 
@@ -46,14 +52,14 @@ public class RightAuto extends OpMode {
         if (timer == null) {
 
             timer = new ElapsedTime();
-            robot.deposit.setSlideTarget(HIGH_SPECIMEN_HEIGHT);
+
+            CommandScheduler.getInstance().schedule(new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT));
 
             robot.drive.sparkFunOTOSDrive.leftBack.setPower(-motorSpeeds);
             robot.drive.sparkFunOTOSDrive.leftFront.setPower(-motorSpeeds);
             robot.drive.sparkFunOTOSDrive.rightBack.setPower(-motorSpeeds);
             robot.drive.sparkFunOTOSDrive.rightFront.setPower(-motorSpeeds);
 
-            robot.colorSensor.enableLed(true);
             if (index == 0) {
                 index = 1;
             }
@@ -69,25 +75,24 @@ public class RightAuto extends OpMode {
             robot.drive.sparkFunOTOSDrive.leftFront.setPower(0);
             robot.drive.sparkFunOTOSDrive.rightBack.setPower(0);
             robot.drive.sparkFunOTOSDrive.rightFront.setPower(0);
-
             index = 2;
         }
 
-        if (timer.milliseconds() >= (1000 + stopTimer) && index == 2) {
-            robot.deposit.setSlideTarget(HIGH_SPECIMEN_ATTACH_HEIGHT);
+        if (timer.milliseconds() >= (3000 + stopTimer) && index == 2) {
+            CommandScheduler.getInstance().schedule(new attachSpecimen(robot.deposit));
 
             index = 3;
         }
 
-        if (timer.milliseconds() >= (1500 + stopTimer) && index == 3) {
+        if (timer.milliseconds() >= (3500 + stopTimer) && index == 3) {
             robot.deposit.setClawOpen(true);
 
             sleep(500);
 
-            robot.drive.sparkFunOTOSDrive.leftBack.setPower(-motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.leftFront.setPower(-motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.rightBack.setPower(-motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.rightFront.setPower(-motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.leftBack.setPower(motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.leftFront.setPower(motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.rightBack.setPower(motorSpeeds);
+            robot.drive.sparkFunOTOSDrive.rightFront.setPower(motorSpeeds);
 
             timer.reset();
             index = 4;
@@ -101,10 +106,17 @@ public class RightAuto extends OpMode {
 
             CommandScheduler.getInstance().schedule(new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0));
 
-            robot.drive.sparkFunOTOSDrive.leftBack.setPower(-motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.leftFront.setPower(+motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.rightBack.setPower(+motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.rightFront.setPower(-motorSpeeds);
+            if (startingPoseName.equals(PoseLocation.BLUE_BUCKET) || startingPoseName.equals(PoseLocation.RED_BUCKET)) {
+                robot.drive.sparkFunOTOSDrive.leftBack.setPower(-motorSpeeds);
+                robot.drive.sparkFunOTOSDrive.leftFront.setPower(+motorSpeeds);
+                robot.drive.sparkFunOTOSDrive.rightBack.setPower(+motorSpeeds);
+                robot.drive.sparkFunOTOSDrive.rightFront.setPower(-motorSpeeds);
+            } else {
+                robot.drive.sparkFunOTOSDrive.leftBack.setPower(+motorSpeeds);
+                robot.drive.sparkFunOTOSDrive.leftFront.setPower(-motorSpeeds);
+                robot.drive.sparkFunOTOSDrive.rightBack.setPower(-motorSpeeds);
+                robot.drive.sparkFunOTOSDrive.rightFront.setPower(+motorSpeeds);
+            }
 
             timer.reset();
             index = 5;

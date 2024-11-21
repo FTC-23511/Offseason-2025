@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.subsystem.commands.realTransfer;
 
 public class Intake extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
-    private double target;
+    public double target;
     public boolean extendoReached;
     // Between retracted and extended
     public boolean extendoRetracted;
@@ -68,7 +68,7 @@ public class Intake extends SubsystemBase {
             extendoPower -= 0.1;
         }
 
-        if (extendoReached) {
+        if ((extendoReached && target > 0) || (robot.extensionEncoder.getPosition() <= 5 && target == 0)) {
             robot.extension.setPower(0);
         } else {
             robot.extension.setPower(extendoPower);
@@ -120,7 +120,7 @@ public class Intake extends SubsystemBase {
         if (intakePivotState.equals(INTAKE)) {
             if (intakeMotorState.equals(FORWARD)) {
                 setActiveIntake(STOP);
-            } else if (intakeMotorState.equals(STOP)) {
+            } else if (intakeMotorState.equals(STOP) || intakeMotorState.equals(HOLD)) {
                 setActiveIntake(FORWARD);
             }
             Intake.sampleColorTarget = sampleColorTarget;
@@ -151,16 +151,8 @@ public class Intake extends SubsystemBase {
 
                 // No point of setting intakeMotor to 0 again
             }
-        }
-
-        if (intakePivotState.equals(TRANSFER)) {
-            if (intakeMotorState.equals(HOLD)) {
-                setActiveIntake(HOLD);
-            }
-        } else {
-            if (intakeMotorState.equals(HOLD)) {
-                setActiveIntake(STOP);
-            }
+        } else if (intakePivotState.equals(TRANSFER)) {
+            setActiveIntake(HOLD);
         }
     }
 

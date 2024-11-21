@@ -9,22 +9,23 @@ import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 
 public class attachSpecimen extends CommandBase {
     Deposit deposit;
-    private boolean finished = false;
-    ElapsedTime timer = new ElapsedTime();
+    ElapsedTime timer;
 
     public attachSpecimen(Deposit deposit) {
         this.deposit = deposit;
+        this.timer = new ElapsedTime();
         addRequirements(deposit);
     }
 
     @Override
     public void initialize() {
         deposit.setSlideTarget(HIGH_SPECIMEN_ATTACH_HEIGHT);
+        timer.reset();
     }
 
     @Override
     public boolean isFinished() {
-        return deposit.slidesReached;
+        return deposit.slidesReached && timer.milliseconds() >= 600;
     }
 
     @Override

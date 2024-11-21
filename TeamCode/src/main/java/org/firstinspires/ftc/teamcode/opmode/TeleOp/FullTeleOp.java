@@ -57,11 +57,17 @@ public class FullTeleOp extends CommandOpMode {
         driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ALLIANCE_ONLY)));
 
-        driver.getGamepadButton(GamepadKeys.Button.X).whenActive(
+        driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
                 new InstantCommand(() -> offset = robot.drive.sparkFunOTOSDrive.pose.heading.toDouble()));
 
         driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
                 new setExtendo(robot.deposit, robot.intake, MAX_EXTENDO_EXTENSION));
+
+        driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, ENDGAME_ASCENT_HEIGHT));
+
+        driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
+                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, 0));
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
@@ -76,7 +82,7 @@ public class FullTeleOp extends CommandOpMode {
                 new realTransfer(robot.deposit, robot.intake));
 
         // Operator Gamepad controls
-        operator.getGamepadButton(GamepadKeys.Button.X).whenActive(
+        operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(
                 new InstantCommand(() -> robot.deposit.setClawOpen(!robot.deposit.clawOpen)));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
@@ -144,13 +150,24 @@ public class FullTeleOp extends CommandOpMode {
             (robot.drive.sparkFunOTOSDrive.pose.heading.toDouble() - offset)
         );
 
+        if (gamepad1.right_trigger > 0.01 &&
+            !Deposit.depositPivotState.equals(Deposit.DepositPivotState.TRANSFER) &&
+            robot.extensionEncoder.getPosition() <= (MAX_EXTENDO_EXTENSION + 5)) {
+
+            robot.intake.target += 5;
+        }
+
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();
 
         telemetry.addData("timer", timer.milliseconds());
         telemetry.addData("depositPos", robot.deposit.getDepositSlidePosition());
-        telemetry.addData("target", robot.deposit.target);
-        telemetry.addData("robot.deposit.depositPivotState", Deposit.depositPivotState);
+        telemetry.addData("deposit target", robot.deposit.target);
+        telemetry.addData("depositPivotState", Deposit.depositPivotState);
+        telemetry.addData("RIGHT_TRIGGER", gamepad1.right_trigger);
+        telemetry.addData("extensionPos", robot.extensionEncoder.getPosition());
+        telemetry.addData("extension target", robot.intake.target);
+        telemetry.addData("intakeMotorState", intakeMotorState);
 
         telemetry.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();
