@@ -108,26 +108,31 @@ public class MeepMeepTesting {
                 .strafeToConstantHeading(new Vector2d(48.5, 58.75))
 
                 .waitSeconds(2.0)
-                .setReversed(true)
                 .strafeToConstantHeading(new Vector2d(47.1, 46.5))
-//                .turnTo(Math.toRadians(90))
-                .waitSeconds(2.0)
-                .setReversed(false)
-                .turnTo(Math.toRadians(45))
-                .waitSeconds(2)
                 .turnTo(Math.toRadians(90))
-                .strafeToConstantHeading(new Vector2d(58.8, 46.5))
-                .waitSeconds(2.0)
-                .strafeToConstantHeading(new Vector2d(52.1, 46.5))
-                .turnTo(Math.toRadians(140))
                 .waitSeconds(2.0)
                 .turnTo(Math.toRadians(45))
+
+                .strafeToConstantHeading(new Vector2d(51.1, 50.5))
+                .waitSeconds(1.5)
+                .strafeToConstantHeading(new Vector2d(47.1, 46.5))
+
+                .strafeToLinearHeading(new Vector2d(55, 46.5), Math.toRadians(90))
                 .waitSeconds(2.0)
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(28.2, 15, Math.toRadians(180)), Math.toRadians(225))
-                .waitSeconds(1.0)
-                .setReversed(false)
-                .strafeToConstantHeading(new Vector2d(26.2, 15))
+                .strafeToLinearHeading(new Vector2d(47.1, 46.5), Math.toRadians(45))
+
+                .strafeToConstantHeading(new Vector2d(51.1, 50.5))
+                .waitSeconds(1.5)
+                .strafeToConstantHeading(new Vector2d(47.1, 46.5))
+
+                .strafeToLinearHeading(new Vector2d(54, 46.5), Math.toRadians(125))
+                .waitSeconds(2.0)
+                .strafeToLinearHeading(new Vector2d(51.1, 50.5), Math.toRadians(45))
+
+                .strafeToConstantHeading(new Vector2d(51.1, 50.5))
+                .waitSeconds(1.5)
+                .strafeToConstantHeading(new Vector2d(47.1, 46.5))
+
 
                 .build());
 
