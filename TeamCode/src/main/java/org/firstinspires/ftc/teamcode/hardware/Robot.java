@@ -156,7 +156,10 @@ public class Robot {
         System.out.println(otos.setAngularScalar(PARAMS.angularScalar));
 
         if (opModeType.equals(OpModeType.AUTO)) {
+            otos.calibrateImu(255, true);
             initHasMovement();
+        } else if (opModeType.equals(OpModeType.TELEOP)) {
+            otos.calibrateImu(255, true);
         }
 
         // The IMU on the OTOS includes a gyroscope and accelerometer, which could
