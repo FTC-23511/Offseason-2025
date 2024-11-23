@@ -68,7 +68,7 @@ public class Intake extends SubsystemBase {
             extendoPower -= 0.2;
         }
 
-        if ((extendoReached && target > 0) || (robot.extensionEncoder.getPosition() <= 5 && target == 0)) {
+        if ((extendoReached && target > 0) || (robot.extensionEncoder.getPosition() <= 3 && target == 0)) {
             robot.extension.setPower(0);
         } else {
             robot.extension.setPower(extendoPower);

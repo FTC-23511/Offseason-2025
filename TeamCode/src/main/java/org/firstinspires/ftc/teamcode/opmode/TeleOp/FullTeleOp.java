@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -52,7 +53,7 @@ public class FullTeleOp extends CommandOpMode {
 
         // Driver Gamepad controls
         driver.getGamepadButton(GamepadKeys.Button.B).whenPressed(
-                new InstantCommand(() -> robot.intake.toggleActiveIntake(Intake.SampleColorTarget.ANY_COLOR)));
+                new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ANY_COLOR)));
 
         driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ALLIANCE_ONLY)));
@@ -61,13 +62,16 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> offset = robot.drive.sparkFunOTOSDrive.pose.heading.toDouble()));
 
         driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
-                new setExtendo(robot.deposit, robot.intake, MAX_EXTENDO_EXTENSION));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
+                        new setExtendo(robot.deposit, robot.intake, MAX_EXTENDO_EXTENSION))));
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, ENDGAME_ASCENT_HEIGHT));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
+                        new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, ENDGAME_ASCENT_HEIGHT))));
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, 0));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
+                        new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, 0))));
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
@@ -76,32 +80,40 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)));
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
-                new extendoSampleEject(robot.deposit, robot.intake));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
+                        new extendoSampleEject(robot.deposit, robot.intake))));
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
-                new realTransfer(robot.deposit, robot.intake));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
+                        new realTransfer(robot.deposit, robot.intake))));
 
         // Operator Gamepad controls
         operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(
                 new InstantCommand(() -> robot.deposit.setClawOpen(!robot.deposit.clawOpen)));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
+                        new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT))));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, LOW_BUCKET_HEIGHT));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
+                        new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, LOW_BUCKET_HEIGHT))));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
+                        new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT))));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.INTAKE, 0));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
+                        new setDeposit(robot.deposit, Deposit.DepositPivotState.INTAKE, 0))));
 
         operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
-                new attachSpecimen(robot.deposit));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
+                        new attachSpecimen(robot.deposit))));
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
-                new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
+                        new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0))));
 
         super.run();
     }

@@ -106,8 +106,8 @@ public class MeepMeepTesting {
                 // 0+4 blue bucket
                 .strafeToConstantHeading(new Vector2d(38, 58.75))
                 .strafeToConstantHeading(new Vector2d(48.5, 58.75))
-
                 .waitSeconds(2.0)
+
                 .strafeToConstantHeading(new Vector2d(47.1, 46.5))
                 .turnTo(Math.toRadians(90))
                 .waitSeconds(2.0)
