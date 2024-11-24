@@ -15,8 +15,9 @@ import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 
 import org.firstinspires.ftc.teamcode.hardware.caching.SolversMotor;
 import org.firstinspires.ftc.teamcode.hardware.caching.SolversServo;
+import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
+import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
-import org.firstinspires.ftc.teamcode.subsystem.Drive;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 
 import java.util.List;
@@ -42,8 +43,6 @@ public class Robot {
     public Motor.Encoder liftEncoder;
     public Motor.Encoder extensionEncoder;
 
-    public SparkFunOTOSCorrected otos;
-
     public RevColorSensorV3 colorSensor;
 
     public List<LynxModule> allHubs;
@@ -52,7 +51,7 @@ public class Robot {
 
     public Deposit deposit;
     public Intake intake;
-    public Drive drive;
+    public Follower follower;
 
     private static Robot instance = new Robot();
     public boolean enabled;
@@ -117,8 +116,6 @@ public class Robot {
 
         colorSensor.enableLed(true);
 
-        drive = new Drive(hardwareMap, startingPose);
-
         // Bulk reading enabled!
         // AUTO mode will bulk read by default and will redo and clear cache once the exact same read is done again
         // MANUAL mode will bulk read once per loop but needs to be manually cleared
@@ -133,6 +130,12 @@ public class Robot {
 
         intake = new Intake();
         deposit = new Deposit();
+        follower = new Follower(hardwareMap);
+        follower.setStartingPose(new Pose(0, 0, 0));
+
+        if (opModeType.equals(OpModeType.TELEOP)) {
+            follower.startTeleopDrive();
+        }
     }
 
     public void initHasMovement() {

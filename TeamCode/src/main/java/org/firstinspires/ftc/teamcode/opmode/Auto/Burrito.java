@@ -31,7 +31,7 @@ public class Burrito extends CommandOpMode {
     private PathChain path;
 
     public void generatePath() {
-        PathBuilder builder = robot.drive.follower.pathBuilder();
+        PathBuilder builder = robot.follower.pathBuilder();
 
         // If you want to edit the pathing copy and update the json code/.pp file found in the Recipes package into https://pedro-path-generator.vercel.app/
         // Then paste the following code https://pedro-path-generator.vercel.app/ spits out at you (excluding the top part with the class and constructor headers)
@@ -39,9 +39,9 @@ public class Burrito extends CommandOpMode {
         // NOTE: .setTangentialHeadingInterpolation() doesn't exist its .setTangentHeadingInterpolation() so just fix that whenever you paste
 
         // Starting Pose (update this as well):
-        robot.drive.follower.setStartingPose(new Pose(6.125, 78, 0));
+        robot.follower.setStartingPose(new Pose(6.125, 78, 0));
 
-        path = robot.drive.follower.pathBuilder()
+        path = robot.follower.pathBuilder()
                 .addPath(
                         // Line 1
                         new BezierLine(
@@ -133,9 +133,9 @@ public class Burrito extends CommandOpMode {
         generatePath();
 
         schedule(
-                new RunCommand(() -> robot.drive.follower.update()),
+                new RunCommand(() -> robot.follower.update()),
                 new SequentialCommandGroup(
-                        new FollowPathCommand(robot.drive.follower, path),
+                        new FollowPathCommand(robot.follower, path),
                         new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, LOW_BUCKET_HEIGHT)
                 )
         );

@@ -26,7 +26,6 @@ public class FullTeleOp extends CommandOpMode {
 
     public ElapsedTime timer;
     public ElapsedTime gameTimer;
-    public Follower follower;
 
     private final Robot robot = Robot.getInstance();
 
@@ -50,9 +49,6 @@ public class FullTeleOp extends CommandOpMode {
         driver = new GamepadEx(gamepad1);
         operator = new GamepadEx(gamepad2);
 
-        follower = new Follower(hardwareMap);
-        follower.setStartingPose(new Pose(0,0,0));
-
         // Driver Gamepad controls
         driver.getGamepadButton(GamepadKeys.Button.B).whenPressed(
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ANY_COLOR)));
@@ -61,7 +57,7 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ALLIANCE_ONLY)));
 
         driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
-                new InstantCommand(() -> headingOffset = follower.getPose().getHeading()));
+                new InstantCommand(() -> robot.follower.setPose(new Pose(0, 0, 0))));
 
         driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
@@ -157,8 +153,8 @@ public class FullTeleOp extends CommandOpMode {
 
         // OTOS Field Centric Code
         double speedMultiplier = 0.35 + (1 - 0.35) * gamepad1.left_trigger;
-        follower.setTeleOpMovementVectors(-gamepad1.left_stick_y * speedMultiplier, -gamepad1.left_stick_x * speedMultiplier, -gamepad1.right_stick_x * speedMultiplier, false);
-        follower.update();
+        robot.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y * speedMultiplier, -gamepad1.left_stick_x * speedMultiplier, -gamepad1.right_stick_x * speedMultiplier, false);
+        robot.follower.update();
 
         if (gamepad1.right_trigger > 0.01 &&
             !Deposit.depositPivotState.equals(Deposit.DepositPivotState.TRANSFER) &&
@@ -172,9 +168,9 @@ public class FullTeleOp extends CommandOpMode {
 
         telemetry.addData("timer", timer.milliseconds());
         telemetry.addData("speedMultiplier", speedMultiplier);
-        telemetry.addData("getHeadingOffset()", follower.getHeadingOffset());
-        telemetry.addData("Deg: getHeading()", Math.toDegrees(follower.getPose().getHeading()));
-        telemetry.addData("Rad: getHeading()", (follower.getPose().getHeading()));
+        telemetry.addData("getHeadingOffset()", robot.follower.getHeadingOffset());
+        telemetry.addData("Deg: getHeading()", Math.toDegrees(robot.follower.getPose().getHeading()));
+        telemetry.addData("Rad: getHeading()", (robot.follower.getPose().getHeading()));
 
         telemetry.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();
