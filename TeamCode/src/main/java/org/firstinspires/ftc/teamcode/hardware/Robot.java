@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import static org.firstinspires.ftc.teamcode.pedroPathing.localization.PoseUpdater.startingPose;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
+
 import com.acmerobotics.roadrunner.ftc.SparkFunOTOSCorrected;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -12,7 +15,6 @@ import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 
 import org.firstinspires.ftc.teamcode.hardware.caching.SolversMotor;
 import org.firstinspires.ftc.teamcode.hardware.caching.SolversServo;
-import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 import org.firstinspires.ftc.teamcode.subsystem.Drive;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
@@ -107,9 +109,6 @@ public class Robot {
         leftDepositPivot = new SolversServo(hardwareMap.get(Servo.class, "leftDepositPivot"), 0.01);
         rightDepositPivot = new SolversServo(hardwareMap.get(Servo.class, "rightDepositPivot"), 0.01);
         depositClaw = new SolversServo(hardwareMap.get(Servo.class, "depositClaw"), 0.01);
-//        intakeClaw = new SolversServo(hardwareMap.get(Servo.class, "intakeClaw"), 0.01);
-//        trayServo = new SolversServo(hardwareMap.get(Servo.class, "trayServo"), 0.01);
-//        wrist = new SolversServo(hardwareMap.get(Servo.class, "wrist"), 0.01);
 
         leftIntakePivot.setDirection(Servo.Direction.REVERSE);
         leftDepositPivot.setDirection(Servo.Direction.REVERSE);
@@ -117,6 +116,8 @@ public class Robot {
         colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
 
         colorSensor.enableLed(true);
+
+        drive = new Drive(hardwareMap, startingPose);
 
         // Bulk reading enabled!
         // AUTO mode will bulk read by default and will redo and clear cache once the exact same read is done again

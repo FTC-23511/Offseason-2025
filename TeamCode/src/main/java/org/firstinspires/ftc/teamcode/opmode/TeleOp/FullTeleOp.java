@@ -13,6 +13,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
+import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
+import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.commands.*;
@@ -24,6 +26,7 @@ public class FullTeleOp extends CommandOpMode {
 
     public ElapsedTime timer;
     public ElapsedTime gameTimer;
+    public Follower follower;
 
     private final Robot robot = Robot.getInstance();
 
@@ -42,8 +45,13 @@ public class FullTeleOp extends CommandOpMode {
         // Initialize subsystems
         register(robot.deposit, robot.intake);
 
+        robot.intake.setActiveIntake(IntakeMotorState.STOP);
+
         driver = new GamepadEx(gamepad1);
         operator = new GamepadEx(gamepad2);
+
+        follower = new Follower(hardwareMap);
+        follower.setStartingPose(new Pose(0,0,0));
 
         // Driver Gamepad controls
         driver.getGamepadButton(GamepadKeys.Button.B).whenPressed(
@@ -53,7 +61,7 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ALLIANCE_ONLY)));
 
         driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
-                new InstantCommand(() -> headingOffset = robot.drive.follower.getPose().getHeading()));
+                new InstantCommand(() -> headingOffset = follower.getPose().getHeading()));
 
         driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
@@ -109,6 +117,10 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
                         new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0))));
 
+        telemetry.addData("intakeMotorState", intakeMotorState);
+
+        telemetry.update(); // DO NOT REMOVE! Needed for telemetry
+
         super.run();
     }
 
@@ -144,10 +156,9 @@ public class FullTeleOp extends CommandOpMode {
         }
 
         // OTOS Field Centric Code
-        double speedMultiplier = 0.35 + (1 - 0.35) * driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
-        robot.drive.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y * speedMultiplier, -gamepad1.left_stick_x * speedMultiplier, -gamepad1.right_stick_x * speedMultiplier, false);
-        robot.drive.follower.update();
-
+        double speedMultiplier = 0.35 + (1 - 0.35) * gamepad1.left_trigger;
+        follower.setTeleOpMovementVectors(-gamepad1.left_stick_y * speedMultiplier, -gamepad1.left_stick_x * speedMultiplier, -gamepad1.right_stick_x * speedMultiplier, false);
+        follower.update();
 
         if (gamepad1.right_trigger > 0.01 &&
             !Deposit.depositPivotState.equals(Deposit.DepositPivotState.TRANSFER) &&
@@ -160,6 +171,10 @@ public class FullTeleOp extends CommandOpMode {
         super.run();
 
         telemetry.addData("timer", timer.milliseconds());
+        telemetry.addData("speedMultiplier", speedMultiplier);
+        telemetry.addData("getHeadingOffset()", follower.getHeadingOffset());
+        telemetry.addData("Deg: getHeading()", Math.toDegrees(follower.getPose().getHeading()));
+        telemetry.addData("Rad: getHeading()", (follower.getPose().getHeading()));
 
         telemetry.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();

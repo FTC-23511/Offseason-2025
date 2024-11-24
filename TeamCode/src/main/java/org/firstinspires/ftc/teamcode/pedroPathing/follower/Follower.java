@@ -103,7 +103,7 @@ public class Follower {
 
     private long reachedParametricPathEndTime;
 
-    private double[] drivePowers;
+    public double[] drivePowers;
     private double[] teleopDriveValues;
 
     private ArrayList<Vector> velocities = new ArrayList<>();

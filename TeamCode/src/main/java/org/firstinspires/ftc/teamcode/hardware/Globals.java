@@ -20,9 +20,10 @@ public class Globals {
         SPECIMEN_SCORING
     }
 
+    public static DepositInit depositInit;
+
     public static OpModeType opModeType;
     public static AllianceColor allianceColor;
-
     public static double headingOffset = 0;
 
     // Robot Width and Length (in inches)

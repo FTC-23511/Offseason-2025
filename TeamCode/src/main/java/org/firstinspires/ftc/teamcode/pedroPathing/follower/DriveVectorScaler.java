@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.pedroPathing.follower;
 
-import static org.firstinspires.ftc.teamcode.hardware.Globals.headingOffset;
-
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Vector;
 
@@ -53,7 +51,6 @@ public class DriveVectorScaler {
      * @return this returns an Array of doubles with a length of 4, which contains the wheel powers.
      */
     public double[] getDrivePowers(Vector correctivePower, Vector headingPower, Vector pathingPower, double robotHeading) {
-        robotHeading -= headingOffset;
         // clamps down the magnitudes of the input vectors
         if (correctivePower.getMagnitude() > 1) correctivePower.setMagnitude(1);
         if (headingPower.getMagnitude() > 1) headingPower.setMagnitude(1);
