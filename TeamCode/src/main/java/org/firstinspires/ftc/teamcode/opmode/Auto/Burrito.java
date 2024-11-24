@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
@@ -30,6 +31,7 @@ import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.subsystem.commands.attachSpecimen;
+import org.firstinspires.ftc.teamcode.subsystem.commands.elapsedWait;
 import org.firstinspires.ftc.teamcode.subsystem.commands.realTransfer;
 import org.firstinspires.ftc.teamcode.subsystem.commands.setDeposit;
 import org.firstinspires.ftc.teamcode.subsystem.commands.setExtendo;
@@ -51,7 +53,7 @@ public class Burrito extends CommandOpMode {
         // NOTE: .setTangentHeadingInterpolation() doesn't exist its .setTangentHeadingInterpolation() so just fix that whenever you paste
 
         // Starting Pose (update this as well):
-        robot.follower.setStartingPose(new Pose(6.125, 78, 180));
+        robot.follower.setStartingPose(new Pose(6.125, 78, Math.toRadians(180)));
 
         paths.add(
                 // Drive to first specimen scoring
@@ -60,7 +62,7 @@ public class Burrito extends CommandOpMode {
                         // Line 1
                         new BezierLine(
                                 new Point(6.125, 78.000, Point.CARTESIAN),
-                                new Point(38.000, 78.000, Point.CARTESIAN)
+                                new Point(40.000, 78.000, Point.CARTESIAN)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -168,24 +170,43 @@ public class Burrito extends CommandOpMode {
         // Initialize subsystems
         register(robot.deposit, robot.intake);
 
-        robot.init(hardwareMap);
-
         robot.initHasMovement();
 
         robot.follower.setMaxPower(0.5);
 
         generatePath();
 
+        ParallelCommandGroup setSlideSpecimenScoring = new ParallelCommandGroup(
+                new InstantCommand(() -> robot.deposit.target =  HIGH_SPECIMEN_HEIGHT),
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
+                        new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT))));
+
+        ParallelCommandGroup attachSpecimen = new ParallelCommandGroup(
+                new InstantCommand(() -> robot.deposit.target =  HIGH_SPECIMEN_ATTACH_HEIGHT),
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
+                        new attachSpecimen(robot.deposit))));
+
+        ParallelCommandGroup setSlideBucketScoring = new ParallelCommandGroup(
+                new InstantCommand(() -> robot.deposit.target =  HIGH_BUCKET_HEIGHT),
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
+                        new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT))));
+
+        ParallelCommandGroup retractSlides = new ParallelCommandGroup(
+                new InstantCommand(() -> robot.deposit.target = 0),
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
+                        new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0))));
+
         schedule(
                 new RunCommand(() -> robot.follower.update()),
                 new SequentialCommandGroup(
                         new ParallelCommandGroup(
-//                                new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT),
-                                new FollowPathCommand(robot.follower, paths.get(1))),
-//                        new attachSpecimen(robot.deposit),
+                                setSlideSpecimenScoring,
+                                new FollowPathCommand(robot.follower, paths.get(0))),
+                        attachSpecimen,
+                        new elapsedWait(1000),
                         new ParallelCommandGroup(
-//                                new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0),
-                                new FollowPathCommand(robot.follower, paths.get(2))),
+                                retractSlides,
+                                new FollowPathCommand(robot.follower, paths.get(1)))
 //                        new ParallelCommandGroup(
 //                                new setExtendo(robot.deposit, robot.intake, 500),
 //                                new InstantCommand(() -> {
@@ -193,10 +214,10 @@ public class Burrito extends CommandOpMode {
 //                                    Intake.sampleColorTarget = Intake.SampleColorTarget.ANY_COLOR;
 //                                    robot.intake.setActiveIntake(Intake.IntakeMotorState.FORWARD);
 //                                }))
-                        new FollowPathCommand(robot.follower, paths.get(3)),
-                        new FollowPathCommand(robot.follower, paths.get(4)),
-                        new FollowPathCommand(robot.follower, paths.get(5)),
-                        new FollowPathCommand(robot.follower, paths.get(6))
+//                        new FollowPathCommand(robot.follower, paths.get(2)),
+//                        new FollowPathCommand(robot.follower, paths.get(3)),
+//                        new FollowPathCommand(robot.follower, paths.get(4)),
+//                        new FollowPathCommand(robot.follower, paths.get(5))
                 )
         );
 
