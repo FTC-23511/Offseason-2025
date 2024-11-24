@@ -72,16 +72,13 @@ public class Auto1Plus0 extends OpMode {
             robot.leftFront.setPower(0);
             robot.rightBack.setPower(0);
             robot.rightFront.setPower(0);
+
+            CommandScheduler.getInstance().schedule(new attachSpecimen(robot.deposit));
+
             index = 2;
         }
 
-        if (timer.milliseconds() >= (3000 + stopTimer) && index == 2) {
-            CommandScheduler.getInstance().schedule(new attachSpecimen(robot.deposit));
-
-            index = 3;
-        }
-
-        if (timer.milliseconds() >= (3500 + stopTimer) && index == 3) {
+        if (timer.milliseconds() >= (3500 + stopTimer) && index == 2) {
             robot.deposit.setClawOpen(true);
 
             sleep(500);
@@ -92,10 +89,10 @@ public class Auto1Plus0 extends OpMode {
             robot.rightFront.setPower(motorSpeeds);
 
             timer.reset();
-            index = 4;
+            index = 3;
         }
 
-        if (timer.milliseconds() >= (stopTimer - 300) && index == 4) {
+        if (timer.milliseconds() >= (stopTimer - 350) && index == 3) {
             robot.leftBack.setPower(0);
             robot.leftFront.setPower(0);
             robot.rightBack.setPower(0);
@@ -116,15 +113,15 @@ public class Auto1Plus0 extends OpMode {
             }
 
             timer.reset();
-            index = 5;
+            index = 4;
         }
 
-        if (timer.milliseconds() >= stopTimer * 2 && index == 5) {
+        if (timer.milliseconds() >= stopTimer * 2 && index == 4) {
             robot.leftBack.setPower(0);
             robot.leftFront.setPower(0);
             robot.rightBack.setPower(0);
             robot.rightFront.setPower(0);
-            index = 6;
+            index = 5;
         }
 
         CommandScheduler.getInstance().run();
