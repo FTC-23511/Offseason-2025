@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 import org.firstinspires.ftc.teamcode.subsystem.commands.setDeposit;
 
-//@Config™
+//@Config
 //@Autonomous
 public class LeftAuto extends OpMode {
     private final Robot robot = Robot.getInstance();
