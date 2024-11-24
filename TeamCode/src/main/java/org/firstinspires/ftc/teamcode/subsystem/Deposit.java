@@ -38,9 +38,9 @@ public class Deposit extends SubsystemBase {
 
         // OpMode specific initializations
         if (opModeType.equals(OpModeType.AUTO)) {
-            if (startingPoseName.equals(PoseLocation.BLUE_BUCKET) || startingPoseName.equals(PoseLocation.RED_BUCKET))
+            if (opModeType.equals(OpModeType.AUTO)) {
                 setPivot(DepositPivotState.SCORING);
-            else {
+            } else {
                 setPivot(DepositPivotState.SPECIMEN_SCORING);
             }
             setClawOpen(false);

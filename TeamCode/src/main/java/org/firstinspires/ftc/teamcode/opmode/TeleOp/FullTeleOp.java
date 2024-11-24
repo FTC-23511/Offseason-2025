@@ -3,9 +3,6 @@ package org.firstinspires.ftc.teamcode.opmode.TeleOp;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 import static org.firstinspires.ftc.teamcode.subsystem.Intake.*;
 
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.PoseVelocity2d;
-import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -16,7 +13,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.roadrunner.SparkFunOTOSDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.commands.*;
@@ -25,7 +21,6 @@ import org.firstinspires.ftc.teamcode.subsystem.commands.*;
 public class FullTeleOp extends CommandOpMode {
     public GamepadEx driver;
     public GamepadEx operator;
-    public SparkFunOTOSDrive drive;
 
     public ElapsedTime timer;
     public ElapsedTime gameTimer;
@@ -38,7 +33,6 @@ public class FullTeleOp extends CommandOpMode {
     public void initialize() {
         // Must have for all opModes
         opModeType = OpModeType.TELEOP;
-        startingPose = new Pose2d(0, 0, 0);
 
         // DO NOT REMOVE! Resetting FTCLib Command Scheduler
         super.reset();
@@ -59,7 +53,7 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ALLIANCE_ONLY)));
 
         driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
-                new InstantCommand(() -> offset = robot.drive.sparkFunOTOSDrive.pose.heading.toDouble()));
+                new InstantCommand(() -> headingOffset = robot.drive.follower.getPose().getHeading()));
 
         driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
@@ -149,18 +143,11 @@ public class FullTeleOp extends CommandOpMode {
             gamepad2.setLedColor(0, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
         }
 
-        // OTOS Field Centric robot.Drive Code
-        robot.drive.sparkFunOTOSDrive.updatePoseEstimate();
-        robot.drive.sparkFunOTOSDrive.setFieldCentricDrivePowers(new PoseVelocity2d(
-                    new Vector2d(
-                        (gamepad1.left_stick_y),
-                        (gamepad1.left_stick_x)
-                    ),
-                gamepad1.right_stick_x
-            ),
-            gamepad1.left_trigger,
-            (robot.drive.sparkFunOTOSDrive.pose.heading.toDouble() - offset)
-        );
+        // OTOS Field Centric Code
+        double speedMultiplier = 0.35 + (1 - 0.35) * driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
+        robot.drive.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y * speedMultiplier, -gamepad1.left_stick_x * speedMultiplier, -gamepad1.right_stick_x * speedMultiplier, false);
+        robot.drive.follower.update();
+
 
         if (gamepad1.right_trigger > 0.01 &&
             !Deposit.depositPivotState.equals(Deposit.DepositPivotState.TRANSFER) &&
@@ -173,10 +160,6 @@ public class FullTeleOp extends CommandOpMode {
         super.run();
 
         telemetry.addData("timer", timer.milliseconds());
-        telemetry.addData("offset", offset);
-        telemetry.addData("offset (double)", robot.drive.sparkFunOTOSDrive.pose.heading.toDouble());
-        telemetry.addData("offset (radian)", robot.drive.sparkFunOTOSDrive.pose.heading);
-
 
         telemetry.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();

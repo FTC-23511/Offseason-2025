@@ -28,13 +28,7 @@ public class Auto1Plus0 extends OpMode {
 
     @Override
     public void init() {
-        if (Objects.equals(startingPoseName, null)) {
-            throw new RuntimeException("Please set your alliance side + position in AlliancePoseSelector");
-        }
-
         opModeType = OpModeType.AUTO;
-        startingPose = STARTING_POSES.get(startingPoseName);
-
 
         CommandScheduler.getInstance().enable();
 
@@ -56,10 +50,10 @@ public class Auto1Plus0 extends OpMode {
 
             CommandScheduler.getInstance().schedule(new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT));
 
-            robot.drive.sparkFunOTOSDrive.leftBack.setPower(-motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.leftFront.setPower(-motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.rightBack.setPower(-motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.rightFront.setPower(-motorSpeeds);
+            robot.leftBack.setPower(-motorSpeeds);
+            robot.leftFront.setPower(-motorSpeeds);
+            robot.rightBack.setPower(-motorSpeeds);
+            robot.rightFront.setPower(-motorSpeeds);
 
             if (index == 0) {
                 index = 1;
@@ -72,10 +66,10 @@ public class Auto1Plus0 extends OpMode {
         telemetry.update();
 
         if (timer.milliseconds() >= stopTimer && index == 1) {
-            robot.drive.sparkFunOTOSDrive.leftBack.setPower(0);
-            robot.drive.sparkFunOTOSDrive.leftFront.setPower(0);
-            robot.drive.sparkFunOTOSDrive.rightBack.setPower(0);
-            robot.drive.sparkFunOTOSDrive.rightFront.setPower(0);
+            robot.leftBack.setPower(0);
+            robot.leftFront.setPower(0);
+            robot.rightBack.setPower(0);
+            robot.rightFront.setPower(0);
             index = 2;
         }
 
@@ -90,44 +84,44 @@ public class Auto1Plus0 extends OpMode {
 
             sleep(500);
 
-            robot.drive.sparkFunOTOSDrive.leftBack.setPower(motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.leftFront.setPower(motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.rightBack.setPower(motorSpeeds);
-            robot.drive.sparkFunOTOSDrive.rightFront.setPower(motorSpeeds);
+            robot.leftBack.setPower(motorSpeeds);
+            robot.leftFront.setPower(motorSpeeds);
+            robot.rightBack.setPower(motorSpeeds);
+            robot.rightFront.setPower(motorSpeeds);
 
             timer.reset();
             index = 4;
         }
 
         if (timer.milliseconds() >= (stopTimer - 300) && index == 4) {
-            robot.drive.sparkFunOTOSDrive.leftBack.setPower(0);
-            robot.drive.sparkFunOTOSDrive.leftFront.setPower(0);
-            robot.drive.sparkFunOTOSDrive.rightBack.setPower(0);
-            robot.drive.sparkFunOTOSDrive.rightFront.setPower(0);
+            robot.leftBack.setPower(0);
+            robot.leftFront.setPower(0);
+            robot.rightBack.setPower(0);
+            robot.rightFront.setPower(0);
 
             CommandScheduler.getInstance().schedule(new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0));
 
-            if (startingPoseName.equals(PoseLocation.BLUE_BUCKET) || startingPoseName.equals(PoseLocation.RED_BUCKET)) {
-                robot.drive.sparkFunOTOSDrive.leftBack.setPower(-motorSpeeds);
-                robot.drive.sparkFunOTOSDrive.leftFront.setPower(+motorSpeeds);
-                robot.drive.sparkFunOTOSDrive.rightBack.setPower(+motorSpeeds);
-                robot.drive.sparkFunOTOSDrive.rightFront.setPower(-motorSpeeds);
-            } else {
-                robot.drive.sparkFunOTOSDrive.leftBack.setPower(+motorSpeeds);
-                robot.drive.sparkFunOTOSDrive.leftFront.setPower(-motorSpeeds);
-                robot.drive.sparkFunOTOSDrive.rightBack.setPower(-motorSpeeds);
-                robot.drive.sparkFunOTOSDrive.rightFront.setPower(+motorSpeeds);
-            }
+
+                robot.leftBack.setPower(-motorSpeeds);
+                robot.leftFront.setPower(+motorSpeeds);
+                robot.rightBack.setPower(+motorSpeeds);
+                robot.rightFront.setPower(-motorSpeeds);
+
+                robot.leftBack.setPower(+motorSpeeds);
+                robot.leftFront.setPower(-motorSpeeds);
+                robot.rightBack.setPower(-motorSpeeds);
+                robot.rightFront.setPower(+motorSpeeds);
+
 
             timer.reset();
             index = 5;
         }
 
         if (timer.milliseconds() >= stopTimer * 2 && index == 5) {
-            robot.drive.sparkFunOTOSDrive.leftBack.setPower(0);
-            robot.drive.sparkFunOTOSDrive.leftFront.setPower(0);
-            robot.drive.sparkFunOTOSDrive.rightBack.setPower(0);
-            robot.drive.sparkFunOTOSDrive.rightFront.setPower(0);
+            robot.leftBack.setPower(0);
+            robot.leftFront.setPower(0);
+            robot.rightBack.setPower(0);
+            robot.rightFront.setPower(0);
             index = 6;
         }
 

@@ -11,13 +11,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.roadrunner.SparkFunOTOSDrive;
 
 @TeleOp
 public class resetEncoders extends CommandOpMode {
     public GamepadEx driver;
     public GamepadEx operator;
-    public SparkFunOTOSDrive drive;
     private FtcDashboard dash = FtcDashboard.getInstance();
 
     public ElapsedTime timer;
@@ -30,7 +28,6 @@ public class resetEncoders extends CommandOpMode {
     public void initialize() {
         // Must have for all opModes
         opModeType = OpModeType.TELEOP;
-        startingPose = new Pose2d(0, 0, 0);
 
         // DO NOT REMOVE! Resetting FTCLib Command Scheduler
         super.reset();

@@ -1,13 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
 
-import static org.firstinspires.ftc.teamcode.hardware.Globals.PoseLocation.*;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.Pose2d;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Config
 public class Globals {
@@ -21,27 +15,15 @@ public class Globals {
         BLUE
     }
 
-    public enum PoseLocation {
-        BLUE_BUCKET,
-        BLUE_OBSERVATION,
-        RED_BUCKET,
-        RED_OBSERVATION
+    public enum DepositInit {
+        BUCKET_SCORING,
+        SPECIMEN_SCORING
     }
 
-    public static final Map<PoseLocation, Pose2d> STARTING_POSES = new HashMap<PoseLocation, Pose2d>() {{
-        put(BLUE_BUCKET, new Pose2d(38, 61.75, Math.toRadians(0)));
-        put(BLUE_OBSERVATION, new Pose2d(-8, 61.75, Math.toRadians(90)));
-        put(RED_BUCKET, new Pose2d(-8, -61.75, Math.toRadians(270)));
-        put(RED_OBSERVATION, new Pose2d(8, -61.75, Math.toRadians(270)));
-    }};
-
     public static OpModeType opModeType;
-
-    public static Pose2d startingPose = new Pose2d(0, 0, 0);
-    public static PoseLocation startingPoseName = null;
     public static AllianceColor allianceColor;
 
-    public static double offset = 0;
+    public static double headingOffset = 0;
 
     // Robot Width and Length (in inches)
     public static double ROBOT_WIDTH = 11.5;
