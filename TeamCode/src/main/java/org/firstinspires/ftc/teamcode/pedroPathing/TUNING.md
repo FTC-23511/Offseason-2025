@@ -53,7 +53,7 @@ measurements will be in centimeters.
   that the robot will travel a distance forward and backward, this will not happen until later, so for
   now you can ignore this message. The robot should not move when you run the opmode initally. Instead,
   it should correct when you push it away from its   starting position. Note that this correction should
-  happen regardless of the robot's rotation, and   that the robot should not rotate itself (if it does,
+  happen regardless of the robot's rotation, and that the robot should not rotate itself (if it does,
   disable `useHeading` as mentioned prior). Also note that the robot will only correct to an imaginary line
   that runs straight forward from the robot's starting position, meaning that it will not correct in the
   (original) forward direction. The PID for the translational error is called `translationalPIDF`.

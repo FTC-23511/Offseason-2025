@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.pedroPathing.localization.localizers;
 
+import com.acmerobotics.roadrunner.ftc.SparkFunOTOSCorrected;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -29,7 +30,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Vector;
  *                         |              |
  *                         |              |
  *                         | ||        || |
- *  left (y positive) <--- | ||        || |  
+ *  left (y positive) <--- | ||        || |
  *                         |     ____     |
  *                         |     ----     |
  *                         \--------------/
@@ -40,7 +41,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Vector;
 public class OTOSLocalizer extends Localizer {
     private HardwareMap hardwareMap;
     private Pose startPose;
-    private SparkFunOTOS otos;
+    private SparkFunOTOSCorrected otos;
     private SparkFunOTOS.Pose2D otosPose;
     private SparkFunOTOS.Pose2D otosVel;
     private SparkFunOTOS.Pose2D otosAcc;
@@ -73,7 +74,7 @@ public class OTOSLocalizer extends Localizer {
           "SparkFunOTOS Corrected" in your robot config
          */
         // TODO: replace this with your OTOS port
-        otos = hardwareMap.get(SparkFunOTOS.class, "sensor_otos");
+        otos = hardwareMap.get(SparkFunOTOSCorrected.class, "sensor_otos");
 
         otos.setLinearUnit(DistanceUnit.INCH);
         otos.setAngularUnit(AngleUnit.RADIANS);
@@ -82,11 +83,17 @@ public class OTOSLocalizer extends Localizer {
         // For the OTOS, left/right is the y axis and forward/backward is the x axis, with left being
         // positive y and forward being positive x. PI/2 radians is facing forward, and clockwise
         // rotation is negative rotation.
-        otos.setOffset(new SparkFunOTOS.Pose2D(0,0,Math.PI / 2));
+        otos.setOffset(new SparkFunOTOS.Pose2D(-4.72440945, 2.36220472,Math.toRadians(90)));
 
         // TODO: replace these with your tuned multipliers
-        otos.setLinearScalar(1.0);
-        otos.setAngularScalar(1.0);
+        otos.setLinearScalar(1.01790068);
+        // FORWARD: 1.0210084275303644 + 1.0152284074977984 + 1.000626238214507 = 1.01228769
+        // LATERAL: 1.0242480785886534 + 1.0216547172047095 + 1.0246382187912646 = 1.02351367
+
+        // AVERAGED: 1.01790068
+
+        otos.setAngularScalar(0.976);
+        // 0.972 + 0.9762 + 0.9798
 
         otos.calibrateImu();
         otos.resetTracking();
