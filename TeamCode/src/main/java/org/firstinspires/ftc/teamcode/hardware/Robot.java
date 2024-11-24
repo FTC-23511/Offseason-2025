@@ -135,6 +135,9 @@ public class Robot {
 
         if (opModeType.equals(OpModeType.TELEOP)) {
             follower.startTeleopDrive();
+            INTAKE_HOLD_SPEED = 0;
+        } else {
+            INTAKE_HOLD_SPEED = 0.15;
         }
     }
 

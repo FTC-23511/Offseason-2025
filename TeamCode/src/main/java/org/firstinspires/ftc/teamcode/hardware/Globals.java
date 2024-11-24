@@ -24,7 +24,6 @@ public class Globals {
 
     public static OpModeType opModeType;
     public static AllianceColor allianceColor;
-    public static double headingOffset = 0;
 
     // Robot Width and Length (in inches)
     public static double ROBOT_WIDTH = 11.5;

@@ -13,7 +13,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
@@ -35,6 +34,8 @@ public class FullTeleOp extends CommandOpMode {
     public void initialize() {
         // Must have for all opModes
         opModeType = OpModeType.TELEOP;
+
+        INTAKE_HOLD_SPEED = 0;
 
         // DO NOT REMOVE! Resetting FTCLib Command Scheduler
         super.reset();
@@ -126,6 +127,8 @@ public class FullTeleOp extends CommandOpMode {
         // This is like the init but when the program is actually started
         if (timer == null) {
             robot.initHasMovement();
+
+            INTAKE_HOLD_SPEED = 0.15;
 
             timer = new ElapsedTime();
             gameTimer = new ElapsedTime();
