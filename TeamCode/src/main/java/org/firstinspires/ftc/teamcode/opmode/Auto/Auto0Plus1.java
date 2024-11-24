@@ -13,8 +13,6 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.subsystem.Deposit;
 import org.firstinspires.ftc.teamcode.subsystem.commands.setDeposit;
 
-import java.util.Objects;
-
 @Config
 @Autonomous
 public class Auto0Plus1 extends OpMode {
@@ -28,6 +26,7 @@ public class Auto0Plus1 extends OpMode {
     @Override
     public void init() {
         opModeType = OpModeType.AUTO;
+        depositInit = DepositInit.BUCKET_SCORING;
 
         CommandScheduler.getInstance().enable();
 
@@ -39,6 +38,7 @@ public class Auto0Plus1 extends OpMode {
         // Initialize subsystems
         CommandScheduler.getInstance().registerSubsystem(robot.deposit, robot.intake);
 
+        robot.initHasMovement();
     }
 
     @Override
@@ -48,7 +48,9 @@ public class Auto0Plus1 extends OpMode {
             timer = new ElapsedTime();
 
             CommandScheduler.getInstance().schedule(new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT));
+
             sleep(2000);
+
             robot.leftBack.setPower(motorSpeeds);
             robot.leftFront.setPower(motorSpeeds);
             robot.rightBack.setPower(motorSpeeds);
@@ -96,13 +98,19 @@ public class Auto0Plus1 extends OpMode {
 
             sleep(500);
 
-            robot.leftBack.setPower(motorSpeeds);
-            robot.leftFront.setPower(motorSpeeds);
-            robot.rightBack.setPower(motorSpeeds);
-            robot.rightFront.setPower(motorSpeeds);
+            robot.leftBack.setPower(motorSpeeds / 3);
+            robot.leftFront.setPower(motorSpeeds / 3);
+            robot.rightBack.setPower(motorSpeeds / 3);
+            robot.rightFront.setPower(motorSpeeds / 3);
 
             timer.reset();
             index = 4;
+        } if (timer.milliseconds() >= (1000) && index == 4) {
+            robot.leftBack.setPower(0);
+            robot.leftFront.setPower(0);
+            robot.rightBack.setPower(0);
+            robot.rightFront.setPower(0);
+            index = 5;
         }
 
         CommandScheduler.getInstance().run();

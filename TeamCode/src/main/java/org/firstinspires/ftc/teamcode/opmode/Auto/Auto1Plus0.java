@@ -29,6 +29,7 @@ public class Auto1Plus0 extends OpMode {
     @Override
     public void init() {
         opModeType = OpModeType.AUTO;
+        depositInit = DepositInit.SPECIMEN_SCORING;
 
         CommandScheduler.getInstance().enable();
 
@@ -40,6 +41,7 @@ public class Auto1Plus0 extends OpMode {
         // Initialize subsystems
         CommandScheduler.getInstance().registerSubsystem(robot.deposit, robot.intake);
 
+        robot.initHasMovement();
     }
 
     @Override
@@ -101,17 +103,17 @@ public class Auto1Plus0 extends OpMode {
 
             CommandScheduler.getInstance().schedule(new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0));
 
-
+            if (poseLocationName.equals(PoseLocationName.BLUE_BUCKET) || poseLocationName.equals(PoseLocationName.RED_BUCKET)) {
                 robot.leftBack.setPower(-motorSpeeds);
                 robot.leftFront.setPower(+motorSpeeds);
                 robot.rightBack.setPower(+motorSpeeds);
                 robot.rightFront.setPower(-motorSpeeds);
-
+            } else {
                 robot.leftBack.setPower(+motorSpeeds);
                 robot.leftFront.setPower(-motorSpeeds);
                 robot.rightBack.setPower(-motorSpeeds);
                 robot.rightFront.setPower(+motorSpeeds);
-
+            }
 
             timer.reset();
             index = 5;

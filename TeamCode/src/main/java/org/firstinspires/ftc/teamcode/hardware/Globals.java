@@ -15,6 +15,13 @@ public class Globals {
         BLUE
     }
 
+    public enum PoseLocationName {
+        BLUE_BUCKET,
+        BLUE_OBSERVATION,
+        RED_BUCKET,
+        RED_OBSERVATION
+    }
+
     public enum DepositInit {
         BUCKET_SCORING,
         SPECIMEN_SCORING
@@ -24,6 +31,7 @@ public class Globals {
 
     public static OpModeType opModeType;
     public static AllianceColor allianceColor;
+    public static PoseLocationName poseLocationName;
 
     // Robot Width and Length (in inches)
     public static double ROBOT_WIDTH = 11.5;
