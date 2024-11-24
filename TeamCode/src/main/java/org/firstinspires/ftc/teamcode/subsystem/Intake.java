@@ -135,7 +135,9 @@ public class Intake extends SubsystemBase {
                         sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
                         if (correctSampleDetected()) {
                             setActiveIntake(STOP);
-                            CommandScheduler.getInstance().schedule(new realTransfer(robot.deposit, robot.intake));
+                            if (opModeType.equals(OpModeType.TELEOP)) {
+                                CommandScheduler.getInstance().schedule(new realTransfer(robot.deposit, robot.intake));
+                            }
                         } else if (!sampleColor.equals(NONE)) {
                             setActiveIntake(REVERSE);
                         } else {

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -16,13 +15,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.PoseUpdater;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierCurve;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Path;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathBuilder;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.DashboardPoseTracker;
@@ -32,6 +27,7 @@ import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.subsystem.commands.attachSpecimen;
 import org.firstinspires.ftc.teamcode.subsystem.commands.elapsedWait;
+import org.firstinspires.ftc.teamcode.subsystem.commands.waitForIntakeCompletion;
 import org.firstinspires.ftc.teamcode.subsystem.commands.realTransfer;
 import org.firstinspires.ftc.teamcode.subsystem.commands.setDeposit;
 import org.firstinspires.ftc.teamcode.subsystem.commands.setExtendo;
@@ -196,6 +192,16 @@ public class Burrito extends CommandOpMode {
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
                         new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0))));
 
+        ParallelCommandGroup setFullExtendo = new ParallelCommandGroup(
+                new InstantCommand(() -> robot.intake.target = MAX_EXTENDO_EXTENSION),
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
+                        new setExtendo(robot.deposit, robot.intake, MAX_EXTENDO_EXTENSION))));
+
+        ParallelCommandGroup retractExtendo = new ParallelCommandGroup(
+                new InstantCommand(() -> robot.intake.target = 0),
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
+                        new setExtendo(robot.deposit, robot.intake, 0))));
+
         schedule(
                 new RunCommand(() -> robot.follower.update()),
                 new SequentialCommandGroup(
@@ -206,24 +212,51 @@ public class Burrito extends CommandOpMode {
                         new elapsedWait(1000),
                         new ParallelCommandGroup(
                                 retractSlides,
-                                new FollowPathCommand(robot.follower, paths.get(1)))
-//                        new ParallelCommandGroup(
-//                                new setExtendo(robot.deposit, robot.intake, 500),
-//                                new InstantCommand(() -> {
-//                                    robot.intake.setPivot(Intake.IntakePivotState.INTAKE);
-//                                    Intake.sampleColorTarget = Intake.SampleColorTarget.ANY_COLOR;
-//                                    robot.intake.setActiveIntake(Intake.IntakeMotorState.FORWARD);
-//                                }))
+                                new FollowPathCommand(robot.follower, paths.get(1))),
+                        new SequentialCommandGroup(
+                                setFullExtendo,
+                                new InstantCommand(() -> {
+                                    Intake.sampleColorTarget = Intake.SampleColorTarget.ANY_COLOR;
+                                    robot.intake.setPivot(Intake.IntakePivotState.INTAKE);
+                                    robot.intake.setActiveIntake(Intake.IntakeMotorState.FORWARD);
+                                })),
+                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
+                                        new waitForIntakeCompletion(robot.intake))),
+                        new realTransfer(robot.deposit, robot.intake),
+                                        setSlideBucketScoring
 //                        new FollowPathCommand(robot.follower, paths.get(2)),
+//                        new InstantCommand(() -> robot.deposit.setClawOpen(true)),
 //                        new FollowPathCommand(robot.follower, paths.get(3)),
+//                        retractSlides,
+//                        new SequentialCommandGroup(
+//                                new setExtendo(robot.deposit, robot.intake, 400),
+//                                new intakeSample(robot.intake, Intake.SampleColorTarget.ANY_COLOR)),
+//                        new realTransfer(robot.deposit, robot.intake),
+//                        setSlideBucketScoring
 //                        new FollowPathCommand(robot.follower, paths.get(4)),
-//                        new FollowPathCommand(robot.follower, paths.get(5))
+//                        new InstantCommand(() -> robot.deposit.setClawOpen(true)),
+//                        new FollowPathCommand(robot.follower, paths.get(5)),
+//                        retractSlides,
+//                        new ParallelCommandGroup(
+//                                new setExtendo(robot.deposit, robot.intake, 400),
+//                                new intakeSample(robot.intake, Intake.SampleColorTarget.ANY_COLOR)),
+//                        new realTransfer(robot.deposit, robot.intake),
+//                        setSlideBucketScoring,
+//                        new FollowPathCommand(robot.follower, paths.get(6)),
+//                        new InstantCommand(() -> robot.deposit.setClawOpen(true)),
+//                        new ParallelCommandGroup(
+//                                new FollowPathCommand(robot.follower, paths.get(7)),
+//                                new SequentialCommandGroup(
+//                                        new elapsedWait(400),
+//                                        retractSlides
+//                                ))
                 )
         );
 
         dashboardPoseTracker = new DashboardPoseTracker(robot.follower.poseUpdater);
         Drawing.drawRobot(robot.follower.poseUpdater.getPose(), "#4CAF50");
         Drawing.sendPacket();
+
     }
 
     @Override
