@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystem.commands;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
-import static org.firstinspires.ftc.teamcode.subsystem.Deposit.DepositPivotState.*;
+import static org.firstinspires.ftc.teamcode.subsystem.Deposit.getDepositPivotPos;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -12,15 +12,13 @@ public class setDeposit extends CommandBase {
     Deposit deposit;
     public Deposit.DepositPivotState state;
 
-    ElapsedTime timer; // Timer to give claw time to close/open
-
+    ElapsedTime timer;
+    private boolean armReadyToMove = false;
     private boolean armMoved = false;
     private final double target;
-    private boolean waitForClaw = false;
-    private boolean armReadyToMove = false;
     private boolean finished = false;
-    private double oldServoPos;
-    private double newServoPos;
+    private double previousServoPos;
+    private double currentServoPos;
 
     public setDeposit(Deposit deposit, Deposit.DepositPivotState state, double target) {
         this.deposit = deposit;
@@ -33,14 +31,7 @@ public class setDeposit extends CommandBase {
 
     @Override
     public void initialize() {
-        if (state.equals(MIDDLE_HOLD) && Deposit.depositPivotState.equals(TRANSFER)) {
-            deposit.setClawOpen(true);
-            waitForClaw = true;
-        } else if (state.equals(SPECIMEN_SCORING) && Deposit.depositPivotState.equals(INTAKE)) {
-            waitForClaw = true;
-        } else {
-            deposit.setClawOpen(false);
-        }
+        deposit.setClawOpen(false);
 
         if (target >= SLIDES_PIVOT_READY_EXTENSION) {
             deposit.setSlideTarget(target);
@@ -54,60 +45,24 @@ public class setDeposit extends CommandBase {
     @Override
     public void execute() {
         if (armReadyToMove && !armMoved) {
-            switch (Deposit.depositPivotState) {
-                case INTAKE:
-                    oldServoPos = DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS;
-                    break;
-                case TRANSFER:
-                    oldServoPos = DEPOSIT_PIVOT_TRANSFER_POS;
-                    break;
-                case SCORING:
-                    oldServoPos = DEPOSIT_PIVOT_SCORING_POS;
-                    break;
-                case MIDDLE_HOLD:
-                    oldServoPos = DEPOSIT_PIVOT_MIDDLE_POS;
-                    break;
-                case SPECIMEN_SCORING:
-                    oldServoPos = DEPOSIT_PIVOT_SPECIMEN_SCORING_POS;
-                    break;
-            }
+            previousServoPos = getDepositPivotPos();
 
             deposit.setPivot(state);
 
-            switch (state) {
-                case INTAKE:
-                    newServoPos = DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS;
-                    break;
-                case TRANSFER:
-                    newServoPos = DEPOSIT_PIVOT_TRANSFER_POS;
-                    break;
-                case SCORING:
-                    newServoPos = DEPOSIT_PIVOT_SCORING_POS;
-                    break;
-                case MIDDLE_HOLD:
-                    newServoPos = DEPOSIT_PIVOT_MIDDLE_POS;
-                    break;
-                case SPECIMEN_SCORING:
-                    newServoPos = DEPOSIT_PIVOT_SPECIMEN_SCORING_POS;
-                    break;
-            }
+            currentServoPos = getDepositPivotPos();
 
             timer.reset();
             armMoved = true;
-        } else if (armMoved && timer.milliseconds() > (Math.abs(newServoPos - oldServoPos) * 1250)) {
+        } else if (armMoved && timer.milliseconds() > (Math.abs(previousServoPos - currentServoPos) * DEPOSIT_PIVOT_MOVEMENT_TIME)) {
             deposit.setSlideTarget(target);
-
             switch (state) {
-                case TRANSFER:
-                    deposit.setClawOpen(true);
-                    break;
-                case MIDDLE_HOLD:
+                case TRANSFER: case MIDDLE_HOLD:
                     deposit.setClawOpen(true);
                     break;
             }
             finished = true;
 
-        } else if (deposit.slidesReached && (timer.milliseconds() > 200 || !waitForClaw)) {
+        } else if (deposit.slidesReached && (timer.milliseconds() > 200)) {
             armReadyToMove = true;
         }
     }

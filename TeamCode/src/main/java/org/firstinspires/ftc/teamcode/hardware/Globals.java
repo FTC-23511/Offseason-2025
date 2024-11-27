@@ -53,10 +53,13 @@ public class Globals {
 
     // Deposit Pivot
     public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.395;
+    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.58;
+    public static double DEPOSIT_PIVOT_SCORING_POS = 1.0;
     public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.78;
     public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.00;
-    public static double DEPOSIT_PIVOT_SCORING_POS = 1.0;
-    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.58;
+
+    // 0.84 sec/360° -> 0.82833333333 sec/355° -> 828.33333333 milliseconds/355°
+    public static double DEPOSIT_PIVOT_MOVEMENT_TIME = 828.33333333 + 400; // 400 milliseconds of buffer
 
     // Deposit Claw
     public static double DEPOSIT_CLAW_OPEN_POS = 0.625;

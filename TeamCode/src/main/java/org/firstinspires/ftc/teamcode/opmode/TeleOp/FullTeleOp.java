@@ -52,7 +52,7 @@ public class FullTeleOp extends CommandOpMode {
 
         // Driver Gamepad controls
         driver.getGamepadButton(GamepadKeys.Button.B).whenPressed(
-                new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ANY_COLOR)));
+                () -> robot.intake.toggleActiveIntake(SampleColorTarget.ANY_COLOR));
 
         driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ALLIANCE_ONLY)));
@@ -104,7 +104,7 @@ public class FullTeleOp extends CommandOpMode {
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new setDeposit(robot.deposit, Deposit.DepositPivotState.INTAKE, 0))));
+                        new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_INTAKE, 0))));
 
         operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,

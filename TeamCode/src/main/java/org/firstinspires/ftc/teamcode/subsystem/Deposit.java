@@ -27,7 +27,7 @@ public class Deposit extends SubsystemBase {
         SPECIMEN_SCORING,
         TRANSFER,
         MIDDLE_HOLD,
-        INTAKE
+        SPECIMEN_INTAKE
     }
 
     public static DepositPivotState depositPivotState;
@@ -105,7 +105,7 @@ public class Deposit extends SubsystemBase {
                 robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
                 robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
                 break;
-            case INTAKE:
+            case SPECIMEN_INTAKE:
                 robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS);
                 robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS);
                 break;
@@ -116,6 +116,22 @@ public class Deposit extends SubsystemBase {
         }
 
         this.depositPivotState = depositPivotState;
+    }
+
+    public static double getDepositPivotPos() {
+        switch (Deposit.depositPivotState) {
+            case SPECIMEN_INTAKE:
+                return DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS;
+            case TRANSFER:
+                return DEPOSIT_PIVOT_TRANSFER_POS;
+            case SCORING:
+                return DEPOSIT_PIVOT_SCORING_POS;
+            case MIDDLE_HOLD:
+                return DEPOSIT_PIVOT_MIDDLE_POS;
+            case SPECIMEN_SCORING:
+                return DEPOSIT_PIVOT_SPECIMEN_SCORING_POS;
+        }
+        throw new NullPointerException("depositPivotState is null!");
     }
 
     @Override
