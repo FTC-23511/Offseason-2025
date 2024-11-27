@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
@@ -52,7 +53,7 @@ public class Deposit extends SubsystemBase {
     }
 
     public void setSlideTarget(double target) {
-        this.target = Math.max(Math.min(target, MAX_SLIDES_EXTENSION), 0);
+        this.target = Range.clip(target, 0, MAX_SLIDES_EXTENSION);
         slidePIDF.setSetPoint(target);
     }
 
@@ -64,7 +65,7 @@ public class Deposit extends SubsystemBase {
         // Just make sure it gets to fully retracted if target is 0
         if (target == 0 && !slidesReached) {
             power -= 0.1;
-        } else if (target >= 2000 && !slidesReached) {
+        } else if (target >= MAX_SLIDES_EXTENSION && !slidesReached) {
             power += 0.1;
         }
 
@@ -75,10 +76,6 @@ public class Deposit extends SubsystemBase {
             robot.liftTop.setPower(power);
             robot.liftBottom.setPower(power);
         }
-    }
-
-    public int getDepositSlidePosition() {
-        return robot.liftEncoder.getPosition();
     }
 
     public void setClawOpen(boolean open) {
@@ -115,23 +112,7 @@ public class Deposit extends SubsystemBase {
                 break;
         }
 
-        this.depositPivotState = depositPivotState;
-    }
-
-    public static double getDepositPivotPos() {
-        switch (Deposit.depositPivotState) {
-            case SPECIMEN_INTAKE:
-                return DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS;
-            case TRANSFER:
-                return DEPOSIT_PIVOT_TRANSFER_POS;
-            case SCORING:
-                return DEPOSIT_PIVOT_SCORING_POS;
-            case MIDDLE_HOLD:
-                return DEPOSIT_PIVOT_MIDDLE_POS;
-            case SPECIMEN_SCORING:
-                return DEPOSIT_PIVOT_SPECIMEN_SCORING_POS;
-        }
-        throw new NullPointerException("depositPivotState is null!");
+        Deposit.depositPivotState = depositPivotState;
     }
 
     @Override

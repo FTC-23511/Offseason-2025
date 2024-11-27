@@ -47,7 +47,7 @@ public class Auto0Plus1 extends OpMode {
 
             timer = new ElapsedTime();
 
-            CommandScheduler.getInstance().schedule(new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT));
+            CommandScheduler.getInstance().schedule(new setDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false));
 
             sleep(2000);
 
@@ -94,7 +94,7 @@ public class Auto0Plus1 extends OpMode {
             robot.rightBack.setPower(0);
             robot.rightFront.setPower(0);
 
-            CommandScheduler.getInstance().schedule(new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0));
+            CommandScheduler.getInstance().schedule(new setDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true));
 
             sleep(500);
 
