@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.TeleOp;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
-import static org.firstinspires.ftc.teamcode.subsystem.Intake.*;
+import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
@@ -14,9 +14,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
-import org.firstinspires.ftc.teamcode.subsystem.Deposit;
-import org.firstinspires.ftc.teamcode.subsystem.Intake;
-import org.firstinspires.ftc.teamcode.subsystem.commands.*;
+import org.firstinspires.ftc.teamcode.commandbase.Deposit;
+import org.firstinspires.ftc.teamcode.commandbase.Intake;
+import org.firstinspires.ftc.teamcode.commandbase.commands.*;
 
 @TeleOp
 public class FullTeleOp extends CommandOpMode {
@@ -61,7 +61,7 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.follower.setPose(new Pose(0, 0, 0))));
 
         driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
                         new setExtendo(robot.deposit, robot.intake, MAX_EXTENDO_EXTENSION))));
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
@@ -78,13 +78,13 @@ public class FullTeleOp extends CommandOpMode {
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)));
 
-        driver.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
-                        new extendoSampleEject(robot.deposit, robot.intake))));
+//        driver.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
+//                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
+//                        new extendoSampleEject(robot.deposit, robot.intake))));
 
-        driver.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
-                        new realTransfer(robot.deposit, robot.intake))));
+//        driver.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
+//                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
+//                        new realTransfer(robot.deposit, robot.intake))));
 
         // Operator Gamepad controls
         operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(

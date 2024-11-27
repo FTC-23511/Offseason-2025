@@ -6,11 +6,6 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
-import com.arcrobotics.ftclib.command.RunCommand;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -22,15 +17,6 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.DashboardPoseTracker;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Drawing;
-import org.firstinspires.ftc.teamcode.subsystem.Deposit;
-import org.firstinspires.ftc.teamcode.subsystem.Intake;
-import org.firstinspires.ftc.teamcode.subsystem.commands.FollowPathCommand;
-import org.firstinspires.ftc.teamcode.subsystem.commands.attachSpecimen;
-import org.firstinspires.ftc.teamcode.subsystem.commands.elapsedWait;
-import org.firstinspires.ftc.teamcode.subsystem.commands.waitForIntakeCompletion;
-import org.firstinspires.ftc.teamcode.subsystem.commands.realTransfer;
-import org.firstinspires.ftc.teamcode.subsystem.commands.setDeposit;
-import org.firstinspires.ftc.teamcode.subsystem.commands.setExtendo;
 
 @Config
 @Autonomous(name = "Burrito (1spec+3sample)", group = "Chipotle Menu", preselectTeleOp = "FullTeleOp")
@@ -172,86 +158,8 @@ public class Burrito extends CommandOpMode {
 
         generatePath();
 
-        ParallelCommandGroup setSlideSpecimenScoring = new ParallelCommandGroup(
-                new InstantCommand(() -> robot.deposit.target =  HIGH_SPECIMEN_HEIGHT),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new setDeposit(robot.deposit, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT))));
-
-        ParallelCommandGroup attachSpecimen = new ParallelCommandGroup(
-                new InstantCommand(() -> robot.deposit.target =  HIGH_SPECIMEN_ATTACH_HEIGHT),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new attachSpecimen(robot.deposit))));
-
-        ParallelCommandGroup setSlideBucketScoring = new ParallelCommandGroup(
-                new InstantCommand(() -> robot.deposit.target =  HIGH_BUCKET_HEIGHT),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new setDeposit(robot.deposit, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT))));
-
-        ParallelCommandGroup retractSlides = new ParallelCommandGroup(
-                new InstantCommand(() -> robot.deposit.target = 0),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new setDeposit(robot.deposit, Deposit.DepositPivotState.MIDDLE_HOLD, 0))));
-
-        ParallelCommandGroup setFullExtendo = new ParallelCommandGroup(
-                new InstantCommand(() -> robot.intake.target = MAX_EXTENDO_EXTENSION),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new setExtendo(robot.deposit, robot.intake, MAX_EXTENDO_EXTENSION))));
-
-        ParallelCommandGroup retractExtendo = new ParallelCommandGroup(
-                new InstantCommand(() -> robot.intake.target = 0),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new setExtendo(robot.deposit, robot.intake, 0))));
-
-        schedule(
-                new RunCommand(() -> robot.follower.update()),
-                new SequentialCommandGroup(
-                        new ParallelCommandGroup(
-                                setSlideSpecimenScoring,
-                                new FollowPathCommand(robot.follower, paths.get(0))),
-                        attachSpecimen,
-                        new elapsedWait(1000),
-                        new ParallelCommandGroup(
-                                retractSlides,
-                                new FollowPathCommand(robot.follower, paths.get(1))),
-                        new SequentialCommandGroup(
-                                setFullExtendo,
-                                new InstantCommand(() -> {
-                                    Intake.sampleColorTarget = Intake.SampleColorTarget.ANY_COLOR;
-                                    robot.intake.setPivot(Intake.IntakePivotState.INTAKE);
-                                    robot.intake.setActiveIntake(Intake.IntakeMotorState.FORWARD);
-                                })),
-                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                                        new waitForIntakeCompletion(robot.intake))),
-                        new realTransfer(robot.deposit, robot.intake),
-                                        setSlideBucketScoring
-//                        new FollowPathCommand(robot.follower, paths.get(2)),
-//                        new InstantCommand(() -> robot.deposit.setClawOpen(true)),
-//                        new FollowPathCommand(robot.follower, paths.get(3)),
-//                        retractSlides,
-//                        new SequentialCommandGroup(
-//                                new setExtendo(robot.deposit, robot.intake, 400),
-//                                new intakeSample(robot.intake, Intake.SampleColorTarget.ANY_COLOR)),
-//                        new realTransfer(robot.deposit, robot.intake),
-//                        setSlideBucketScoring
-//                        new FollowPathCommand(robot.follower, paths.get(4)),
-//                        new InstantCommand(() -> robot.deposit.setClawOpen(true)),
-//                        new FollowPathCommand(robot.follower, paths.get(5)),
-//                        retractSlides,
-//                        new ParallelCommandGroup(
-//                                new setExtendo(robot.deposit, robot.intake, 400),
-//                                new intakeSample(robot.intake, Intake.SampleColorTarget.ANY_COLOR)),
-//                        new realTransfer(robot.deposit, robot.intake),
-//                        setSlideBucketScoring,
-//                        new FollowPathCommand(robot.follower, paths.get(6)),
-//                        new InstantCommand(() -> robot.deposit.setClawOpen(true)),
-//                        new ParallelCommandGroup(
-//                                new FollowPathCommand(robot.follower, paths.get(7)),
-//                                new SequentialCommandGroup(
-//                                        new elapsedWait(400),
-//                                        retractSlides
-//                                ))
-                )
-        );
+        // Put actual auto here
+        schedule();
 
         dashboardPoseTracker = new DashboardPoseTracker(robot.follower.poseUpdater);
         Drawing.drawRobot(robot.follower.poseUpdater.getPose(), "#4CAF50");

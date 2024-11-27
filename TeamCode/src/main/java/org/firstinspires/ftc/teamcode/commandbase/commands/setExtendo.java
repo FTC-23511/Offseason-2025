@@ -1,13 +1,11 @@
-package org.firstinspires.ftc.teamcode.subsystem.commands;
-
-import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
+package org.firstinspires.ftc.teamcode.commandbase.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.subsystem.Deposit;
-import org.firstinspires.ftc.teamcode.subsystem.Intake;
+import org.firstinspires.ftc.teamcode.commandbase.Deposit;
+import org.firstinspires.ftc.teamcode.commandbase.Intake;
 
 public class setExtendo extends CommandBase {
     Intake intake;

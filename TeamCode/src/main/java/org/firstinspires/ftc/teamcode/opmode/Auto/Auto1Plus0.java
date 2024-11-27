@@ -10,11 +10,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.subsystem.Deposit;
-import org.firstinspires.ftc.teamcode.subsystem.commands.attachSpecimen;
-import org.firstinspires.ftc.teamcode.subsystem.commands.setDeposit;
-
-import java.util.Objects;
+import org.firstinspires.ftc.teamcode.commandbase.Deposit;
+import org.firstinspires.ftc.teamcode.commandbase.commands.attachSpecimen;
+import org.firstinspires.ftc.teamcode.commandbase.commands.setDeposit;
 
 @Config
 @Autonomous

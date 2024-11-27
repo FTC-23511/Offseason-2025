@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.subsystem.commands;
+package org.firstinspires.ftc.teamcode.commandbase.commands;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
-import static org.firstinspires.ftc.teamcode.subsystem.Deposit.getDepositPivotPos;
+import static org.firstinspires.ftc.teamcode.commandbase.Deposit.getDepositPivotPos;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.subsystem.Deposit;
+import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 
 public class setDeposit extends CommandBase {
     Deposit deposit;

@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.subsystem.vision;
+package org.firstinspires.ftc.teamcode.commandbase.vision;
 
-import static org.firstinspires.ftc.teamcode.subsystem.vision.SampleDetectionPipelinePNP.calculateDistance;
-import static org.firstinspires.ftc.teamcode.subsystem.vision.SampleDetectionPipelinePNP.pointsList;
-import static org.firstinspires.ftc.teamcode.subsystem.vision.SampleDetectionPipelinePNP.samplesList;
+import static org.firstinspires.ftc.teamcode.commandbase.vision.SampleDetectionPipelinePNP.calculateDistance;
+import static org.firstinspires.ftc.teamcode.commandbase.vision.SampleDetectionPipelinePNP.pointsList;
+import static org.firstinspires.ftc.teamcode.commandbase.vision.SampleDetectionPipelinePNP.samplesList;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -14,7 +14,6 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 @TeleOp
 public class SampleDetectionDemoTeleop extends LinearOpMode {

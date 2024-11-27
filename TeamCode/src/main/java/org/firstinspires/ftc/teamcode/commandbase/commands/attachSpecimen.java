@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.subsystem.commands;
+package org.firstinspires.ftc.teamcode.commandbase.commands;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.subsystem.Deposit;
+import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 
 public class attachSpecimen extends CommandBase {
     Deposit deposit;
