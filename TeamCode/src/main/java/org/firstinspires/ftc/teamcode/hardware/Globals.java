@@ -58,9 +58,10 @@ public class Globals {
     public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.78;
     public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.00;
 
-    // 0.84 sec/360° -> 0.82833333333 sec/355° -> 828.33333333 milliseconds/355°
-    public static double DEPOSIT_PIVOT_MOVEMENT_TIME = 828.33333333 + 400; // 400 milliseconds of buffer
-    public static double INTAKE_PIVOT_MOVEMENT_TIME = 1000; // TO-DO: Update with actual calculations
+    // 0.84 sec/360° -> 0.828 sec/355° -> (gear ratio of 5:4) 1.035 sec/355° -> 1035 milliseconds/355°
+    public static double DEPOSIT_PIVOT_MOVEMENT_TIME = 1035 + 200; // 200 milliseconds of buffer
+    // 0.84 sec/360° -> 0.828 sec/355° -> 828 milliseconds/355°
+    public static double INTAKE_PIVOT_MOVEMENT_TIME = 828 + 200; // 200 milliseconds of buffer
 
     // Deposit Claw
     public static double DEPOSIT_CLAW_OPEN_POS = 0.625;

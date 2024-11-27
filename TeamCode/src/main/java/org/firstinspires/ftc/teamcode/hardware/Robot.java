@@ -143,4 +143,16 @@ public class Robot {
         deposit.init();
         intake.init();
     }
+
+    public enum RobotState {
+        RESTING,
+        TRANSFERRED,
+        SCORING,
+        INTAKING,
+        EJECTING,
+        SPECIMEN_INTAKING,
+        SPECIMEN_SCORING
+    }
+
+    public static RobotState robotState;
 }

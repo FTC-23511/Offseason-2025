@@ -15,9 +15,7 @@ public class setDeposit extends CommandBase {
     private final boolean clawOpen;
 
     ElapsedTime timer;
-    private boolean armReadyToMove = false;
-    private boolean armMoved = false;
-    private boolean finished = false;
+    private int index;
     private double previousServoPos;
     private double currentServoPos;
 
@@ -40,45 +38,51 @@ public class setDeposit extends CommandBase {
         // If it is more than that just yolo it because slides are faster than the pivot so arm is ready to move instantly
         if (target >= SLIDES_PIVOT_READY_EXTENSION) {
             robot.deposit.setSlideTarget(target);
-            armReadyToMove = true;
+
+            // Index for moving the arm
+            index = 1;
         } else {
             robot.deposit.setSlideTarget(SLIDES_PIVOT_READY_EXTENSION + 50);
+
+            // Index for wait for slide move up before move arm
+            index = 0;
         }
+
         timer.reset();
     }
 
     @Override
     public void execute() {
-        // Should run if the target is less than SLIDES_PIVOT_READY_EXTENSION (due to the if statement above) AND when the slides are actually above that height
-        // Should run first or never depending on target in loop
-        if (robot.liftEncoder.getPosition() >= SLIDES_PIVOT_READY_EXTENSION && target >= SLIDES_PIVOT_READY_EXTENSION && !armReadyToMove) {
-            armReadyToMove = true;
+        // Wait until slide is above height that pivot won't hit axle
+        if (robot.liftEncoder.getPosition() >= SLIDES_PIVOT_READY_EXTENSION && index == 0) {
+            index = 1;
         }
 
-        // Should run in the loop immediately after armReadyToMove = true and move the arm
-        if (armReadyToMove && !armMoved) {
+        // Move the pivot
+        if (index == 1) {
             // Update previous and current servo pivot pos for timer logic in next if statement
             previousServoPos = robot.leftDepositPivot.getPosition();
             robot.deposit.setPivot(state);
             currentServoPos = robot.leftDepositPivot.getPosition();
             timer.reset();
 
-            armMoved = true;
+            index = 2;
         }
 
-        // Should be final move of claw and slides to the original desired state after arm has moved
+        // Final move of claw and slides to the original desired state after arm has moved
         // Uses difference in pos of claw multiplied by a constant that converts servoPos change to milliseconds (DEPOSIT_PIVOT_MOVEMENT_TIME)
-        if (armMoved && timer.milliseconds() > (Math.abs(previousServoPos - currentServoPos) * DEPOSIT_PIVOT_MOVEMENT_TIME)) {
+        if (index == 2 && timer.milliseconds() > (Math.abs(previousServoPos - currentServoPos) * DEPOSIT_PIVOT_MOVEMENT_TIME)) {
             robot.deposit.setSlideTarget(target);
             robot.deposit.setClawOpen(clawOpen);
-            finished = true;
+
+            index = 3;
         }
     }
 
     // Command finishes when slides have reached and all arm movements are finished
     @Override
     public boolean isFinished() {
-        return robot.deposit.slidesReached && finished;
+        return robot.deposit.slidesReached && index == 3;
     }
 }
 
