@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-public class setDeposit extends CommandBase {
+public class SetDeposit extends CommandBase {
     private final Robot robot;
     private final Deposit.DepositPivotState state;
     private final double target;
@@ -19,7 +19,7 @@ public class setDeposit extends CommandBase {
     private double previousServoPos;
     private double currentServoPos;
 
-    public setDeposit(Robot robot, Deposit.DepositPivotState state, double target, boolean clawOpen) {
+    public SetDeposit(Robot robot, Deposit.DepositPivotState state, double target, boolean clawOpen) {
         this.robot = robot;
         this.state = state;
         this.target = target;

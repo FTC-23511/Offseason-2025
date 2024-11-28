@@ -43,6 +43,7 @@ public class Intake extends SubsystemBase {
         YELLOW,
         NONE
     }
+
     public static SampleColorDetected sampleColor = NONE;
     public static SampleColorTarget sampleColorTarget = ANY_COLOR;
     public static IntakePivotState intakePivotState = TRANSFER;

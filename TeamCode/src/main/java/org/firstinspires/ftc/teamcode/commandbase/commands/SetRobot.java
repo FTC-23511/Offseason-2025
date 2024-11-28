@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.commandbase.commands;
 
-import com.arcrobotics.ftclib.command.InstantCommand;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
+
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 
@@ -8,11 +9,12 @@ import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-public class setRobot extends ParallelCommandGroup {
+public class SetRobot extends ParallelCommandGroup {
     private final Robot robot;
     private final Robot.RobotState robotState;
     private boolean didItReallyHappen = false;
-    public setRobot(Robot robot, Robot.RobotState robotState) {
+
+    public SetRobot(Robot robot, Robot.RobotState robotState) {
         this.robot = robot;
         this.robotState = robotState;
 
@@ -20,15 +22,15 @@ public class setRobot extends ParallelCommandGroup {
             case RESTING:
                 if (!Robot.robotState.equals(Robot.RobotState.TRANSFERRED)) {
                     addCommands(
-                            new setDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
-                            new setIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0)
+                            new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
+                            new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0)
                     );
-                    addRequirements(robot.intake, robot.deposit);
+//                    addRequirements(robot.intake, robot.deposit);
                 } else {
                     addCommands(
-                            new undoTransfer(robot)
+                            new UndoTransfer(robot)
                     );
-                    addRequirements(robot.intake, robot.deposit);
+//                    addRequirements(robot.intake, robot.deposit);
                 }
 
                 didItReallyHappen = true;
@@ -37,19 +39,29 @@ public class setRobot extends ParallelCommandGroup {
             case TRANSFERRED:
                 if (Robot.robotState.equals(Robot.RobotState.RESTING)) {
                     addCommands(
-                            new transfer(robot)
+                            new Transfer(robot)
                     );
-                    addRequirements(robot.intake, robot.deposit);
+//                    addRequirements(robot.intake, robot.deposit);
 
                     didItReallyHappen = true;
                 }
                 break;
             case SPECIMEN_SCORING:
+                if (Robot.robotState.equals(Robot.RobotState.SPECIMEN_INTAKING)) {
+                    addCommands(
+                            new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false)
+                    );
+                    addRequirements(robot.deposit);
+
+                    didItReallyHappen = true;
+                }
                 break;
             case SPECIMEN_INTAKING:
                 break;
         }
     }
+
+
 
     @Override
     public void end(boolean interruptible) {

@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
-import org.firstinspires.ftc.teamcode.commandbase.commands.setDeposit;
+import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
 
 @Config
 @Autonomous
@@ -47,7 +47,7 @@ public class Auto0Plus1 extends OpMode {
 
             timer = new ElapsedTime();
 
-            CommandScheduler.getInstance().schedule(new setDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false));
+            CommandScheduler.getInstance().schedule(new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false));
 
             sleep(2000);
 
@@ -94,7 +94,7 @@ public class Auto0Plus1 extends OpMode {
             robot.rightBack.setPower(0);
             robot.rightFront.setPower(0);
 
-            CommandScheduler.getInstance().schedule(new setDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true));
+            CommandScheduler.getInstance().schedule(new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true));
 
             sleep(500);
 

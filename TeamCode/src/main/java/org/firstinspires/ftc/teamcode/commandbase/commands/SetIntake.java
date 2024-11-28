@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-public class setIntake extends CommandBase {
+public class SetIntake extends CommandBase {
     private final Robot robot;
     private final Intake.IntakeMotorState motorState;
     private final Intake.IntakePivotState pivotState;
@@ -20,7 +20,7 @@ public class setIntake extends CommandBase {
 
     private boolean waitForPivot = false;
 
-    public setIntake(Robot robot, Intake.IntakePivotState pivotState, Intake.IntakeMotorState motorState, double target) {
+    public SetIntake(Robot robot, Intake.IntakePivotState pivotState, Intake.IntakeMotorState motorState, double target) {
         this.robot = robot;
         this.pivotState = pivotState;
         this.motorState = motorState;

@@ -1,17 +1,15 @@
 package org.firstinspires.ftc.teamcode.commandbase.commands;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.DEPOSIT_PIVOT_MOVEMENT_TIME;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.INTAKE_PIVOT_MOVEMENT_TIME;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.SLIDES_PIVOT_READY_EXTENSION;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
-import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-public class undoTransfer extends CommandBase {
+public class UndoTransfer extends CommandBase {
     private final Robot robot;
 
     ElapsedTime timer;
@@ -19,7 +17,7 @@ public class undoTransfer extends CommandBase {
     private double previousServoPos;
     private double currentServoPos;
 
-    public undoTransfer(Robot robot) {
+    public UndoTransfer(Robot robot) {
         this.robot = robot;
         this.timer = new ElapsedTime();
 

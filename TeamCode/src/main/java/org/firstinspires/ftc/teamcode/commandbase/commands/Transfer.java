@@ -6,10 +6,10 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-public class transfer extends SequentialCommandGroup {
-    public transfer(Robot robot) {
+public class Transfer extends SequentialCommandGroup {
+    public Transfer(Robot robot) {
         addCommands(
-                new setDeposit(robot, Deposit.DepositPivotState.TRANSFER, 0, true),
+                new SetDeposit(robot, Deposit.DepositPivotState.TRANSFER, 0, true),
                 new InstantCommand(() -> robot.deposit.setClawOpen(false))
         );
         addRequirements(robot.intake, robot.deposit);
