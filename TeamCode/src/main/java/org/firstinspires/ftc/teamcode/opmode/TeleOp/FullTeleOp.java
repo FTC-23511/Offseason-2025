@@ -110,32 +110,40 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.deposit.setClawOpen(!robot.deposit.clawOpen)));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new SetDeposit(robot, DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false))));
+                new UninterruptibleCommand(
+                        new SetDeposit(robot, DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false)
+                )
+        );
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new SetDeposit(robot, DepositPivotState.SCORING, LOW_BUCKET_HEIGHT, false))));
+                new UninterruptibleCommand(
+                        new SetDeposit(robot, DepositPivotState.SCORING, LOW_BUCKET_HEIGHT, false)
+                )
+        );
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new SetDeposit(robot, DepositPivotState.SCORING, HIGH_SPECIMEN_HEIGHT, false))));
+                new UninterruptibleCommand(
+                        new SetDeposit(robot, DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false)
+                )
+        );
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new SetDeposit(robot, DepositPivotState.SPECIMEN_INTAKE, 0, true))));
+                new UninterruptibleCommand(
+                        new SetDeposit(robot, DepositPivotState.SPECIMEN_INTAKE, 0, true)
+                )
+        );
 
         operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
-                        new attachSpecimen(robot.deposit))));
+                new UninterruptibleCommand(
+                        new attachSpecimen(robot.deposit)
+                )
+        );
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
-                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, 0, true))));
-
-        telemetry.addData("intakeMotorState", intakeMotorState);
-
-        telemetry.update(); // DO NOT REMOVE! Needed for telemetry
+                new UninterruptibleCommand(
+                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, 0, true)
+                )
+        );
 
         super.run();
     }

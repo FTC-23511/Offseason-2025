@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.commandbase.commands;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
@@ -15,7 +16,7 @@ public class SetDeposit extends CommandBase {
     private final boolean clawOpen;
 
     ElapsedTime timer;
-    private int index;
+    private double index;
     private double previousServoPos;
     private double currentServoPos;
 
@@ -44,7 +45,11 @@ public class SetDeposit extends CommandBase {
                 robot.deposit.setSlideTarget(target);
 
                 // Index for moving the arm
-                index = 1;
+                if (state.equals(Deposit.DepositPivotState.SPECIMEN_SCORING)) {
+                    index = 0.5;
+                } else {
+                    index = 1;
+                }
             } else {
                 robot.deposit.setSlideTarget(SLIDES_PIVOT_READY_EXTENSION + 50);
 
@@ -64,11 +69,18 @@ public class SetDeposit extends CommandBase {
             index = 1;
         }
 
+        // Wait for slides to go a bit up if going to specimen scoring so that clip doesn't hit wall
+        if (index == 0.5 && timer.milliseconds() >= 200) {
+            index = 1;
+        }
+
         // Move the pivot
         if (index == 1) {
             // Update previous and current servo pivot pos for timer logic in next if statement
             previousServoPos = robot.leftDepositPivot.getPosition();
+
             robot.deposit.setPivot(state);
+
             currentServoPos = robot.leftDepositPivot.getPosition();
             timer.reset();
 
