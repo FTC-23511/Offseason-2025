@@ -6,7 +6,6 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
@@ -54,7 +53,7 @@ public class Burrito extends CommandOpMode {
                                 // Line 1
                                 new BezierLine(
                                         new Point(6.125, 78.000, Point.CARTESIAN),
-                                        new Point(37.500, 78.000, Point.CARTESIAN)
+                                        new Point(40.000, 78.000, Point.CARTESIAN)
                                 )
                         )
                         .setTangentHeadingInterpolation()
@@ -66,10 +65,10 @@ public class Burrito extends CommandOpMode {
                         .addPath(
                                 // Line 2
                                 new BezierCurve(
-                                        new Point(37.500, 78.000, Point.CARTESIAN),
+                                        new Point(40.000, 78.000, Point.CARTESIAN),
                                         new Point(22.000, 78.000, Point.CARTESIAN),
-                                        new Point(20.714, 119.293, Point.CARTESIAN),
-                                        new Point(34.939, 117.790, Point.CARTESIAN)
+                                        new Point(20.714, 122.000, Point.CARTESIAN),
+                                        new Point(34.939, 122.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(180)).build());
@@ -184,6 +183,7 @@ public class Burrito extends CommandOpMode {
                                 new FollowPathCommand(robot.follower, paths.get(0))
                         ),
                         attachSpecimen,
+                        new WaitCommand(250),
                         new MT2Relocalization(robot),
                         new ParallelCommandGroup(
                                 new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
@@ -195,11 +195,11 @@ public class Burrito extends CommandOpMode {
                         ),
                         new WaitUntilCommand(Intake::correctSampleDetected),
                         new RealTransfer(robot),
+                        new WaitCommand(250),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
                         new FollowPathCommand(robot.follower, paths.get(2)),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
                         new FollowPathCommand(robot.follower, paths.get(3))
-//                        retractSlides,
 //                        new SequentialCommandGroup(
 //                                new setExtendo(robot.deposit, robot.intake, 400),
 //                                new intakeSample(robot.intake, Intake.SampleColorTarget.ANY_COLOR)),
