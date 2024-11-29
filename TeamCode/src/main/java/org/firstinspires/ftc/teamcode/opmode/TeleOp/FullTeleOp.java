@@ -95,13 +95,7 @@ public class FullTeleOp extends CommandOpMode {
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
                 new UninterruptibleCommand(
-                        new SequentialCommandGroup(
-                            new ParallelCommandGroup(
-                                    new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
-                                    new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, true)
-                            ),
-                            new Transfer(robot)
-                        )
+                        new RealTransfer(robot)
                 )
         );
 

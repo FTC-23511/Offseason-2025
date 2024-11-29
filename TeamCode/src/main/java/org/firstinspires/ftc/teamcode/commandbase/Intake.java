@@ -13,6 +13,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.Transfer;
@@ -144,15 +145,11 @@ public class Intake extends SubsystemBase {
                         if (correctSampleDetected()) {
                             setActiveIntake(STOP);
                             if (opModeType.equals(OpModeType.TELEOP)) {
-                                CommandScheduler.getInstance().schedule(new UninterruptibleCommand(
-                                        new SequentialCommandGroup(
-                                                new ParallelCommandGroup(
-                                                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
-                                                        new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, true)
-                                                ),
-                                                new Transfer(robot)
+                                CommandScheduler.getInstance().schedule(
+                                        new UninterruptibleCommand(
+                                                new RealTransfer(robot)
                                         )
-                                ));
+                                );
                             }
                         } else if (!sampleColor.equals(NONE)) {
                             setActiveIntake(REVERSE);

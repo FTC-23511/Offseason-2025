@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.hardware;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -46,6 +47,8 @@ public class Robot {
     public List<LynxModule> allHubs;
 
     public LynxModule ControlHub;
+
+    public Limelight3A limelight;
 
     public Deposit deposit;
     public Intake intake;
@@ -114,6 +117,8 @@ public class Robot {
 
         colorSensor.enableLed(true);
 
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+
         // Bulk reading enabled!
         // AUTO mode will bulk read by default and will redo and clear cache once the exact same read is done again
         // MANUAL mode will bulk read once per loop but needs to be manually cleared
@@ -136,6 +141,10 @@ public class Robot {
             INTAKE_HOLD_SPEED = 0;
         } else {
             INTAKE_HOLD_SPEED = 0.15;
+
+            // Limelight stuff do not delete
+            limelight.pipelineSwitch(1);
+            limelight.start();
         }
     }
 

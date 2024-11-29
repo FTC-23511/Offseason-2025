@@ -27,7 +27,7 @@ public class SetRobot extends ParallelCommandGroup {
 //                    addRequirements(robot.intake, robot.deposit);
                 } else {
                     addCommands(
-                            new UndoTransfer(robot)
+                            new UninterruptibleCommand(new UndoTransfer(robot))
                     );
 //                    addRequirements(robot.intake, robot.deposit);
                 }
@@ -63,11 +63,12 @@ public class SetRobot extends ParallelCommandGroup {
 
 
     @Override
-    public void end(boolean interruptible) {
-        if (didItReallyHappen) {
+    public void end(boolean interrupted) {
+        if (didItReallyHappen && !interrupted) {
             Robot.robotState = robotState;
         }
-    }
 
+        super.end(interrupted);
+    }
 
 }
