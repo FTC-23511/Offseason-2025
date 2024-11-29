@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
@@ -19,12 +20,14 @@ public class SetIntake extends CommandBase {
     private double currentServoPos;
 
     private boolean waitForPivot = false;
+    private boolean waitForSample = false;
 
-    public SetIntake(Robot robot, Intake.IntakePivotState pivotState, Intake.IntakeMotorState motorState, double target) {
+    public SetIntake(Robot robot, Intake.IntakePivotState pivotState, Intake.IntakeMotorState motorState, double target, boolean waitForSample) {
         this.robot = robot;
         this.pivotState = pivotState;
         this.motorState = motorState;
         this.target = target;
+        this.waitForSample = waitForSample;
         this.timer = new ElapsedTime();
 
         addRequirements(robot.intake);
@@ -60,7 +63,22 @@ public class SetIntake extends CommandBase {
     // Command finishes when extendo has reached and pivot has had time to move
     @Override
     public boolean isFinished() {
-        return robot.intake.extendoReached && (timer.milliseconds() > Math.abs(previousServoPos - currentServoPos) * INTAKE_PIVOT_MOVEMENT_TIME);
+        if (waitForSample) {
+            switch (motorState) {
+                case FORWARD:
+                    return (robot.intake.extendoReached &&
+                            (timer.milliseconds() > Math.abs(previousServoPos - currentServoPos) * INTAKE_PIVOT_MOVEMENT_TIME))
+                            || (Intake.correctSampleDetected() && robot.colorSensor.getDistance(DistanceUnit.CM) > SAMPLE_DISTANCE_THRESHOLD);
+                case REVERSE:
+                    return (robot.intake.extendoReached &&
+                            (timer.milliseconds() > Math.abs(previousServoPos - currentServoPos) * INTAKE_PIVOT_MOVEMENT_TIME))
+                            || (Intake.sampleColor.equals(Intake.SampleColorDetected.NONE) && robot.colorSensor.getDistance(DistanceUnit.CM) < SAMPLE_DISTANCE_THRESHOLD);
+            }
+        }
+
+        return (robot.intake.extendoReached &&
+                (timer.milliseconds() > Math.abs(previousServoPos - currentServoPos) * INTAKE_PIVOT_MOVEMENT_TIME)
+        );
     }
 }
 

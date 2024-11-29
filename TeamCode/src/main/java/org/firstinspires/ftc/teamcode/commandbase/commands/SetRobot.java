@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.commandbase.commands;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
@@ -19,11 +18,11 @@ public class SetRobot extends ParallelCommandGroup {
         this.robotState = robotState;
 
         switch (robotState) {
-            case RESTING:
+            case MIDDLE_RESTING:
                 if (!Robot.robotState.equals(Robot.RobotState.TRANSFERRED)) {
                     addCommands(
                             new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
-                            new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0)
+                            new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, true)
                     );
 //                    addRequirements(robot.intake, robot.deposit);
                 } else {
@@ -37,7 +36,7 @@ public class SetRobot extends ParallelCommandGroup {
                 break;
 
             case TRANSFERRED:
-                if (Robot.robotState.equals(Robot.RobotState.RESTING)) {
+                if (Robot.robotState.equals(Robot.RobotState.MIDDLE_RESTING)) {
                     addCommands(
                             new Transfer(robot)
                     );

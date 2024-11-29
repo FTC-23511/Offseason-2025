@@ -31,24 +31,30 @@ public class SetDeposit extends CommandBase {
 
     @Override
     public void initialize() {
-        // Always close claw first in case of any arm movements that need to be done
-        robot.deposit.setClawOpen(false);
 
-        // Move slides to above pivot ready extension if target is below the pivot ready extension so that arm can move later
-        // If it is more than that just yolo it because slides are faster than the pivot so arm is ready to move instantly
-        if (target >= SLIDES_PIVOT_READY_EXTENSION) {
-            robot.deposit.setSlideTarget(target);
-
-            // Index for moving the arm
-            index = 1;
+        if (Deposit.depositPivotState.equals(this.state) && robot.deposit.target == this.target) {
+            index = 3;
         } else {
-            robot.deposit.setSlideTarget(SLIDES_PIVOT_READY_EXTENSION + 50);
+            // Always close claw first in case of any arm movements that need to be done
+            robot.deposit.setClawOpen(false);
 
-            // Index for wait for slide move up before move arm
-            index = 0;
+            // Move slides to above pivot ready extension if target is below the pivot ready extension so that arm can move later
+            // If it is more than that just yolo it because slides are faster than the pivot so arm is ready to move instantly
+            if (target >= SLIDES_PIVOT_READY_EXTENSION) {
+                robot.deposit.setSlideTarget(target);
+
+                // Index for moving the arm
+                index = 1;
+            } else {
+                robot.deposit.setSlideTarget(SLIDES_PIVOT_READY_EXTENSION + 50);
+
+                // Index for wait for slide move up before move arm
+                index = 0;
+            }
+
+            timer.reset();
         }
 
-        timer.reset();
     }
 
     @Override

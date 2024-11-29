@@ -142,10 +142,12 @@ public class Robot {
     public void initHasMovement() {
         deposit.init();
         intake.init();
+
+        robotState = RobotState.MIDDLE_RESTING;
     }
 
     public enum RobotState {
-        RESTING,
+        MIDDLE_RESTING,
         TRANSFERRED,
         SCORING,
         INTAKING,

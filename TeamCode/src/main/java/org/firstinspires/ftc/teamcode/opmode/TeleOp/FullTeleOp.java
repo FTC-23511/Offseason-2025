@@ -1,22 +1,25 @@
 package org.firstinspires.ftc.teamcode.opmode.TeleOp;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
+import static org.firstinspires.ftc.teamcode.commandbase.Deposit.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.commandbase.commands.*;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
-import org.firstinspires.ftc.teamcode.commandbase.commands.*;
 
 @TeleOp
 public class FullTeleOp extends CommandOpMode {
@@ -52,25 +55,28 @@ public class FullTeleOp extends CommandOpMode {
 
         // Driver Gamepad controls
         driver.getGamepadButton(GamepadKeys.Button.B).whenPressed(
-                () -> robot.intake.toggleActiveIntake(SampleColorTarget.ANY_COLOR));
+                new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ANY_COLOR)));
 
         driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ALLIANCE_ONLY)));
 
         driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
-                new InstantCommand(() -> robot.follower.setPose(new Pose(0, 0, 0))));
+                new InstantCommand(() -> robot.follower.setPose(new Pose(robot.follower.getPose().getX(), robot.follower.getPose().getY(), 0))));
 
-//        driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
-//                new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-//                        new setExtendo(robot.deposit, robot.intake, MAX_EXTENDO_EXTENSION))));
+        driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
+                new InstantCommand(() -> robot.intake.setExtendoTarget(MAX_EXTENDO_EXTENSION)));
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
-                        new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, ENDGAME_ASCENT_HEIGHT, false))));
+                new UninterruptibleCommand(
+                        new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, ENDGAME_ASCENT_HEIGHT, false)
+                )
+        );
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
-                        new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, 0, false))));
+                new UninterruptibleCommand(
+                        new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, 0, false)
+                )
+        );
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
@@ -78,13 +84,26 @@ public class FullTeleOp extends CommandOpMode {
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)));
 
-//        driver.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
-//                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
-//                        new extendoSampleEject(robot.deposit, robot.intake))));
+        driver.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
+                new UninterruptibleCommand(
+                        new SequentialCommandGroup(
+                                new UndoTransfer(robot),
+                                new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.REVERSE, MAX_EXTENDO_EXTENSION, true)
+                        )
+                )
+        );
 
-//        driver.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
-//                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
-//                        new realTransfer(robot.deposit, robot.intake))));
+        driver.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
+                new UninterruptibleCommand(
+                        new SequentialCommandGroup(
+                            new ParallelCommandGroup(
+                                    new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
+                                    new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, true)
+                            ),
+                            new Transfer(robot)
+                        )
+                )
+        );
 
         // Operator Gamepad controls
         operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(
@@ -92,19 +111,19 @@ public class FullTeleOp extends CommandOpMode {
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false))));
+                        new SetDeposit(robot, DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false))));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new SetDeposit(robot, Deposit.DepositPivotState.SCORING, LOW_BUCKET_HEIGHT, false))));
+                        new SetDeposit(robot, DepositPivotState.SCORING, LOW_BUCKET_HEIGHT, false))));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false))));
+                        new SetDeposit(robot, DepositPivotState.SCORING, HIGH_SPECIMEN_HEIGHT, false))));
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(true,
-                        new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_INTAKE, 0, true))));
+                        new SetDeposit(robot, DepositPivotState.SPECIMEN_INTAKE, 0, true))));
 
         operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
@@ -112,7 +131,7 @@ public class FullTeleOp extends CommandOpMode {
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(false,
-                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true))));
+                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, 0, true))));
 
         telemetry.addData("intakeMotorState", intakeMotorState);
 
@@ -160,8 +179,8 @@ public class FullTeleOp extends CommandOpMode {
         robot.follower.update();
 
         if (gamepad1.right_trigger > 0.01 &&
-            !Deposit.depositPivotState.equals(Deposit.DepositPivotState.TRANSFER) &&
-            robot.extensionEncoder.getPosition() <= (MAX_EXTENDO_EXTENSION - 5)) {
+                !depositPivotState.equals(Deposit.DepositPivotState.TRANSFER) &&
+                robot.extensionEncoder.getPosition() <= (MAX_EXTENDO_EXTENSION - 5)) {
 
             robot.intake.target += 5;
         }
@@ -170,10 +189,19 @@ public class FullTeleOp extends CommandOpMode {
         super.run();
 
         telemetry.addData("timer", timer.milliseconds());
-        telemetry.addData("speedMultiplier", speedMultiplier);
-        telemetry.addData("getHeadingOffset()", robot.follower.getHeadingOffset());
-        telemetry.addData("Deg: getHeading()", Math.toDegrees(robot.follower.getPose().getHeading()));
-        telemetry.addData("Rad: getHeading()", (robot.follower.getPose().getHeading()));
+        telemetry.addData("extendoReached", robot.intake.extendoReached);
+        telemetry.addData("slidesRetracted", robot.deposit.slidesRetracted);
+        telemetry.addData("slidesReached", robot.deposit.slidesReached);
+        telemetry.addData("robotState", Robot.robotState);
+
+        telemetry.addData("intakePivotState", intakePivotState);
+        telemetry.addData("depositPivotState", depositPivotState);
+
+        telemetry.addData("UndoTransfer", CommandScheduler.getInstance().isScheduled(new UndoTransfer(robot)));
+        telemetry.addData("liftTop.getPower()", robot.liftTop.getPower());
+        telemetry.addData("liftBottom.getPower()", robot.liftBottom.getPower());
+
+        telemetry.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());
 
         telemetry.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();

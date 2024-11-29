@@ -6,10 +6,17 @@ import static org.firstinspires.ftc.teamcode.commandbase.Intake.SampleColorDetec
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.SampleColorTarget.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState.*;
 
+import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
+import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
+import org.firstinspires.ftc.teamcode.commandbase.commands.Transfer;
+import org.firstinspires.ftc.teamcode.commandbase.commands.UninterruptibleCommand;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 public class Intake extends SubsystemBase {
@@ -65,6 +72,8 @@ public class Intake extends SubsystemBase {
         // Just make sure it gets to fully retracted if target is 0
         if (target == 0) {
             extendoPower -= 0.2;
+        } else {
+            extendoPower += 0.2;
         }
 
         if ((extendoReached && target > 0) || (robot.extensionEncoder.getPosition() <= 3 && target == 0)) {
@@ -134,9 +143,17 @@ public class Intake extends SubsystemBase {
                         sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
                         if (correctSampleDetected()) {
                             setActiveIntake(STOP);
-//                            if (opModeType.equals(OpModeType.TELEOP)) {
-//                                CommandScheduler.getInstance().schedule(new realTransfer(robot.deposit, robot.intake));
-//                            }
+                            if (opModeType.equals(OpModeType.TELEOP)) {
+                                CommandScheduler.getInstance().schedule(new UninterruptibleCommand(
+                                        new SequentialCommandGroup(
+                                                new ParallelCommandGroup(
+                                                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
+                                                        new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, true)
+                                                ),
+                                                new Transfer(robot)
+                                        )
+                                ));
+                            }
                         } else if (!sampleColor.equals(NONE)) {
                             setActiveIntake(REVERSE);
                         } else {
