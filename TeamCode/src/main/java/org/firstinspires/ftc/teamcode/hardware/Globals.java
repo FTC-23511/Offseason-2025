@@ -52,7 +52,7 @@ public class Globals {
     public static double AUTO_EXTENDO_EXTENSION;
 
     // Deposit Pivot
-    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.395;
+    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.385;
     public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.58;
     public static double DEPOSIT_PIVOT_SCORING_POS = 1.0;
     public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.78;
@@ -71,9 +71,9 @@ public class Globals {
     public static double MAX_SLIDES_EXTENSION = 2050;
     public static double SLIDES_PIVOT_READY_EXTENSION = 200;
     public static double LOW_BUCKET_HEIGHT = 1000;
-    public static double HIGH_BUCKET_HEIGHT = 2050;
+    public static double HIGH_BUCKET_HEIGHT = 2020;
     public static double HIGH_SPECIMEN_HEIGHT = 900;
     public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1350;
-    public static double AUTO_ASCENT_HEIGHT = 700;
+    public static double AUTO_ASCENT_HEIGHT = 800;
     public static double ENDGAME_ASCENT_HEIGHT = 1150;
 }

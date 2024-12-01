@@ -34,7 +34,7 @@ public class Deposit extends SubsystemBase {
     public static DepositPivotState depositPivotState;
 
     public void init() {
-        slidePIDF.setTolerance(10, 10);
+        slidePIDF.setTolerance(12, 10);
         setSlideTarget(0);
 
         // OpMode specific initializations
@@ -59,14 +59,14 @@ public class Deposit extends SubsystemBase {
 
     public void autoUpdateSlides() {
         double power = slidePIDF.calculate(robot.liftEncoder.getPosition(), target);
-        slidesReached = slidePIDF.atSetPoint();
+        slidesReached = slidePIDF.atSetPoint() || (robot.liftEncoder.getPosition() >= target && target == HIGH_BUCKET_HEIGHT);
         slidesRetracted = (target <= 0) && slidesReached;
 
         // Just make sure it gets to fully retracted if target is 0
         if (target == 0 && !slidesReached) {
             power -= 0.1;
-        } else if (target >= MAX_SLIDES_EXTENSION && !slidesReached) {
-            power += 0.1;
+        } else if (target >= HIGH_BUCKET_HEIGHT && !slidesReached) {
+            power += 0.6;
         }
 
         if (slidesRetracted) {

@@ -67,7 +67,7 @@ public class Intake extends SubsystemBase {
 
     public void autoUpdateExtendo() {
         double extendoPower = extendoPIDF.calculate(robot.extensionEncoder.getPosition(), this.target);
-        extendoReached = extendoPIDF.atSetPoint();
+        extendoReached = (extendoPIDF.atSetPoint() && target > 0) || (robot.extensionEncoder.getPosition() <= 3 && target == 0);
         extendoRetracted = (target <= 0) && extendoReached;
 
         // Just make sure it gets to fully retracted if target is 0
@@ -77,7 +77,7 @@ public class Intake extends SubsystemBase {
             extendoPower += 0.2;
         }
 
-        if ((extendoReached && target > 0) || (robot.extensionEncoder.getPosition() <= 3 && target == 0)) {
+        if (extendoReached) {
             robot.extension.setPower(0);
         } else {
             robot.extension.setPower(extendoPower);
@@ -156,6 +156,8 @@ public class Intake extends SubsystemBase {
                         } else {
                             setActiveIntake(FORWARD);
                         }
+                    } else {
+                        sampleColor = NONE;
                     }
                     break;
                 case REVERSE:
