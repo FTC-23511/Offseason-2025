@@ -140,7 +140,7 @@ public class Intake extends SubsystemBase {
         if (intakePivotState.equals(INTAKE)) {
             switch (intakeMotorState) {
                 case FORWARD:
-                    if (robot.colorSensor.getDistance(DistanceUnit.CM) < SAMPLE_DISTANCE_THRESHOLD) {
+                    if (hasSample()) {
                         sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
                         if (correctSampleDetected()) {
                             setActiveIntake(STOP);
@@ -161,7 +161,7 @@ public class Intake extends SubsystemBase {
                     }
                     break;
                 case REVERSE:
-                    if (robot.colorSensor.getDistance(DistanceUnit.CM) > SAMPLE_DISTANCE_THRESHOLD) {
+                    if (!hasSample()) {
                         setActiveIntake(FORWARD);
                     }
                     break;
@@ -205,6 +205,10 @@ public class Intake extends SubsystemBase {
                 break;
         }
         return false;
+    }
+
+    public boolean hasSample() {
+        return robot.colorSensor.getDistance(DistanceUnit.CM) < SAMPLE_DISTANCE_THRESHOLD;
     }
 
     @Override
