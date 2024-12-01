@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.commandbase.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
@@ -15,14 +16,17 @@ public class MT2Relocalization extends CommandBase {
     private int successfulReads = 0;
     private final int neededReads;
     private final List<Pose> reads = new ArrayList<>();
+    ElapsedTime timer;
 
     public MT2Relocalization(Robot robot, int neededReads) {
         this.robot = robot;
         this.neededReads = neededReads;
+        this.timer = new ElapsedTime();
     }
 
     @Override
     public void initialize() {
+        timer.reset();
         robot.limelight.updateRobotOrientation(robot.follower.getPose().getHeading());
         LLResult result = robot.limelight.getLatestResult();
 
@@ -42,7 +46,7 @@ public class MT2Relocalization extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return successfulReads >= neededReads;
+        return (successfulReads >= neededReads) || timer.milliseconds() >= 400;
     }
 
     @Override

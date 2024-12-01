@@ -76,4 +76,7 @@ public class Globals {
     public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1350;
     public static double AUTO_ASCENT_HEIGHT = 800;
     public static double ENDGAME_ASCENT_HEIGHT = 1150;
+
+    // command timeout
+    public final static int MAX_COMMAND_RUN_TIME_MS = 1000;
 }

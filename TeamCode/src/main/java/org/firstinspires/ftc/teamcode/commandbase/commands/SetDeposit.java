@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.commandbase.commands;
 
-import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.DEPOSIT_PIVOT_MOVEMENT_TIME;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.MAX_COMMAND_RUN_TIME_MS;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.SLIDES_PIVOT_READY_EXTENSION;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
@@ -100,7 +101,7 @@ public class SetDeposit extends CommandBase {
     // Command finishes when slides have reached and all arm movements are finished
     @Override
     public boolean isFinished() {
-        return robot.deposit.slidesReached && index == 3;
+        return (robot.deposit.slidesReached && index == 3) || timer.milliseconds() >= MAX_COMMAND_RUN_TIME_MS;
     }
 }
 
