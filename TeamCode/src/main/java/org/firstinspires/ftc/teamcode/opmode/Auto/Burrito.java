@@ -124,7 +124,7 @@ public class Burrito extends CommandOpMode {
                                         new Point(23.709, 132.520, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(-155)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(-158)).build());
 
         paths.add(
                 // Drive to third sample scoring
@@ -136,7 +136,7 @@ public class Burrito extends CommandOpMode {
                                         new Point(13.974, 130.776, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(-155), Math.toRadians(135)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(-158), Math.toRadians(135)).build());
 
         paths.add(
                 // Park/ascent level 1
@@ -193,17 +193,18 @@ public class Burrito extends CommandOpMode {
                         ),
                         attachSpecimen,
                         new WaitCommand(250),
+                        new InstantCommand(() -> robot.follower.setMaxPower(0.7)),
 //                        new MT2Relocalization(robot),
 
                         // Sample 1
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
-                                        new WaitCommand(500),
+                                        new WaitCommand(400),
                                         new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true)
                                 ),
                                 new FollowPathCommand(robot.follower, paths.get(1)),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(1700),
+                                        new WaitCommand(1100),
                                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true)
                                 )
                         ),
@@ -222,7 +223,8 @@ public class Burrito extends CommandOpMode {
                                         new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true)
                                 )
                         ),
-                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 155, true),
+                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true),
+                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 220, true),
                         new WaitUntilCommand(Intake::correctSampleDetected),
                         new RealTransfer(robot),
                         new WaitCommand(250),
@@ -234,11 +236,12 @@ public class Burrito extends CommandOpMode {
                         new ParallelCommandGroup(
                                 new FollowPathCommand(robot.follower, paths.get(5)),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(500),
+                                        new WaitCommand(300),
                                         new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true)
                                 )
                         ),
-                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 195, true),
+                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true),
+                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 300 , true),
                         new WaitUntilCommand(Intake::correctSampleDetected),
                         new RealTransfer(robot),
                         new WaitCommand(250),
@@ -250,7 +253,7 @@ public class Burrito extends CommandOpMode {
                         new ParallelCommandGroup(
                                 new FollowPathCommand(robot.follower, paths.get(7)),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(500),
+                                        new WaitCommand(300),
                                         new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true)
                                 )
                         ),

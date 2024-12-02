@@ -68,11 +68,11 @@ public class SetIntake extends CommandBase {
                 case FORWARD:
                     return (robot.intake.extendoReached &&
                             (timer.milliseconds() > Math.abs(previousServoPos - currentServoPos) * INTAKE_PIVOT_MOVEMENT_TIME))
-                            || (Intake.correctSampleDetected() && robot.colorSensor.getDistance(DistanceUnit.CM) > SAMPLE_DISTANCE_THRESHOLD);
+                            || (Intake.correctSampleDetected() && robot.intake.hasSample());
                 case REVERSE:
                     return (robot.intake.extendoReached &&
                             (timer.milliseconds() > Math.abs(previousServoPos - currentServoPos) * INTAKE_PIVOT_MOVEMENT_TIME))
-                            || (Intake.sampleColor.equals(Intake.SampleColorDetected.NONE) && robot.colorSensor.getDistance(DistanceUnit.CM) < SAMPLE_DISTANCE_THRESHOLD);
+                            || (Intake.sampleColor.equals(Intake.SampleColorDetected.NONE) && !robot.intake.hasSample());
             }
         }
 

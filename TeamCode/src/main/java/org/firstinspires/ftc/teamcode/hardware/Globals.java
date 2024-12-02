@@ -52,7 +52,7 @@ public class Globals {
     public static double AUTO_EXTENDO_EXTENSION;
 
     // Deposit Pivot
-    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.385;
+    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.38;
     public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.58;
     public static double DEPOSIT_PIVOT_SCORING_POS = 1.0;
     public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.78;
@@ -64,7 +64,7 @@ public class Globals {
     public static double INTAKE_PIVOT_MOVEMENT_TIME = 828 + 200; // 200 milliseconds of buffer
 
     // Deposit Claw
-    public static double DEPOSIT_CLAW_OPEN_POS = 0.625;
+    public static double DEPOSIT_CLAW_OPEN_POS = 0.65;
     public static double DEPOSIT_CLAW_CLOSE_POS = 0.4;
 
     // Deposit Slides
@@ -74,9 +74,9 @@ public class Globals {
     public static double HIGH_BUCKET_HEIGHT = 2020;
     public static double HIGH_SPECIMEN_HEIGHT = 900;
     public static double HIGH_SPECIMEN_ATTACH_HEIGHT = 1350;
-    public static double AUTO_ASCENT_HEIGHT = 800;
+    public static double AUTO_ASCENT_HEIGHT = 900;
     public static double ENDGAME_ASCENT_HEIGHT = 1150;
 
     // command timeout
-    public final static int MAX_COMMAND_RUN_TIME_MS = 1000;
+    public final static int MAX_COMMAND_RUN_TIME_MS = 3000;
 }

@@ -101,7 +101,7 @@ public class SetDeposit extends CommandBase {
     // Command finishes when slides have reached and all arm movements are finished
     @Override
     public boolean isFinished() {
-        return (robot.deposit.slidesReached && index == 3) || timer.milliseconds() >= MAX_COMMAND_RUN_TIME_MS;
+        return robot.deposit.slidesReached && index == 3;
     }
 }
 

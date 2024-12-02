@@ -69,7 +69,7 @@ public class UndoTransfer extends CommandBase {
     // Command finishes when all execute commands have finished (index == 3), and slides have retracted
     @Override
     public boolean isFinished() {
-        return (robot.deposit.slidesReached && index == 3) || timer.milliseconds() >= MAX_COMMAND_RUN_TIME_MS;
+        return robot.deposit.slidesReached && index == 3;
     }
 }
 

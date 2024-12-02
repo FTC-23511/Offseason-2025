@@ -8,10 +8,8 @@ import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 public class RealTransfer extends SequentialCommandGroup {
-    private final Robot robot;
 
     public RealTransfer(Robot robot) {
-        this.robot = robot;
         addCommands(new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
