@@ -44,8 +44,8 @@ public class Globals {
     public static final double SAMPLE_DISTANCE_THRESHOLD = 2.15;
 
     // Intake Pivot
-    public static double INTAKE_PIVOT_TRANSFER_POS = 0.21;
-    public static double INTAKE_PIVOT_INTAKE_POS = 0.8;
+    public static double INTAKE_PIVOT_TRANSFER_POS = 0.25;
+    public static double INTAKE_PIVOT_INTAKE_POS = 0.835;
 
     // Intake Extendo
     public static double MAX_EXTENDO_EXTENSION = 480;

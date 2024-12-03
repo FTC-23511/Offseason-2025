@@ -196,14 +196,18 @@ public class FullTeleOp extends CommandOpMode {
         telemetry.addData("slidesReached", robot.deposit.slidesReached);
         telemetry.addData("robotState", Robot.robotState);
 
-        telemetry.addData("intakePivotState", intakePivotState);
-        telemetry.addData("depositPivotState", depositPivotState);
-
-        telemetry.addData("UndoTransfer", CommandScheduler.getInstance().isScheduled(new UndoTransfer(robot)));
         telemetry.addData("liftTop.getPower()", robot.liftTop.getPower());
         telemetry.addData("liftBottom.getPower()", robot.liftBottom.getPower());
+        telemetry.addData("extension.getPower()", robot.extension.getPower());
 
+        telemetry.addData("extensionEncoder.getPosition()", robot.extensionEncoder.getPosition());
         telemetry.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());
+
+        telemetry.addData("slides target", robot.deposit.target);
+        telemetry.addData("extendo target", robot.intake.target);
+
+        telemetry.addData("intakePivotState", intakePivotState);
+        telemetry.addData("depositPivotState", depositPivotState);
 
         telemetry.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();

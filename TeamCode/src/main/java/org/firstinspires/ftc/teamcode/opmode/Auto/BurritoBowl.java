@@ -1,10 +1,15 @@
 package org.firstinspires.ftc.teamcode.opmode.Auto;
 
-import java.util.ArrayList;
-
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.depositPivotState;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.intakePivotState;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.AUTO_ASCENT_HEIGHT;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.DepositInit;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_BUCKET_HEIGHT;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_SPECIMEN_ATTACH_HEIGHT;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_SPECIMEN_HEIGHT;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.depositInit;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
@@ -18,9 +23,13 @@ import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
+import org.firstinspires.ftc.teamcode.commandbase.commands.FollowPathCommand;
+import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
+import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
+import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
+import org.firstinspires.ftc.teamcode.commandbase.commands.UndoTransfer;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierCurve;
@@ -29,12 +38,13 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.DashboardPoseTracker;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Drawing;
-import org.firstinspires.ftc.teamcode.commandbase.commands.*;
+
+import java.util.ArrayList;
 
 @Config
-@Autonomous(name = "Burrito (1spec+3sample)", group = "Chipotle Menu", preselectTeleOp = "FullTeleOp")
+@Autonomous(name = "Burrito Bowl (0spec+4sample)", group = "Chipotle Menu", preselectTeleOp = "FullTeleOp")
 
-public class Burrito extends CommandOpMode {
+public class BurritoBowl extends CommandOpMode {
     private final Robot robot = Robot.getInstance();
     private ElapsedTime timer;
 
@@ -48,37 +58,36 @@ public class Burrito extends CommandOpMode {
         // NOTE: .setTangentHeadingInterpolation() doesn't exist its .setTangentHeadingInterpolation() so just fix that whenever you paste
 
         // Starting Pose (update this as well):
-        robot.follower.setStartingPose(new Pose(6.125, 78, Math.toRadians(180)));
-
-        paths.add(
-                // Drive to first specimen scoring
-                robot.follower.pathBuilder()
-                        .addPath(
-                                // Line 1
-                                new BezierLine(
-                                        new Point(6.125, 78.000, Point.CARTESIAN),
-                                        new Point(40.000, 78.000, Point.CARTESIAN)
-                                )
-                        )
-                        .setTangentHeadingInterpolation()
-                        .setReversed(true).build());
-
-        paths.add(
-                // Drive to first sample intake
-                robot.follower.pathBuilder()
-                        .addPath(
-                                // Line 2
-                                new BezierCurve(
-                                        new Point(40.000, 78.000, Point.CARTESIAN),
-                                        new Point(22.000, 78.000, Point.CARTESIAN),
-                                        new Point(20.714, 122.000, Point.CARTESIAN),
-                                        new Point(34.939, 122.000, Point.CARTESIAN)
-                                )
-                        )
-                        .setConstantHeadingInterpolation(Math.toRadians(180)).build());
+        robot.follower.setStartingPose(new Pose(6.125, 101.75, Math.toRadians(180)));
 
         paths.add(
                 // Drive to first sample scoring
+                robot.follower.pathBuilder()
+                        .addPath(
+                                // Line 1
+                                new BezierCurve(
+                                        new Point(6.125, 101.750, Point.CARTESIAN),
+                                        new Point(13.726, 104.818, Point.CARTESIAN),
+                                        new Point(12.977, 129.525, Point.CARTESIAN)
+                                )
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(135))
+                        .setReversed(true).build());
+
+        paths.add(
+                // Drive to second sample intake
+                robot.follower.pathBuilder()
+                        .addPath(
+                                // Line 2
+                                new BezierLine(
+                                        new Point(12.977, 129.525, Point.CARTESIAN),
+                                        new Point(34.939, 120.790, Point.CARTESIAN)
+                                )
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(180)).build());
+
+        paths.add(
+                // Drive to second sample scoring
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 3
@@ -91,7 +100,7 @@ public class Burrito extends CommandOpMode {
                         .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(135)).build());
 
         paths.add(
-                // Drive to second sample intake
+                // Drive to third sample intake
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 4
@@ -103,7 +112,7 @@ public class Burrito extends CommandOpMode {
                         .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(180)).build());
 
         paths.add(
-                // Drive to second sample scoring
+                // Drive to third sample scoring
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 5
@@ -115,7 +124,7 @@ public class Burrito extends CommandOpMode {
                         .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(135)).build());
 
         paths.add(
-                // Drive to third sample intake
+                // Drive to fourth sample intake
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 6
@@ -127,7 +136,7 @@ public class Burrito extends CommandOpMode {
                         .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(-158)).build());
 
         paths.add(
-                // Drive to third sample scoring
+                // Drive to fourth sample scoring
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 7
@@ -144,7 +153,7 @@ public class Burrito extends CommandOpMode {
                         .addPath(
                                 // Line 8
                                 new BezierCurve(
-                                        new Point(14.974, 128.776, Point.CARTESIAN),
+                                        new Point(13.974, 130.776, Point.CARTESIAN),
                                         new Point(63.706, 117.899, Point.CARTESIAN),
                                         new Point(62.157, 94.894, Point.CARTESIAN)
                                 )
@@ -154,7 +163,7 @@ public class Burrito extends CommandOpMode {
     @Override
     public void initialize() {
         opModeType = OpModeType.AUTO;
-        depositInit = DepositInit.BUCKET_SCORING;
+        depositInit = DepositInit.SPECIMEN_SCORING;
 
         timer = new ElapsedTime();
         timer.reset();
@@ -169,7 +178,7 @@ public class Burrito extends CommandOpMode {
 
         robot.initHasMovement();
 
-        robot.follower.setMaxPower(0.6);
+        robot.follower.setMaxPower(0.5);
 
         generatePath();
 
@@ -186,20 +195,26 @@ public class Burrito extends CommandOpMode {
                 new RunCommand(() -> robot.follower.update()),
 
                 new SequentialCommandGroup(
-                        // Sample 1
+                        // Specimen 1
                         new ParallelCommandGroup(
-                                new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_BUCKET_HEIGHT, false),
+                                new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false),
                                 new FollowPathCommand(robot.follower, paths.get(0))
                         ),
-                        new InstantCommand(() -> robot.deposit.setClawOpen(true)),
+                        attachSpecimen,
+                        new WaitCommand(250),
+                        new InstantCommand(() -> robot.follower.setMaxPower(0.7)),
+//                        new MT2Relocalization(robot),
 
-                        // Sample 2
+                        // Sample 1
                         new ParallelCommandGroup(
-                                new FollowPathCommand(robot.follower, paths.get(1)),
-                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(300),
+                                        new WaitCommand(400),
                                         new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true)
+                                ),
+                                new FollowPathCommand(robot.follower, paths.get(1)),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(1100),
+                                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true)
                                 )
                         ),
                         new WaitUntilCommand(Intake::correctSampleDetected),
@@ -209,7 +224,7 @@ public class Burrito extends CommandOpMode {
                         new FollowPathCommand(robot.follower, paths.get(2)),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
 
-                        // Sample 3
+                        // Sample 2
                         new ParallelCommandGroup(
                                 new FollowPathCommand(robot.follower, paths.get(3)),
                                 new SequentialCommandGroup(
@@ -226,7 +241,7 @@ public class Burrito extends CommandOpMode {
                         new FollowPathCommand(robot.follower, paths.get(4)),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
 
-                        // Sample 4
+                        // Sample 3
                         new ParallelCommandGroup(
                                 new FollowPathCommand(robot.follower, paths.get(5)),
                                 new SequentialCommandGroup(
