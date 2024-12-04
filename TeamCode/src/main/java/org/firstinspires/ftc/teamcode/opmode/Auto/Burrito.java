@@ -154,7 +154,7 @@ public class Burrito extends CommandOpMode {
     @Override
     public void initialize() {
         opModeType = OpModeType.AUTO;
-        depositInit = DepositInit.BUCKET_SCORING;
+        depositInit = DepositInit.SPECIMEN_SCORING;
 
         timer = new ElapsedTime();
         timer.reset();
@@ -169,7 +169,7 @@ public class Burrito extends CommandOpMode {
 
         robot.initHasMovement();
 
-        robot.follower.setMaxPower(0.6);
+        robot.follower.setMaxPower(0.45);
 
         generatePath();
 
@@ -186,20 +186,26 @@ public class Burrito extends CommandOpMode {
                 new RunCommand(() -> robot.follower.update()),
 
                 new SequentialCommandGroup(
-                        // Sample 1
+                        // Specimen 1
                         new ParallelCommandGroup(
-                                new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_BUCKET_HEIGHT, false),
+                                new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false),
                                 new FollowPathCommand(robot.follower, paths.get(0))
                         ),
-                        new InstantCommand(() -> robot.deposit.setClawOpen(true)),
+                        attachSpecimen,
+                        new WaitCommand(250),
+                        new InstantCommand(() -> robot.follower.setMaxPower(0.7)),
+//                        new MT2Relocalization(robot),
 
-                        // Sample 2
+                        // Sample 1
                         new ParallelCommandGroup(
-                                new FollowPathCommand(robot.follower, paths.get(1)),
-                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(300),
+                                        new WaitCommand(400),
                                         new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true)
+                                ),
+                                new FollowPathCommand(robot.follower, paths.get(1)),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(1100),
+                                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true)
                                 )
                         ),
                         new WaitUntilCommand(Intake::correctSampleDetected),
@@ -209,7 +215,7 @@ public class Burrito extends CommandOpMode {
                         new FollowPathCommand(robot.follower, paths.get(2)),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
 
-                        // Sample 3
+                        // Sample 2
                         new ParallelCommandGroup(
                                 new FollowPathCommand(robot.follower, paths.get(3)),
                                 new SequentialCommandGroup(
@@ -226,7 +232,7 @@ public class Burrito extends CommandOpMode {
                         new FollowPathCommand(robot.follower, paths.get(4)),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
 
-                        // Sample 4
+                        // Sample 3
                         new ParallelCommandGroup(
                                 new FollowPathCommand(robot.follower, paths.get(5)),
                                 new SequentialCommandGroup(

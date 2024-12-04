@@ -58,7 +58,7 @@ public class BurritoBowl extends CommandOpMode {
         // NOTE: .setTangentHeadingInterpolation() doesn't exist its .setTangentHeadingInterpolation() so just fix that whenever you paste
 
         // Starting Pose (update this as well):
-        robot.follower.setStartingPose(new Pose(6.125, 101.75, Math.toRadians(180)));
+        robot.follower.setStartingPose(new Pose(6.125, 102.125, Math.toRadians(90)));
 
         paths.add(
                 // Drive to first sample scoring
@@ -66,13 +66,12 @@ public class BurritoBowl extends CommandOpMode {
                         .addPath(
                                 // Line 1
                                 new BezierCurve(
-                                        new Point(6.125, 101.750, Point.CARTESIAN),
+                                        new Point(6.125, 102.125, Point.CARTESIAN),
                                         new Point(13.726, 104.818, Point.CARTESIAN),
                                         new Point(12.977, 129.525, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(135))
-                        .setReversed(true).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(135)).build());
 
         paths.add(
                 // Drive to second sample intake
@@ -81,7 +80,7 @@ public class BurritoBowl extends CommandOpMode {
                                 // Line 2
                                 new BezierLine(
                                         new Point(12.977, 129.525, Point.CARTESIAN),
-                                        new Point(34.939, 120.790, Point.CARTESIAN)
+                                        new Point(34.939, 122.750, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(180)).build());
@@ -92,8 +91,8 @@ public class BurritoBowl extends CommandOpMode {
                         .addPath(
                                 // Line 3
                                 new BezierCurve(
-                                        new Point(34.939, 120.790, Point.CARTESIAN),
-                                        new Point(15.972, 123.785, Point.CARTESIAN),
+                                        new Point(34.939, 122.750, Point.CARTESIAN),
+                                        new Point(15.000, 120.00, Point.CARTESIAN),
                                         new Point(12.977, 128.776, Point.CARTESIAN)
                                 )
                         )
@@ -155,7 +154,7 @@ public class BurritoBowl extends CommandOpMode {
                                 new BezierCurve(
                                         new Point(13.974, 130.776, Point.CARTESIAN),
                                         new Point(63.706, 117.899, Point.CARTESIAN),
-                                        new Point(62.157, 94.894, Point.CARTESIAN)
+                                        new Point(62.157, 93.500 , Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(-90)).build());
@@ -163,7 +162,7 @@ public class BurritoBowl extends CommandOpMode {
     @Override
     public void initialize() {
         opModeType = OpModeType.AUTO;
-        depositInit = DepositInit.SPECIMEN_SCORING;
+        depositInit = DepositInit.BUCKET_SCORING;
 
         timer = new ElapsedTime();
         timer.reset();
@@ -178,43 +177,32 @@ public class BurritoBowl extends CommandOpMode {
 
         robot.initHasMovement();
 
-        robot.follower.setMaxPower(0.5);
+        robot.follower.setMaxPower(0.6);
 
         generatePath();
-
-        ParallelCommandGroup attachSpecimen = new ParallelCommandGroup(
-                new SetDeposit(robot, Deposit.depositPivotState, HIGH_SPECIMEN_ATTACH_HEIGHT, false),
-                new SequentialCommandGroup(
-                        new WaitCommand(300),
-                        new InstantCommand(() -> robot.deposit.setClawOpen(true))
-                )
-        );
 
         schedule(
                 // DO NOT REMOVE: updates follower to follow path
                 new RunCommand(() -> robot.follower.update()),
 
                 new SequentialCommandGroup(
-                        // Specimen 1
-                        new ParallelCommandGroup(
-                                new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false),
-                                new FollowPathCommand(robot.follower, paths.get(0))
-                        ),
-                        attachSpecimen,
-                        new WaitCommand(250),
-                        new InstantCommand(() -> robot.follower.setMaxPower(0.7)),
-//                        new MT2Relocalization(robot),
-
                         // Sample 1
                         new ParallelCommandGroup(
+                                new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(400),
-                                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true)
-                                ),
+                                        new WaitCommand(500),
+                                        new FollowPathCommand(robot.follower, paths.get(0))
+                                )
+                        ),
+                        new InstantCommand(() -> robot.deposit.setClawOpen(true)),
+
+                        // Sample 2
+                        new ParallelCommandGroup(
                                 new FollowPathCommand(robot.follower, paths.get(1)),
+                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(1100),
-                                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true)
+                                        new WaitCommand(300),
+                                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true)
                                 )
                         ),
                         new WaitUntilCommand(Intake::correctSampleDetected),
@@ -224,7 +212,7 @@ public class BurritoBowl extends CommandOpMode {
                         new FollowPathCommand(robot.follower, paths.get(2)),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
 
-                        // Sample 2
+                        // Sample 3
                         new ParallelCommandGroup(
                                 new FollowPathCommand(robot.follower, paths.get(3)),
                                 new SequentialCommandGroup(
@@ -241,7 +229,7 @@ public class BurritoBowl extends CommandOpMode {
                         new FollowPathCommand(robot.follower, paths.get(4)),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
 
-                        // Sample 3
+                        // Sample 4
                         new ParallelCommandGroup(
                                 new FollowPathCommand(robot.follower, paths.get(5)),
                                 new SequentialCommandGroup(
@@ -263,13 +251,15 @@ public class BurritoBowl extends CommandOpMode {
                                 new FollowPathCommand(robot.follower, paths.get(7)),
                                 new SequentialCommandGroup(
                                         new WaitCommand(300),
-                                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true)
+                                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
+                                        new InstantCommand(() -> robot.follower.setMaxPower(0.4))
                                 )
                         ),
 
                         new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, AUTO_ASCENT_HEIGHT, true)
                 )
         );
+
 
         dashboardPoseTracker = new DashboardPoseTracker(robot.follower.poseUpdater);
         Drawing.drawRobot(robot.follower.poseUpdater.getPose(), "#4CAF50");
