@@ -67,7 +67,7 @@ public class Robot {
 
     // Make sure to run this after instance has been enabled/made
     public void init(HardwareMap hardwareMap) {
-        liftBottom = new SolversMotor((hardwareMap.get(DcMotor.class, "liftBottom")), 0.01);
+        liftBottom = new SolversMotor(hardwareMap.get(DcMotor.class, "liftBottom"), 0.01);
         liftTop = new SolversMotor(hardwareMap.get(DcMotor.class, "liftTop"), 0.01);
         extension = new SolversMotor(hardwareMap.get(DcMotor.class, "extension"), 0.01);
         intakeMotor = new SolversMotor(hardwareMap.get(DcMotor.class, "intakeMotor"), 0.01);
@@ -141,10 +141,6 @@ public class Robot {
             INTAKE_HOLD_SPEED = 0;
         } else {
             INTAKE_HOLD_SPEED = 0.15;
-
-            // Limelight stuff do not delete
-            limelight.pipelineSwitch(1);
-            limelight.start();
         }
     }
 

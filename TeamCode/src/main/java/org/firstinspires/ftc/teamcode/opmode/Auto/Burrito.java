@@ -297,5 +297,10 @@ public class Burrito extends CommandOpMode {
         Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
         Drawing.drawRobot(robot.follower.poseUpdater.getPose(), "#4CAF50");
         Drawing.sendPacket();
+
+        // DO NOT REMOVE! Removing this will return stale data since bulk caching is on Manual mode
+        // Also only clearing the control hub to decrease loop times
+        // This means if we start reading both hubs (which we aren't) we need to clear both
+        robot.ControlHub.clearBulkCache();
     }
 }
