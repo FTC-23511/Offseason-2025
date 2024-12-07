@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.commandbase.commands;
 
+import static org.firstinspires.ftc.teamcode.hardware.Globals.SLIDES_PIVOT_READY_EXTENSION;
+
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 
@@ -12,7 +14,7 @@ public class RealTransfer extends SequentialCommandGroup {
     public RealTransfer(Robot robot) {
         addCommands(new SequentialCommandGroup(
                 new ParallelCommandGroup(
-                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
+                        new SetDeposit(robot, Deposit.DepositPivotState.TRANSFER, SLIDES_PIVOT_READY_EXTENSION + 50, true),
                         new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, false)
                 ),
                 new Transfer(robot)

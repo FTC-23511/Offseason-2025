@@ -254,7 +254,9 @@ public class Burrito extends CommandOpMode {
                                 new FollowPathCommand(robot.follower, paths.get(7)),
                                 new SequentialCommandGroup(
                                         new WaitCommand(300),
-                                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true)
+                                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
+                                        new WaitCommand(400),
+                                        new InstantCommand(() -> robot.follower.setMaxPower(0.4))
                                 )
                         ),
 

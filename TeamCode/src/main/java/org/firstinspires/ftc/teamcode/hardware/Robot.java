@@ -140,6 +140,8 @@ public class Robot {
             follower.startTeleopDrive();
             INTAKE_HOLD_SPEED = 0;
         } else {
+            limelight.pipelineSwitch(1);
+            limelight.start();
             INTAKE_HOLD_SPEED = 0.15;
         }
     }

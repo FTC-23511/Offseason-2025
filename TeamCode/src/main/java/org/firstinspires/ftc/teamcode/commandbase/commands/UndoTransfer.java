@@ -48,18 +48,11 @@ public class UndoTransfer extends CommandBase {
             // Close claw so that it doesn't hit slides
             robot.deposit.setClawOpen(false);
 
-            // Update previous and current servo pivot pos for timer logic in next if statement
-            previousServoPos = robot.leftDepositPivot.getPosition();
-            robot.deposit.setPivot(Deposit.DepositPivotState.MIDDLE_HOLD);
-            currentServoPos = robot.leftDepositPivot.getPosition();
-            timer.reset();
-
             index = 2;
         }
 
         // Move the slides back down
         if (index == 2 && timer.milliseconds() > (Math.abs(previousServoPos - currentServoPos) * DEPOSIT_PIVOT_MOVEMENT_TIME)) {
-            robot.deposit.setSlideTarget(0);
             robot.deposit.setClawOpen(true);
 
             index = 3;

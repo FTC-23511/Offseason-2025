@@ -11,8 +11,9 @@ public class Transfer extends SequentialCommandGroup {
     public Transfer(Robot robot) {
         addCommands(
                 new SetDeposit(robot, Deposit.DepositPivotState.TRANSFER, 0, true),
-                new WaitCommand(200),
-                new InstantCommand(() -> robot.deposit.setClawOpen(false))
+                new WaitCommand(300),
+                new InstantCommand(() -> robot.deposit.setClawOpen(false)),
+                new WaitCommand(200)
         );
         addRequirements(robot.intake, robot.deposit);
     }
