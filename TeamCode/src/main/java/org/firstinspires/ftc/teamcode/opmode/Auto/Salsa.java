@@ -85,7 +85,7 @@ public class Salsa extends CommandOpMode {
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(115))
-                        .setReversed(true).build());
+                        .build());
 
         paths.add(
                 // Drop off first sample into observation zone
@@ -325,6 +325,8 @@ public class Salsa extends CommandOpMode {
 
         telemetry.addData("Robot Pose", robot.follower.getPose());
         telemetry.addData("Heading", Math.toDegrees(robot.follower.getPose().getHeading()));
+
+        telemetry.addData("Heading Error", Math.toDegrees(robot.follower.headingError));
 
         telemetry.update(); // DO NOT REMOVE! Needed for telemetry
 
