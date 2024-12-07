@@ -52,7 +52,7 @@ public class Globals {
     public static double AUTO_EXTENDO_EXTENSION;
 
     // Deposit Pivot
-    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.37;
+    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.38;
     public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.58;
     public static double DEPOSIT_PIVOT_SCORING_POS = 1.0;
     public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.78;
