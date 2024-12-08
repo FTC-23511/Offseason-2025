@@ -300,7 +300,7 @@ public class Burrito extends CommandOpMode {
         telemetry.addData("deposit target", robot.deposit.target);
         telemetry.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());
         telemetry.addData("extendo target", robot.intake.target);
-        telemetry.addData("liftEncoder.getPosition()", robot.extensionEncoder.getPosition());
+        telemetry.addData("extensionEncoder.getPosition()", robot.extensionEncoder.getPosition());
 
         telemetry.update(); // DO NOT REMOVE! Needed for telemetry
 

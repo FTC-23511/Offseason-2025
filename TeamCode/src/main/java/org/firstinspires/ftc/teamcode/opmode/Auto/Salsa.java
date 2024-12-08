@@ -427,7 +427,7 @@ public class Salsa extends CommandOpMode {
         telemetry.addData("deposit target", robot.deposit.target);
         telemetry.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());
         telemetry.addData("extendo target", robot.intake.target);
-        telemetry.addData("liftEncoder.getPosition()", robot.extensionEncoder.getPosition());
+        telemetry.addData("extensionEncoder.getPosition()", robot.extensionEncoder.getPosition());
 
         telemetry.addData("Robot Pose", robot.follower.getPose());
         telemetry.addData("Heading", Math.toDegrees(robot.follower.getPose().getHeading()));
