@@ -11,6 +11,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.ParallelRaceGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -208,7 +209,10 @@ public class Burrito extends CommandOpMode {
                                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true)
                                 )
                         ),
-                        new WaitUntilCommand(Intake::correctSampleDetected),
+                        new ParallelRaceGroup(
+                                new WaitUntilCommand(Intake::correctSampleDetected),
+                                new WaitCommand(2000)
+                        ),
                         new RealTransfer(robot),
                         new WaitCommand(250),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
@@ -225,7 +229,10 @@ public class Burrito extends CommandOpMode {
                         ),
                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true),
                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 220, true),
-                        new WaitUntilCommand(Intake::correctSampleDetected),
+                        new ParallelRaceGroup(
+                                new WaitUntilCommand(Intake::correctSampleDetected),
+                                new WaitCommand(2000)
+                        ),
                         new RealTransfer(robot),
                         new WaitCommand(250),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
@@ -242,7 +249,10 @@ public class Burrito extends CommandOpMode {
                         ),
                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true),
                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 300 , true),
-                        new WaitUntilCommand(Intake::correctSampleDetected),
+                        new ParallelRaceGroup(
+                                new WaitUntilCommand(Intake::correctSampleDetected),
+                                new WaitCommand(2000)
+                        ),
                         new RealTransfer(robot),
                         new WaitCommand(250),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),

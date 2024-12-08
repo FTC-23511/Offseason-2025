@@ -162,7 +162,11 @@ public class Intake extends SubsystemBase {
                     break;
                 case REVERSE:
                     if (!hasSample()) {
-                        setActiveIntake(FORWARD);
+                        if (opModeType.equals(OpModeType.TELEOP)) {
+                            setActiveIntake(FORWARD);
+                        } else {
+                            setActiveIntake(STOP);
+                        }
                     }
                     break;
 

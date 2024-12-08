@@ -78,6 +78,12 @@ public class FullTeleOp extends CommandOpMode {
                 )
         );
 
+        driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
+                new UninterruptibleCommand(
+                        new SetIntake(robot, intakePivotState, intakeMotorState, 0, false)
+                )
+        );
+
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
 

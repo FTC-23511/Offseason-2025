@@ -55,7 +55,7 @@ public class Globals {
     public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.38;
     public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.58;
     public static double DEPOSIT_PIVOT_SCORING_POS = 1.0;
-    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.78;
+    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.765;
     public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.00;
 
     // 0.84 sec/360° -> 0.828 sec/355° -> (gear ratio of 5:4) 1.035 sec/355° -> 1035 milliseconds/355°

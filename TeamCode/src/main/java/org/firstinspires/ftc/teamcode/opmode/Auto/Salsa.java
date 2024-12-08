@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_SPECIMEN_ATTA
 import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_SPECIMEN_HEIGHT;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.MAX_EXTENDO_EXTENSION;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.SLIDES_PIVOT_READY_EXTENSION;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.depositInit;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
 
@@ -17,6 +18,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.ParallelRaceGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -68,7 +70,7 @@ public class Salsa extends CommandOpMode {
                                 // Line 1
                                 new BezierLine(
                                         new Point(6.125, 66.250, Point.CARTESIAN),
-                                        new Point(40.50, 66.250, Point.CARTESIAN)
+                                        new Point(40.250, 66.250, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(180)).build());
@@ -79,12 +81,12 @@ public class Salsa extends CommandOpMode {
                         .addPath(
                                 // Line 2
                                 new BezierCurve(
-                                        new Point(40.50, 66.250, Point.CARTESIAN),
+                                        new Point(40.250, 66.250, Point.CARTESIAN),
                                         new Point(31.695, 52.908, Point.CARTESIAN),
-                                        new Point(31.945, 39.432, Point.CARTESIAN)
+                                        new Point(32.500, 39.432, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(128))
+                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(130))
                         .build());
 
         paths.add(
@@ -93,11 +95,11 @@ public class Salsa extends CommandOpMode {
                         .addPath(
                                 // Line 3
                                 new BezierLine(
-                                        new Point(31.945, 39.432, Point.CARTESIAN),
+                                        new Point(32.500, 39.432, Point.CARTESIAN),
                                         new Point(29.449, 33.692, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(128), Math.toRadians(30)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(130), Math.toRadians(30)).build());
 
         paths.add(
                 // Drive to second sample spike mark
@@ -106,10 +108,10 @@ public class Salsa extends CommandOpMode {
                                 // Line 4
                                 new BezierLine(
                                         new Point(29.449, 33.692, Point.CARTESIAN),
-                                        new Point(32.444, 28.700, Point.CARTESIAN)
+                                        new Point(33.000, 31.000, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(30), Math.toRadians(128)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(30), Math.toRadians(130)).build());
 
         paths.add(
                 // Drop off second sample into observation zone
@@ -117,11 +119,11 @@ public class Salsa extends CommandOpMode {
                         .addPath(
                                 // Line 5
                                 new BezierLine(
-                                        new Point(32.444, 28.700, Point.CARTESIAN),
+                                        new Point(33.000, 31.000, Point.CARTESIAN),
                                         new Point(28.950, 23.709, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(128), Math.toRadians(30)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(130), Math.toRadians(30)).build());
 
         paths.add(
                 // Move to first specimen intake minus a few inches to give human player time to align specimen
@@ -130,19 +132,19 @@ public class Salsa extends CommandOpMode {
                                 // Line 6 (8 in Guacamole pathing)
                                 new BezierLine(
                                         new Point(16.000, 5.750, Point.CARTESIAN),
-                                        new Point(12.000, 30.000, Point.CARTESIAN)
+                                        new Point(12.000, 26.000, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(30), Math.toRadians(180)).build());
 
         paths.add(
-                // Second specimen intaking
+                // Second specimen intake
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 7 (9 in Guacamole pathing) (modified heading so it matches above heading)
                                 new BezierLine(
-                                        new Point(12.000, 30.000, Point.CARTESIAN),
-                                        new Point(6.250, 30.000, Point.CARTESIAN)
+                                        new Point(12.000, 26.000, Point.CARTESIAN),
+                                        new Point(6.250, 26.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(180)).build());
@@ -153,22 +155,22 @@ public class Salsa extends CommandOpMode {
                         .addPath(
                                 // Line 8 (10 in Guacamole pathing)
                                 new BezierCurve(
-                                        new Point(6.250, 30.000, Point.CARTESIAN),
-                                        new Point(14.000, 62.000, Point.CARTESIAN),
-                                        new Point(40.000, 62.000, Point.CARTESIAN)
+                                        new Point(6.250, 26.000, Point.CARTESIAN),
+                                        new Point(14.000, 64.000, Point.CARTESIAN),
+                                        new Point(42.500, 64.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(180)).build());
 
         paths.add(
-                // Third specimen intaking
+                // Third specimen intake
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 9 (11 in Guacamole pathing)
                                 new BezierCurve(
-                                        new Point(40.000, 62.000, Point.CARTESIAN),
-                                        new Point(30.000, 30.000, Point.CARTESIAN),
-                                        new Point(6.250, 30.000, Point.CARTESIAN)
+                                        new Point(42.500, 64.000, Point.CARTESIAN),
+                                        new Point(30.000, 26.000, Point.CARTESIAN),
+                                        new Point(6.250, 26.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(180)).build());
@@ -179,22 +181,22 @@ public class Salsa extends CommandOpMode {
                         .addPath(
                                 // Line 10 (12 in Guacamole pathing)
                                 new BezierCurve(
-                                        new Point(6.250, 30.000, Point.CARTESIAN),
-                                        new Point(14.000, 62.000, Point.CARTESIAN),
-                                        new Point(40.000, 64.000, Point.CARTESIAN)
+                                        new Point(6.250, 26.000, Point.CARTESIAN),
+                                        new Point(14.000, 66.000, Point.CARTESIAN),
+                                        new Point(42.500, 66.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(180)).build());
 
         paths.add(
-                // Third specimen intake
+                // Fourth specimen intake
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 11 (13 in Guacamole pathing)
                                 new BezierCurve(
-                                        new Point(40.000, 64.000, Point.CARTESIAN),
-                                        new Point(30.000, 30.000, Point.CARTESIAN),
-                                        new Point(6.250, 30.000, Point.CARTESIAN)
+                                        new Point(42.500, 66.000, Point.CARTESIAN),
+                                        new Point(30.000, 26.000, Point.CARTESIAN),
+                                        new Point(6.250, 26.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(180)).build());
@@ -205,9 +207,9 @@ public class Salsa extends CommandOpMode {
                         .addPath(
                         // Line 12 (14 in Guacamole)
                         new BezierCurve(
-                                new Point(6.250, 30.000, Point.CARTESIAN),
-                                new Point(14.000, 69.000, Point.CARTESIAN),
-                                new Point(40.000, 69.000, Point.CARTESIAN)
+                                new Point(6.250, 26.000, Point.CARTESIAN),
+                                new Point(14.000, 70.000, Point.CARTESIAN),
+                                new Point(42.500, 70.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180)).build());
@@ -216,14 +218,14 @@ public class Salsa extends CommandOpMode {
                 // Park in observation zone
                 robot.follower.pathBuilder()
                         .addPath(
-                                // Line 15
-                                new BezierCurve(
-                                        new Point(40.000, 69.000, Point.CARTESIAN),
-                                        new Point(30.000, 30.000, Point.CARTESIAN),
-                                        new Point(6.250, 30.000, Point.CARTESIAN)
-                                )
+                        // Line 13 (15 in Guacamole)
+                        new BezierCurve(
+                                new Point(42.500, 70.000, Point.CARTESIAN),
+                                new Point(30.000, 26.000, Point.CARTESIAN),
+                                new Point(18.000, 26.000, Point.CARTESIAN)
                         )
-                        .setConstantHeadingInterpolation(Math.toRadians(180)).build());
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180)).build());
     }
 
     @Override
@@ -266,9 +268,9 @@ public class Salsa extends CommandOpMode {
                                 new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false),
                                 new FollowPathCommand(robot.follower, paths.get(0))
                         ),
-                        new InstantCommand(() -> robot.follower.setMaxPower(0.75)),
+                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
                         attachSpecimen,
-//                        new MT2Relocalization(robot),
+//                        new MT2Relocalization(robot), RIP :(
 
                         // Sample 1
                         new ParallelCommandGroup(
@@ -280,37 +282,122 @@ public class Salsa extends CommandOpMode {
                         ),
                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true),
                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 200, true),
-                        new WaitUntilCommand(Intake::correctSampleDetected),
+                        new ParallelRaceGroup(
+                                new WaitUntilCommand(Intake::correctSampleDetected),
+                                new WaitCommand(2000)
+                        ),
                         new FollowPathCommand(robot.follower, paths.get(2)),
                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.REVERSE, 300, true),
                         new WaitUntilCommand(() -> !robot.intake.hasSample()),
 
                         // Sample 2
+                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 100, true),
                         new FollowPathCommand(robot.follower, paths.get(3)),
-                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, true),
-                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 200, true),
-                        new WaitUntilCommand(Intake::correctSampleDetected),
+                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 300, true),
+                        new ParallelRaceGroup(
+                                new WaitUntilCommand(Intake::correctSampleDetected),
+                                new WaitCommand(2000)
+                        ),
                         new FollowPathCommand(robot.follower, paths.get(4)),
                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.REVERSE, 300, true),
                         new WaitUntilCommand(() -> !robot.intake.hasSample()),
 
                         // Intake Specimen 2
-                        new InstantCommand(() -> robot.follower.setMaxPower(0.75)),
                         new ParallelCommandGroup(
-                            new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.STOP, 0, false),
+                            new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.REVERSE, 0, false),
                             new FollowPathCommand(robot.follower, paths.get(5)),
                             new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_INTAKE, 0, true)
                         ),
+                        new InstantCommand(() -> robot.intake.setActiveIntake(Intake.IntakeMotorState.STOP)),
+                        new InstantCommand(() -> robot.follower.setMaxPower(0.25)),
                         new WaitCommand(500),
-                        new FollowPathCommand(robot.follower, paths.get(6)),
+                        new ParallelRaceGroup(
+                                new FollowPathCommand(robot.follower, paths.get(6)),
+                                new WaitCommand(400)
+                        ),
                         new InstantCommand(() -> robot.deposit.setClawOpen(false)),
+                        new WaitCommand(200),
 
+                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
                         // Score Specimen 2
                         new ParallelCommandGroup(
                                 new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false),
-                                new FollowPathCommand(robot.follower, paths.get(7))
+                                new FollowPathCommand(robot.follower, paths.get(7)),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(1000),
+                                        new InstantCommand(() -> robot.follower.setMaxPower(0.35))
+                                )
                         ),
-                        attachSpecimen
+                        attachSpecimen,
+                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
+
+                        // Intake Specimen 3
+                        new ParallelRaceGroup(
+                            new ParallelCommandGroup(
+                                    new FollowPathCommand(robot.follower, paths.get(8)),
+                                    new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_INTAKE, 0, true),
+                                    new SequentialCommandGroup(
+                                            new WaitCommand(1000),
+                                            new InstantCommand(() -> robot.follower.setMaxPower(0.25))
+                                    )
+                            ),
+                            new WaitCommand(2500)
+                        ),
+                        new InstantCommand(() -> robot.deposit.setClawOpen(false)),
+                        new WaitCommand(200),
+
+                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
+                        // Scoring Sample 3
+                        new ParallelCommandGroup(
+                                new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new FollowPathCommand(robot.follower, paths.get(9))
+                                ),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(1200),
+                                        new InstantCommand(() -> robot.follower.setMaxPower(0.35))
+                                )
+                        ),
+                        attachSpecimen,
+
+                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
+                        // Intake Specimen 4
+                        new ParallelRaceGroup(
+                                new ParallelCommandGroup(
+                                        new FollowPathCommand(robot.follower, paths.get(10)),
+                                        new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_INTAKE, 0, true),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1000),
+                                                new InstantCommand(() -> robot.follower.setMaxPower(0.25))
+                                        )
+                                ),
+                                new WaitCommand(2500)
+                        ),
+                        new InstantCommand(() -> robot.deposit.setClawOpen(false)),
+                        new WaitCommand(200),
+
+                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
+                        // Scoring Specimen 4
+                        new ParallelCommandGroup(
+                                new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new FollowPathCommand(robot.follower, paths.get(11))
+                                ),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(1400),
+                                        new InstantCommand(() -> robot.follower.setMaxPower(0.35))
+                                )
+                        ),
+                        attachSpecimen,
+                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
+
+                        // Parking
+                        new ParallelCommandGroup(
+                                new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
+                                new FollowPathCommand(robot.follower, paths.get(12))
+                        )
                 )
         );
 
