@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.tuning.servo.sample;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
-import static org.firstinspires.ftc.teamcode.hardware.System.checkButton;
-import static org.firstinspires.ftc.teamcode.hardware.System.round;
+import static org.firstinspires.ftc.teamcode.hardware.SolversMethods.checkButton;
+import static org.firstinspires.ftc.teamcode.hardware.SolversMethods.round;
 import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.CLAW_SERVO_POS;
 
 import com.acmerobotics.dashboard.FtcDashboard;

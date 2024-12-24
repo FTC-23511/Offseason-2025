@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.tuning.motor.sample;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
-import static org.firstinspires.ftc.teamcode.hardware.System.checkButton;
+import static org.firstinspires.ftc.teamcode.hardware.SolversMethods.checkButton;
 import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.CENTER_MOTOR_POWER;
 
 import com.acmerobotics.dashboard.FtcDashboard;

@@ -7,16 +7,11 @@ import static org.firstinspires.ftc.teamcode.commandbase.Intake.SampleColorTarge
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState.*;
 
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
-import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
-import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
-import org.firstinspires.ftc.teamcode.commandbase.commands.Transfer;
 import org.firstinspires.ftc.teamcode.commandbase.commands.UninterruptibleCommand;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
@@ -30,6 +25,7 @@ public class Intake extends SubsystemBase {
     // Whether the claw is open or not in the current state of the claw
     public enum IntakePivotState {
         INTAKE,
+        READY_INTAKE,
         TRANSFER
     }
 
@@ -100,13 +96,18 @@ public class Intake extends SubsystemBase {
                 robot.leftIntakePivot.setPosition(INTAKE_PIVOT_INTAKE_POS);
                 robot.rightIntakePivot.setPosition(INTAKE_PIVOT_INTAKE_POS);
                 break;
+
+            case READY_INTAKE:
+                robot.leftIntakePivot.setPosition(INTAKE_PIVOT_READY_INTAKE_POS);
+                robot.rightIntakePivot.setPosition(INTAKE_PIVOT_READY_INTAKE_POS);
+                break;
         }
 
         Intake.intakePivotState = intakePivotState;
     }
 
     public void setActiveIntake(IntakeMotorState intakeMotorState) {
-        if (intakePivotState.equals(INTAKE)) {
+        if (intakePivotState.equals(INTAKE) ||intakePivotState.equals(READY_INTAKE)) {
             switch (intakeMotorState) {
                 case FORWARD:
                     robot.intakeMotor.setPower(INTAKE_FORWARD_SPEED);
@@ -126,7 +127,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void toggleActiveIntake(SampleColorTarget sampleColorTarget) {
-        if (intakePivotState.equals(INTAKE)) {
+        if (intakePivotState.equals(INTAKE) || intakePivotState.equals(READY_INTAKE)) {
             if (intakeMotorState.equals(FORWARD)) {
                 setActiveIntake(STOP);
             } else if (intakeMotorState.equals(STOP) || intakeMotorState.equals(HOLD)) {
@@ -137,11 +138,11 @@ public class Intake extends SubsystemBase {
     }
 
     public void autoUpdateActiveIntake() {
-        if (intakePivotState.equals(INTAKE)) {
+        if (intakePivotState.equals(INTAKE) || intakePivotState.equals(READY_INTAKE)) {
             switch (intakeMotorState) {
                 case FORWARD:
                     if (hasSample()) {
-                        sampleColor = sampleDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
+                        sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
                         if (correctSampleDetected()) {
                             setActiveIntake(STOP);
                             if (opModeType.equals(OpModeType.TELEOP)) {
@@ -177,8 +178,8 @@ public class Intake extends SubsystemBase {
         }
     }
 
-    public static SampleColorDetected sampleDetected(int red, int green, int blue) {
-        if ((blue + green + red) >= 900) {
+    public static SampleColorDetected sampleColorDetected(int red, int green, int blue) {
+        if ((blue + green + red) >= 900) { // If it's less than 900, then there isn't a sample fully in yet
             if (blue >= green && blue >= red) {
                 return BLUE;
             } else if (green >= red) {

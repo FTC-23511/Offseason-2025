@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class System {
+public class SolversMethods {
     // Example Usage for gamepad1 right bumper: checkButton(currentGamepad1, "right_bumper")
     public static boolean checkButton(Gamepad gamepad, String button) {
         try {

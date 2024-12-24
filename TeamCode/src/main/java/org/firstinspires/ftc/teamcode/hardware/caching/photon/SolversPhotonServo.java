@@ -6,8 +6,6 @@
 //import com.qualcomm.robotcore.hardware.Servo;
 //
 
-import static org.firstinspires.ftc.teamcode.hardware.System.round;
-
 ///**
 // * A wrapper servo class that provides caching to avoid unnecessary setPosition() calls.
 // * Credit to team FTC 22105 (Runtime Terror) for the base class, we just modified it

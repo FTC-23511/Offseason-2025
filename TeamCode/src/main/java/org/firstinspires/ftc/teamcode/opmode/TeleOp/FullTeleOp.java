@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.TeleOp;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
@@ -17,6 +18,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.commandbase.commands.*;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
+import org.firstinspires.ftc.teamcode.hardware.TelemetryData;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
@@ -28,6 +30,8 @@ public class FullTeleOp extends CommandOpMode {
 
     public ElapsedTime timer;
     public ElapsedTime gameTimer;
+
+    TelemetryData telemetryData = new TelemetryData(telemetry);
 
     private final Robot robot = Robot.getInstance();
 
@@ -64,7 +68,10 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.follower.setPose(new Pose(robot.follower.getPose().getX(), robot.follower.getPose().getY(), 0))));
 
         driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
-                new InstantCommand(() -> robot.intake.setExtendoTarget(MAX_EXTENDO_EXTENSION)));
+                new UninterruptibleCommand(
+                        new SetIntake(robot, IntakePivotState.READY_INTAKE, intakeMotorState, MAX_EXTENDO_EXTENSION, false)
+                )
+        );
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new UninterruptibleCommand(
@@ -74,15 +81,15 @@ public class FullTeleOp extends CommandOpMode {
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new UninterruptibleCommand(
-                        new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, 0, false)
-                )
-        );
+                        new ParallelCommandGroup(
+                                new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, 0, false),
+                                new SetIntake(robot, intakePivotState, intakeMotorState, 0, false)
 
-        driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
-                new UninterruptibleCommand(
-                        new SetIntake(robot, intakePivotState, intakeMotorState, 0, false)
+                        )
                 )
         );
+        driver.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
+                new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.READY_INTAKE)));
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
@@ -155,7 +162,7 @@ public class FullTeleOp extends CommandOpMode {
         if (timer == null) {
             robot.initHasMovement();
 
-            INTAKE_HOLD_SPEED = 0.15;
+            INTAKE_HOLD_SPEED = 0.15; // Enable hold
 
             timer = new ElapsedTime();
             gameTimer = new ElapsedTime();
@@ -196,26 +203,26 @@ public class FullTeleOp extends CommandOpMode {
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();
 
-        telemetry.addData("timer", timer.milliseconds());
-        telemetry.addData("extendoReached", robot.intake.extendoReached);
-        telemetry.addData("slidesRetracted", robot.deposit.slidesRetracted);
-        telemetry.addData("slidesReached", robot.deposit.slidesReached);
-        telemetry.addData("robotState", Robot.robotState);
+        telemetryData.addData("timer", timer.milliseconds());
+        telemetryData.addData("extendoReached", robot.intake.extendoReached);
+        telemetryData.addData("slidesRetracted", robot.deposit.slidesRetracted);
+        telemetryData.addData("slidesReached", robot.deposit.slidesReached);
+        telemetryData.addData("robotState", Robot.robotState);
 
-        telemetry.addData("liftTop.getPower()", robot.liftTop.getPower());
-        telemetry.addData("liftBottom.getPower()", robot.liftBottom.getPower());
-        telemetry.addData("extension.getPower()", robot.extension.getPower());
+        telemetryData.addData("liftTop.getPower()", robot.liftTop.getPower());
+        telemetryData.addData("liftBottom.getPower()", robot.liftBottom.getPower());
+        telemetryData.addData("extension.getPower()", robot.extension.getPower());
 
-        telemetry.addData("extensionEncoder.getPosition()", robot.extensionEncoder.getPosition());
-        telemetry.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());
+        telemetryData.addData("extensionEncoder.getPosition()", robot.extensionEncoder.getPosition());
+        telemetryData.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());
 
-        telemetry.addData("slides target", robot.deposit.target);
-        telemetry.addData("extendo target", robot.intake.target);
+        telemetryData.addData("slides target", robot.deposit.target);
+        telemetryData.addData("extendo target", robot.intake.target);
 
-        telemetry.addData("intakePivotState", intakePivotState);
-        telemetry.addData("depositPivotState", depositPivotState);
+        telemetryData.addData("intakePivotState", intakePivotState);
+        telemetryData.addData("depositPivotState", depositPivotState);
 
-        telemetry.update(); // DO NOT REMOVE! Needed for telemetry
+        telemetryData.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();
         // DO NOT REMOVE! Removing this will return stale data since bulk caching is on Manual mode
         // Also only clearing the control hub to decrease loop times
