@@ -32,6 +32,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.Globals;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.PoseUpdater;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierPoint;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Path;
@@ -1028,5 +1029,19 @@ public class Follower {
      */
     public void resetIMU() {
         poseUpdater.resetIMU();
+    }
+
+    // Turn right: jiggle(-5)
+    // Turn left: jiggle(5)
+    public PathChain jiggle(double angle) {
+        return pathBuilder()
+                .addPath(
+                        // Line 1
+                        new BezierLine(
+                                new Point(getPose().getX(), getPose().getY(), Point.CARTESIAN),
+                                new Point(getPose().getX(), getPose().getY(), Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(getPose().getHeading()), Math.toRadians(getPose().getHeading() + angle)).build();
     }
 }
