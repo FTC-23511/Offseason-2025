@@ -1,12 +1,16 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import android.util.Log;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TelemetryData {
     private final Telemetry telemetry;
-    private ArrayList<String> dataList = new ArrayList<>();
+
+    private final Map<String, String> dataMap = new HashMap<>();
 
     public TelemetryData(Telemetry telemetry) {
         this.telemetry = telemetry;
@@ -14,15 +18,15 @@ public class TelemetryData {
 
     public void addData(String caption, Object value) {
         telemetry.addData(caption, value);
-        dataList.add(caption + ": " + value.toString());
+        dataMap.put(caption, value.toString());
     }
 
     public void update() {
         telemetry.update();
-        for (String data : dataList) {
-            System.out.println(data);
+        for (Map.Entry<String, String> entry : dataMap.entrySet()) {
+            Log.v(entry.getKey(), entry.getValue());
         }
 
-        dataList.clear();
+        dataMap.clear();
     }
 }

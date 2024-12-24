@@ -46,7 +46,7 @@ public class Globals {
     // Intake Pivot
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.25;
     public static double INTAKE_PIVOT_INTAKE_POS = 0.835;
-    public static double INTAKE_PIVOT_READY_INTAKE_POS = 0.75; // TODO: Tune so it can go over the sub still
+    public static double INTAKE_PIVOT_READY_INTAKE_POS = 0.675;
 
     // Intake Extendo
     public static double MAX_EXTENDO_EXTENSION = 480;
