@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.pedroPathing.localization.tuning;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
@@ -35,7 +34,6 @@ public class TurnTuner extends OpMode {
 
     public static double ANGLE_ROTATIONS = 1;
     private static double ANGLE = (ANGLE_ROTATIONS * 2) * Math.PI;
-
 
     /**
      * This initializes the PoseUpdater as well as the FTC Dashboard telemetry.
