@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.teamcode.opmode.TeleOp;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -69,7 +67,7 @@ public class FullTeleOp extends CommandOpMode {
 
         driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
                 new UninterruptibleCommand(
-                        new SetIntake(robot, IntakePivotState.READY_INTAKE, intakeMotorState, MAX_EXTENDO_EXTENSION, false)
+                        new SetIntake(robot, IntakePivotState.INTAKE_READY, intakeMotorState, MAX_EXTENDO_EXTENSION, false)
                 )
         );
 
@@ -89,7 +87,7 @@ public class FullTeleOp extends CommandOpMode {
                 )
         );
         driver.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
-                new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.READY_INTAKE)));
+                new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.INTAKE_READY)));
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));

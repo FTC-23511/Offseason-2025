@@ -25,7 +25,7 @@ public class Intake extends SubsystemBase {
     // Whether the claw is open or not in the current state of the claw
     public enum IntakePivotState {
         INTAKE,
-        READY_INTAKE,
+        INTAKE_READY,
         TRANSFER
     }
 
@@ -97,7 +97,7 @@ public class Intake extends SubsystemBase {
                 robot.rightIntakePivot.setPosition(INTAKE_PIVOT_INTAKE_POS);
                 break;
 
-            case READY_INTAKE:
+            case INTAKE_READY:
                 robot.leftIntakePivot.setPosition(INTAKE_PIVOT_READY_INTAKE_POS);
                 robot.rightIntakePivot.setPosition(INTAKE_PIVOT_READY_INTAKE_POS);
                 break;
@@ -107,7 +107,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void setActiveIntake(IntakeMotorState intakeMotorState) {
-        if (intakePivotState.equals(INTAKE) ||intakePivotState.equals(READY_INTAKE)) {
+        if (intakePivotState.equals(INTAKE) ||intakePivotState.equals(INTAKE_READY)) {
             switch (intakeMotorState) {
                 case FORWARD:
                     robot.intakeMotor.setPower(INTAKE_FORWARD_SPEED);
@@ -127,7 +127,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void toggleActiveIntake(SampleColorTarget sampleColorTarget) {
-        if (intakePivotState.equals(INTAKE) || intakePivotState.equals(READY_INTAKE)) {
+        if (intakePivotState.equals(INTAKE) || intakePivotState.equals(INTAKE_READY)) {
             if (intakeMotorState.equals(FORWARD)) {
                 setActiveIntake(STOP);
             } else if (intakeMotorState.equals(STOP) || intakeMotorState.equals(HOLD)) {
@@ -138,7 +138,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void autoUpdateActiveIntake() {
-        if (intakePivotState.equals(INTAKE) || intakePivotState.equals(READY_INTAKE)) {
+        if (intakePivotState.equals(INTAKE) || intakePivotState.equals(INTAKE_READY)) {
             switch (intakeMotorState) {
                 case FORWARD:
                     if (hasSample()) {

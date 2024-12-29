@@ -1,12 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmode.Auto;
 
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.depositPivotState;
+import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState.FORWARD;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.intakePivotState;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.AUTO_ASCENT_HEIGHT;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.DepositInit;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_BUCKET_HEIGHT;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_SPECIMEN_ATTACH_HEIGHT;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_SPECIMEN_HEIGHT;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.MAX_EXTENDO_EXTENSION;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.depositInit;
@@ -15,6 +12,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.ConditionalCommand;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.ParallelRaceGroup;
@@ -25,16 +23,13 @@ import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
-import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.UndoTransfer;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierCurve;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
@@ -63,28 +58,29 @@ public class SubAuto extends CommandOpMode {
         robot.follower.setStartingPose(new Pose(6.125, 78, Math.toRadians(90)));
 
         paths.add(
-                // Turn 5 degrees right
+
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 1
                                 new BezierLine(
-                                        new Point(6.125, 78.000, Point.CARTESIAN),
-                                        new Point(6.125, 78.000, Point.CARTESIAN)
+                                        new Point(robot.follower.getPose().getX(), robot.follower.getPose().getY(), Point.CARTESIAN),
+                                        new Point(robot.follower.getPose().getX(), robot.follower.getPose().getY() - 3, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(85)).build());
+                        .setTangentHeadingInterpolation().build());
 
         paths.add(
-                // Turn 5 degrees left
+
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 1
                                 new BezierLine(
-                                        new Point(6.125, 78.000, Point.CARTESIAN),
+                                        new Point(6.125, 75.500, Point.CARTESIAN),
                                         new Point(6.125, 78.000, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(95)).build());
+                        .setTangentHeadingInterpolation().build());
+
     }
     @Override
     public void initialize() {
@@ -104,36 +100,77 @@ public class SubAuto extends CommandOpMode {
 
         robot.initHasMovement();
 
-        robot.intake.setPivot(Intake.IntakePivotState.READY_INTAKE);
+        robot.intake.setPivot(Intake.IntakePivotState.INTAKE_READY);
 
         robot.follower.setMaxPower(0.45);
 
         generatePath();
 
+//        ParallelRaceGroup subIntake = new ParallelRaceGroup(
+//                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, false),
+//                new WaitCommand(2000),
+//                new WaitUntilCommand(robot.intake::hasSample)
+//        );
+
         schedule(
                 // DO NOT REMOVE: updates follower to follow path
                 new RunCommand(() -> robot.follower.update()),
-
 
                 new SequentialCommandGroup(
                         // Need to get to sub clear position and sub clear first tho
 
                         new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)),
-                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, true),
+
+                        new ParallelRaceGroup(
+                                new SequentialCommandGroup(
+                                        new ParallelRaceGroup(
+                                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, FORWARD, MAX_EXTENDO_EXTENSION, false),
+                                                new WaitCommand(1000)
+                                        ),
+                                        new FollowPathCommand(robot.follower, paths.get(0)),
+                                        new FollowPathCommand(robot.follower, robot.follower.jiggle(2.0)),
+                                        new WaitCommand(500),
+                                        new FollowPathCommand(robot.follower, robot.follower.jiggle(-2.0))
+                                ),
+                                new WaitCommand(4000),
+                                new WaitUntilCommand(robot.intake::hasSample)
+                        ),
+
+                        new ConditionalCommand(
+                                new InstantCommand(),
+                                new WaitCommand(500),
+                                () -> Intake.correctSampleDetected() || !robot.intake.hasSample()
+                        ),
 
                         new ParallelRaceGroup(
                                 new WaitUntilCommand(Intake::correctSampleDetected),
                                 new SequentialCommandGroup(
-                                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 50, true),
-                                        new FollowPathCommand(robot.follower, robot.follower.jiggle(5)),
-                                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, true),
+                                        new SetIntake(robot, Intake.IntakePivotState.INTAKE_READY, FORWARD, 50, true),
+
+                                        new FollowPathCommand(robot.follower, paths.get(0)),
+                                        new WaitCommand(500),
+                                        new ParallelCommandGroup(
+                                        new FollowPathCommand(robot.follower, robot.follower.jiggle(2.5)),
+
+                                                new ParallelRaceGroup(
+                                                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, FORWARD, MAX_EXTENDO_EXTENSION, false),
+                                                        new WaitCommand(2000),
+                                                        new WaitUntilCommand(robot.intake::hasSample)
+                                                )
+                                        ),
+
                                         new FollowPathCommand(robot.follower, robot.follower.jiggle(-5)),
 
-                                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 50, true),
-                                        new FollowPathCommand(robot.follower, robot.follower.jiggle(-5)),
-                                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, true),
+                                        new SetIntake(robot, Intake.IntakePivotState.INTAKE_READY, FORWARD, 50, true),
+
+                                        new ParallelRaceGroup(
+                                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, FORWARD, MAX_EXTENDO_EXTENSION, false),
+                                                new WaitCommand(2000),
+                                                new WaitUntilCommand(robot.intake::hasSample)
+                                        ),
+
                                         new FollowPathCommand(robot.follower, robot.follower.jiggle(5))
-                                )
+                                    )
                         ),
 
                         new RealTransfer(robot)
