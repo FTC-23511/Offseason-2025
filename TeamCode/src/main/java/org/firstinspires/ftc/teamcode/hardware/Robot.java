@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 
+import org.firstinspires.ftc.teamcode.commandbase.Drive;
 import org.firstinspires.ftc.teamcode.hardware.caching.SolversMotor;
 import org.firstinspires.ftc.teamcode.hardware.caching.SolversServo;
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
@@ -39,6 +40,8 @@ public class Robot {
     public SolversServo rightDepositPivot;
     public SolversServo depositClaw;
     public SolversServo depositWrist;
+    public SolversServo leftHang;
+    public SolversServo rightHang;
 
     public Motor.Encoder liftEncoder;
     public Motor.Encoder extensionEncoder;
@@ -53,6 +56,8 @@ public class Robot {
 
     public Deposit deposit;
     public Intake intake;
+    public Drive drive;
+
     public Follower follower;
 
     private static Robot instance = new Robot();
@@ -111,9 +116,12 @@ public class Robot {
         rightDepositPivot = new SolversServo(hardwareMap.get(Servo.class, "rightDepositPivot"), 0.01);
         depositClaw = new SolversServo(hardwareMap.get(Servo.class, "depositClaw"), 0.01);
         depositWrist = new SolversServo(hardwareMap.get(Servo.class, "depositWrist"), 0.01);
+        leftHang = new SolversServo(hardwareMap.get(Servo.class, "leftHang"), 0.01);
+        rightHang = new SolversServo(hardwareMap.get(Servo.class, "rightHang"), 0.01);
 
         leftIntakePivot.setDirection(Servo.Direction.REVERSE);
         leftDepositPivot.setDirection(Servo.Direction.REVERSE);
+        leftHang.setDirection(Servo.Direction.REVERSE);
 
         colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
 
@@ -135,6 +143,7 @@ public class Robot {
 
         intake = new Intake();
         deposit = new Deposit();
+        drive = new Drive();
         follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose(0, 0, 0));
 
@@ -151,6 +160,7 @@ public class Robot {
     public void initHasMovement() {
         deposit.init();
         intake.init();
+        drive.init();
 
         robotState = RobotState.MIDDLE_RESTING;
     }

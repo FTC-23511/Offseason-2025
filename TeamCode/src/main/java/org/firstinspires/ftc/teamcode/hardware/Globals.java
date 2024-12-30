@@ -87,6 +87,11 @@ public class Globals {
     public static double AUTO_ASCENT_HEIGHT = 900;
     public static double ENDGAME_ASCENT_HEIGHT = 1150;
 
+    // Hang Servos
+
+    public static double HANG_RETRACTED_POS = 0.0;
+    public static double HANG_EXTENDED_POS = 1.0;
+
     // command timeout
     public final static int MAX_COMMAND_RUN_TIME_MS = 3000;
 }
