@@ -6,12 +6,15 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.commandbase.Drive;
 import org.firstinspires.ftc.teamcode.hardware.caching.SolversMotor;
 import org.firstinspires.ftc.teamcode.hardware.caching.SolversServo;
@@ -60,6 +63,8 @@ public class Robot {
     public Drive drive;
 
     public Follower follower;
+
+    public IMU imu;
 
     private static Robot instance = new Robot();
     public boolean enabled;
@@ -131,6 +136,8 @@ public class Robot {
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
+        initializeImu(hardwareMap);
+
         // Bulk reading enabled!
         // AUTO mode will bulk read by default and will redo and clear cache once the exact same read is done again
         // MANUAL mode will bulk read once per loop but needs to be manually cleared
@@ -165,6 +172,28 @@ public class Robot {
         drive.init();
 
         robotState = RobotState.MIDDLE_RESTING;
+    }
+    public double getYawDegrees() {
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+    }
+    public double getPitchDegrees() {
+        return imu.getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES);
+    }
+    public double getRollDegrees() {
+        return imu.getRobotYawPitchRollAngles().getRoll(AngleUnit.DEGREES);
+    }
+
+    public void resetYaw() {
+        imu.resetYaw();
+    }
+
+    public void initializeImu(HardwareMap hardwareMap) {
+        // IMU orientation
+        imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
+        imu.initialize(parameters);
     }
 
     public enum RobotState {
