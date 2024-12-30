@@ -41,6 +41,7 @@ public class Robot {
     public SolversServo depositClaw;
     public SolversServo depositWrist;
     public SolversServo leftHang;
+    public SolversServo gearboxSwitcher;
     public SolversServo rightHang;
 
     public Motor.Encoder liftEncoder;
@@ -118,6 +119,7 @@ public class Robot {
         depositWrist = new SolversServo(hardwareMap.get(Servo.class, "depositWrist"), 0.01);
         leftHang = new SolversServo(hardwareMap.get(Servo.class, "leftHang"), 0.01);
         rightHang = new SolversServo(hardwareMap.get(Servo.class, "rightHang"), 0.01);
+        gearboxSwitcher = new SolversServo(hardwareMap.get(Servo.class, "gearboxSwitcher"), 0.01);
 
         leftIntakePivot.setDirection(Servo.Direction.REVERSE);
         leftDepositPivot.setDirection(Servo.Direction.REVERSE);

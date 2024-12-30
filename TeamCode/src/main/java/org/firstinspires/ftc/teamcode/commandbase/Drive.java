@@ -7,19 +7,26 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-
 public class Drive extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
 
     public enum HangState {
         HANG_RETRACTED,
-        HANG_EXTENDED
+        HANG_EXTENDED,
+        HANG_SWINGING
+    }
+
+    public enum GearboxState {
+        HANG_GEAR,
+        DEPOSIT_GEAR
     }
 
     public static HangState hangState;
+    public static GearboxState gearboxState;
 
     public void init() {
         setHang(HangState.HANG_RETRACTED);
+        setGearbox(GearboxState.DEPOSIT_GEAR);
     }
 
     public void setHang(HangState hangState) {
@@ -32,8 +39,25 @@ public class Drive extends SubsystemBase {
                 robot.leftHang.setPosition(HANG_EXTENDED_POS);
                 robot.rightHang.setPosition(HANG_EXTENDED_POS);
                 break;
+            case HANG_SWINGING:
+                robot.leftHang.setPosition(HANG_SWINGING_POS);
+                robot.rightHang.setPosition(HANG_SWINGING_POS);
+                break;
         }
 
         Drive.hangState = hangState;
+    }
+
+    public void setGearbox(GearboxState gearboxState) {
+        switch (gearboxState) {
+            case HANG_GEAR:
+                robot.gearboxSwitcher.setPosition(HANG_GEAR_POS);
+                break;
+            case DEPOSIT_GEAR:
+                robot.gearboxSwitcher.setPosition(DEPOSIT_GEAR_POS);
+                break;
+        }
+
+        Drive.gearboxState = gearboxState;
     }
 }
