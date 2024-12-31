@@ -53,7 +53,9 @@ public class Robot {
     public SolversServo rightDepositPivot;
     public SolversServo depositClaw;
     public SolversServo depositWrist;
+
     public SolversServo gearboxSwitcher;
+    public SolversServo subPusher;
 
     public SolversCRServo leftHang;
     public SolversCRServo rightHang;

@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 @Config
 @TeleOp
-public class doubleDepositPivotTester extends OpMode {
+public class depositServosTuner extends OpMode {
     private final Robot robot = Robot.getInstance();
 
     Gamepad currentGamepad1 = new Gamepad();
@@ -30,7 +30,7 @@ public class doubleDepositPivotTester extends OpMode {
 
         robot.leftDepositPivot.setPosition(CENTER_SERVO_POS);
         robot.rightDepositPivot.setPosition(CENTER_SERVO_POS);
-        robot.depositClaw.setPosition(CLAW_SERVO_POS);
+        robot.depositWrist.setPosition(WRIST_SERVO_POS);
     }
 
     @Override
@@ -38,16 +38,22 @@ public class doubleDepositPivotTester extends OpMode {
 
         robot.leftDepositPivot.setPosition(CENTER_SERVO_POS);
         robot.rightDepositPivot.setPosition(CENTER_SERVO_POS);
-
-        robot.depositClaw.setPosition(CLAW_SERVO_POS);
+        robot.depositWrist.setPosition(WRIST_SERVO_POS);
 
         CENTER_SERVO_POS = Math.max(Math.min(CENTER_SERVO_POS, 1), 0);
-        CLAW_SERVO_POS = Math.max(Math.min(CLAW_SERVO_POS, 1), 0);
+        WRIST_SERVO_POS = Math.max(Math.min(WRIST_SERVO_POS, 1), 0);
 
         currentGamepad1.copy(gamepad1);
 
+        if (gamepad1.a) {
+            robot.deposit.setClawOpen(true);
+        }
+        if (gamepad1.b) {
+            robot.deposit.setClawOpen(false);
+        }
+
         telemetry.addData("leftDepositPivot getPosition", robot.leftDepositPivot.getPosition());
-        telemetry.addData("rightServo getPosition",robot.rightDepositPivot.getPosition());
+        telemetry.addData("rightDepositPivot getPosition",robot.rightDepositPivot.getPosition());
         telemetry.addData("servoPos", round(CENTER_SERVO_POS, 2));
         telemetry.update();
 

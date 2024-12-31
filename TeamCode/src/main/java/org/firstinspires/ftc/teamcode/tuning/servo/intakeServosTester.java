@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 @Config
 @TeleOp
-public class doubleIntakePivotTester extends OpMode {
+public class intakeServosTester extends OpMode {
     private final Robot robot = Robot.getInstance();
 
     Gamepad currentGamepad1 = new Gamepad();
@@ -44,7 +44,7 @@ public class doubleIntakePivotTester extends OpMode {
         currentGamepad1.copy(gamepad1);
 
         telemetry.addData("leftIntakePivot getPosition", robot.leftIntakePivot.getPosition());
-        telemetry.addData("rightDepositPivot getPosition",robot.rightDepositPivot.getPosition());
+        telemetry.addData("rightIntakePivot getPosition",robot.rightIntakePivot.getPosition());
         telemetry.addData("servoPos", round(CENTER_SERVO_POS, 2));
         telemetry.update();
 

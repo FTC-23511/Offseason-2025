@@ -6,6 +6,7 @@
         <LynxModule name="Control Hub" port="173">
 
             <Servo name="rightIntakePivot" port="1"/>
+            <Servo name="subPusher" port="2"/>
             <Servo name="leftIntakePivot" port="3"/>
             <Servo name="depositWrist" port="4"/>
             <Servo name="leftHang" port="5"/>
