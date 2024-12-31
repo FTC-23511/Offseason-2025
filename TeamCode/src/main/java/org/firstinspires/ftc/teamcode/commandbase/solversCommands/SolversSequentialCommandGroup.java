@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SolversSequentialCommandGroup extends SolversCommandGroupBase {
-
     private final List<Command> m_commands = new ArrayList<>();
     private int m_currentCommandIndex = -1;
     private boolean m_runWhenDisabled = true;

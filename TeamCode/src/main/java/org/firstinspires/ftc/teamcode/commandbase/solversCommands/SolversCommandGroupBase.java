@@ -11,7 +11,6 @@ import java.util.WeakHashMap;
 
 
 public abstract class SolversCommandGroupBase extends CommandBase implements Command {
-
     private static final Set<Command> m_groupedCommands =
             Collections.newSetFromMap(new WeakHashMap<>());
 
