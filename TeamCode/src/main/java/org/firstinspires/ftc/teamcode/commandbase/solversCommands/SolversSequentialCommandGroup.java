@@ -20,7 +20,6 @@ public class SolversSequentialCommandGroup extends SolversCommandGroupBase {
         addCommands(commands);
     }
 
-
     @Override
     public void addCommands(Command... commands) {
         requireUngrouped(commands);

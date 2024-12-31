@@ -168,7 +168,7 @@ public class Robot {
         follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(new Pose(0, 0, 0));
 
-        FollowerConstants.useBreakModeInTeleop = true;
+        FollowerConstants.useBrakeModeInTeleOp = true;
 
         poseUpdater = new PoseUpdater(hardwareMap, FConstants.class, LConstants.class);
 

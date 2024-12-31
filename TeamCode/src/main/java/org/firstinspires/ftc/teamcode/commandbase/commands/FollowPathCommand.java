@@ -18,8 +18,10 @@ public class FollowPathCommand extends CommandBase {
         this.path = path;
     }
 
-    public FollowPathCommand(Follower follower, Path path) {
-        this(follower, new PathChain(path));
+    public FollowPathCommand(Follower follower, PathChain path, boolean holdEnd) {
+        this.follower = follower;
+        this.path = path;
+        this.holdEnd = holdEnd;
     }
 
     /**
