@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.commandbase.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.pedropathing.follower.Follower;
+import com.pedropathing.pathgen.Path;
+import com.pedropathing.pathgen.PathChain;
 
-import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Path;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
 
 // Thanks Powercube/Watt-sUP 16166 we copied verbatim
 public class FollowPathCommand extends CommandBase {

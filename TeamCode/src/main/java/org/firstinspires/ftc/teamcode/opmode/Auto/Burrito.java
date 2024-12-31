@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.opmode.Auto;
 
 import java.util.ArrayList;
 
-import static org.firstinspires.ftc.teamcode.commandbase.Deposit.depositPivotState;
-import static org.firstinspires.ftc.teamcode.commandbase.Intake.intakePivotState;
+import static org.firstinspires.ftc.teamcode.commandbase.Deposit.*;
+import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -16,20 +16,19 @@ import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
+import com.pedropathing.localization.Pose;
+import com.pedropathing.pathgen.BezierCurve;
+import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.PathChain;
+import com.pedropathing.pathgen.Point;
+import com.pedropathing.util.Drawing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierCurve;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
-import org.firstinspires.ftc.teamcode.pedroPathing.util.DashboardPoseTracker;
-import org.firstinspires.ftc.teamcode.pedroPathing.util.Drawing;
+import com.pedropathing.util.DashboardPoseTracker;
 import org.firstinspires.ftc.teamcode.commandbase.commands.*;
 
 @Config
@@ -274,8 +273,8 @@ public class Burrito extends CommandOpMode {
                 )
         );
 
-        dashboardPoseTracker = new DashboardPoseTracker(robot.follower.poseUpdater);
-        Drawing.drawRobot(robot.follower.poseUpdater.getPose(), "#4CAF50");
+        dashboardPoseTracker = new DashboardPoseTracker(robot.poseUpdater);
+        Drawing.drawRobot(robot.follower.getPose(), "#4CAF50");
         Drawing.sendPacket();
 
     }
@@ -307,7 +306,7 @@ public class Burrito extends CommandOpMode {
         // Pathing telemetry
         dashboardPoseTracker.update();
         Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
-        Drawing.drawRobot(robot.follower.poseUpdater.getPose(), "#4CAF50");
+        Drawing.drawRobot(robot.follower.getPose(), "#4CAF50");
         Drawing.sendPacket();
 
         // DO NOT REMOVE! Removing this will return stale data since bulk caching is on Manual mode

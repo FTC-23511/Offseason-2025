@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.depositInit;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.pedropathing.localization.Pose;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.hardware.Globals;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
+
 
 import java.util.ArrayList;
 import java.util.Objects;

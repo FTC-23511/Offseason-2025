@@ -1,16 +1,14 @@
 package org.firstinspires.ftc.teamcode.opmode.Auto;
 
-import static org.firstinspires.ftc.teamcode.commandbase.Deposit.depositPivotState;
-import static org.firstinspires.ftc.teamcode.commandbase.Intake.intakePivotState;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.AUTO_ASCENT_HEIGHT;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.DepositInit;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_BUCKET_HEIGHT;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_SPECIMEN_ATTACH_HEIGHT;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_SPECIMEN_HEIGHT;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.depositInit;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
+import static org.firstinspires.ftc.teamcode.commandbase.Deposit.*;
+import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
+import com.pedropathing.localization.Pose;
+import com.pedropathing.pathgen.BezierCurve;
+import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.PathChain;
+import com.pedropathing.pathgen.Point;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
@@ -21,6 +19,8 @@ import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
+import com.pedropathing.util.DashboardPoseTracker;
+import com.pedropathing.util.Drawing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -32,13 +32,6 @@ import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.UndoTransfer;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierCurve;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
-import org.firstinspires.ftc.teamcode.pedroPathing.util.DashboardPoseTracker;
-import org.firstinspires.ftc.teamcode.pedroPathing.util.Drawing;
 
 import java.util.ArrayList;
 
@@ -274,8 +267,8 @@ public class BurritoBowl extends CommandOpMode {
         );
 
 
-        dashboardPoseTracker = new DashboardPoseTracker(robot.follower.poseUpdater);
-        Drawing.drawRobot(robot.follower.poseUpdater.getPose(), "#4CAF50");
+        dashboardPoseTracker = new DashboardPoseTracker(robot.poseUpdater);
+        Drawing.drawRobot(robot.poseUpdater.getPose(), "#4CAF50");
         Drawing.sendPacket();
 
     }
@@ -307,7 +300,7 @@ public class BurritoBowl extends CommandOpMode {
         // Pathing telemetry
         dashboardPoseTracker.update();
         Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
-        Drawing.drawRobot(robot.follower.poseUpdater.getPose(), "#4CAF50");
+        Drawing.drawRobot(robot.poseUpdater.getPose(), "#4CAF50");
         Drawing.sendPacket();
 
         // DO NOT REMOVE! Removing this will return stale data since bulk caching is on Manual mode

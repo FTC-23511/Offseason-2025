@@ -7,9 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.PoseUpdater;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
+
+import com.pedropathing.localization.Pose;
 
 import java.util.ArrayList;
 import java.util.Objects;

@@ -33,18 +33,28 @@ repositories {
     maven {
         url = 'https://jitpack.io'
     }
+    maven {
+        url= 'https://maven.pedropathing.com/'
+    }
 }
 
 dependencies {
     implementation project(':FtcRobotController')
+    annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 
     // RoadRunner v1.0.x & FTC Dashboard
     implementation "com.acmerobotics.roadrunner:core:1.0.0"
     implementation "com.acmerobotics.roadrunner:actions:1.0.0"
     implementation "com.acmerobotics.dashboard:dashboard:0.4.16"
 
-    // OTOS
-     implementation "com.github.jdhs-ftc:road-runner-ftc-otos:a425f97d46"
+    // Pedro Pathing
+    implementation 'com.pedropathing:pedro:1.0.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
+    //noinspection DifferentStdlibGradleVersion
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.20'
+
+    // j5's RR OTOS
+    //  implementation "com.github.jdhs-ftc:road-runner-ftc-otos:a425f97d46"
     // implementation "page.j5155.roadrunner:ftc-otos:0.1.0+0.1.14"
 
     // FTCLib

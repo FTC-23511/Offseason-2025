@@ -10,6 +10,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.pedropathing.localization.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -17,7 +18,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.commandbase.commands.*;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.hardware.TelemetryData;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
+
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 

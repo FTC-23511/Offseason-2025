@@ -18,7 +18,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.teamcode.commandbase.commands.MT2Relocalization;
 import org.firstinspires.ftc.teamcode.hardware.Globals;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 
 import java.util.ArrayList;
 import java.util.Objects;

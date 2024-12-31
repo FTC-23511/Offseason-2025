@@ -32,16 +32,16 @@ public class Drive extends SubsystemBase {
     public void setHang(HangState hangState) {
         switch (hangState) {
             case HANG_RETRACTED:
-                robot.leftHang.setPosition(HANG_RETRACTED_POS);
-                robot.rightHang.setPosition(HANG_RETRACTED_POS);
+                robot.leftHang.setPower(HANG_RETRACTED_POS);
+                robot.rightHang.setPower(HANG_RETRACTED_POS);
                 break;
             case HANG_EXTENDED:
-                robot.leftHang.setPosition(HANG_EXTENDED_POS);
-                robot.rightHang.setPosition(HANG_EXTENDED_POS);
+                robot.leftHang.setPower(HANG_EXTENDED_POS);
+                robot.rightHang.setPower(HANG_EXTENDED_POS);
                 break;
             case HANG_SWINGING:
-                robot.leftHang.setPosition(HANG_SWINGING_POS);
-                robot.rightHang.setPosition(HANG_SWINGING_POS);
+                robot.leftHang.setPower(HANG_SWINGING_POS);
+                robot.rightHang.setPower(HANG_SWINGING_POS);
                 break;
         }
 

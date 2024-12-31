@@ -20,6 +20,8 @@ import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
+
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -29,12 +31,12 @@ import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.UndoTransfer;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
-import org.firstinspires.ftc.teamcode.pedroPathing.util.DashboardPoseTracker;
-import org.firstinspires.ftc.teamcode.pedroPathing.util.Drawing;
+import com.pedropathing.localization.Pose;
+import com.pedropathing.util.Drawing;
+import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.PathChain;
+import com.pedropathing.pathgen.Point;
+import com.pedropathing.util.DashboardPoseTracker;
 
 import java.util.ArrayList;
 
@@ -128,9 +130,9 @@ public class SubAuto extends CommandOpMode {
                                                 new WaitCommand(1000)
                                         ),
                                         new FollowPathCommand(robot.follower, paths.get(0)),
-                                        new FollowPathCommand(robot.follower, robot.follower.jiggle(2.0)),
+                                        new FollowPathCommand(robot.follower, robot.jiggle(2.0)),
                                         new WaitCommand(500),
-                                        new FollowPathCommand(robot.follower, robot.follower.jiggle(-2.0))
+                                        new FollowPathCommand(robot.follower, robot.jiggle(-2.0))
                                 ),
                                 new WaitCommand(4000),
                                 new WaitUntilCommand(robot.intake::hasSample)
@@ -150,7 +152,7 @@ public class SubAuto extends CommandOpMode {
                                         new FollowPathCommand(robot.follower, paths.get(0)),
                                         new WaitCommand(500),
                                         new ParallelCommandGroup(
-                                        new FollowPathCommand(robot.follower, robot.follower.jiggle(2.5)),
+                                        new FollowPathCommand(robot.follower, robot.jiggle(2.5)),
 
                                                 new ParallelRaceGroup(
                                                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, FORWARD, MAX_EXTENDO_EXTENSION, false),
@@ -159,7 +161,7 @@ public class SubAuto extends CommandOpMode {
                                                 )
                                         ),
 
-                                        new FollowPathCommand(robot.follower, robot.follower.jiggle(-5)),
+                                        new FollowPathCommand(robot.follower, robot.jiggle(-5)),
 
                                         new SetIntake(robot, Intake.IntakePivotState.INTAKE_READY, FORWARD, 50, true),
 
@@ -169,7 +171,7 @@ public class SubAuto extends CommandOpMode {
                                                 new WaitUntilCommand(robot.intake::hasSample)
                                         ),
 
-                                        new FollowPathCommand(robot.follower, robot.follower.jiggle(5))
+                                        new FollowPathCommand(robot.follower, robot.jiggle(5))
                                     )
                         ),
 
@@ -177,8 +179,8 @@ public class SubAuto extends CommandOpMode {
                 )
         );
 
-        dashboardPoseTracker = new DashboardPoseTracker(robot.follower.poseUpdater);
-        Drawing.drawRobot(robot.follower.poseUpdater.getPose(), "#4CAF50");
+        dashboardPoseTracker = new DashboardPoseTracker(robot.poseUpdater);
+        Drawing.drawRobot(robot.poseUpdater.getPose(), "#4CAF50");
         Drawing.sendPacket();
 
     }
@@ -210,7 +212,7 @@ public class SubAuto extends CommandOpMode {
         // Pathing telemetry
         dashboardPoseTracker.update();
         Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
-        Drawing.drawRobot(robot.follower.poseUpdater.getPose(), "#4CAF50");
+        Drawing.drawRobot(robot.poseUpdater.getPose(), "#4CAF50");
         Drawing.sendPacket();
 
         // DO NOT REMOVE! Removing this will return stale data since bulk caching is on Manual mode
