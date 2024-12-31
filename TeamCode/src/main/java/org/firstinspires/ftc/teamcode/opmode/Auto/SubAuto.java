@@ -1,13 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmode.Auto;
 
-import static org.firstinspires.ftc.teamcode.commandbase.Deposit.depositPivotState;
-import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState.FORWARD;
-import static org.firstinspires.ftc.teamcode.commandbase.Intake.intakePivotState;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.DepositInit;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.MAX_EXTENDO_EXTENSION;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.depositInit;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
+import static org.firstinspires.ftc.teamcode.commandbase.Deposit.*;
+import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState.*;
+import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
@@ -30,6 +26,7 @@ import org.firstinspires.ftc.teamcode.commandbase.commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.UndoTransfer;
+import org.firstinspires.ftc.teamcode.commandbase.solversCommands.SolversSequentialCommandGroup;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.util.Drawing;
@@ -118,13 +115,13 @@ public class SubAuto extends CommandOpMode {
                 // DO NOT REMOVE: updates follower to follow path
                 new RunCommand(() -> robot.follower.update()),
 
-                new SequentialCommandGroup(
+                new SolversSequentialCommandGroup(
                         // Need to get to sub clear position and sub clear first tho
 
                         new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)),
 
                         new ParallelRaceGroup(
-                                new SequentialCommandGroup(
+                                new SolversSequentialCommandGroup(
                                         new ParallelRaceGroup(
                                                 new SetIntake(robot, Intake.IntakePivotState.INTAKE, FORWARD, MAX_EXTENDO_EXTENSION, false),
                                                 new WaitCommand(1000)
@@ -146,7 +143,7 @@ public class SubAuto extends CommandOpMode {
 
                         new ParallelRaceGroup(
                                 new WaitUntilCommand(Intake::correctSampleDetected),
-                                new SequentialCommandGroup(
+                                new SolversSequentialCommandGroup(
                                         new SetIntake(robot, Intake.IntakePivotState.INTAKE_READY, FORWARD, 50, true),
 
                                         new FollowPathCommand(robot.follower, paths.get(0)),
