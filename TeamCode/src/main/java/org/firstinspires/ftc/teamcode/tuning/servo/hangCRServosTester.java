@@ -39,7 +39,7 @@ public class hangCRServosTester extends OpMode {
         robot.rightHang.setPower(CENTER_SERVO_POWER);
 
 
-        CENTER_SERVO_POWER = Math.max(Math.min(CENTER_SERVO_POWER, 1), 0);
+        CENTER_SERVO_POWER = Math.max(Math.min(CENTER_SERVO_POWER, 1), -1);
 
         currentGamepad1.copy(gamepad1);
 

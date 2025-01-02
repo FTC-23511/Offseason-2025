@@ -2,8 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 
 import com.acmerobotics.dashboard.config.Config;
-
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
+import com.pedropathing.localization.Pose;
 
 @Config
 public class Globals {
@@ -50,9 +49,9 @@ public class Globals {
     public static final double SAMPLE_DISTANCE_THRESHOLD = 2.15;
 
     // Intake Pivot
-    public static double INTAKE_PIVOT_TRANSFER_POS = 0.25;
-    public static double INTAKE_PIVOT_INTAKE_POS = 0.835;
-    public static double INTAKE_PIVOT_READY_INTAKE_POS = 0.675;
+    public static double INTAKE_PIVOT_TRANSFER_POS = 0.01;
+    public static double INTAKE_PIVOT_INTAKE_POS = 0.70;
+    public static double INTAKE_PIVOT_READY_INTAKE_POS = 0.50;
 
     // Intake Extendo
     public static double MAX_EXTENDO_EXTENSION = 480;
@@ -62,8 +61,10 @@ public class Globals {
     public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.38;
     public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.58;
     public static double DEPOSIT_PIVOT_SCORING_POS = 1.0;
-    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 0.765;
-    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.00;
+    public static double DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS = 0.05;
+    public static double DEPOSIT_PIVOT_SPECIMEN_BACK_INTAKE_POS = 0.765;
+    public static double DEPOSIT_PIVOT_SPECIMEN_FRONT_SCORING_POS = 0.00;
+    public static double DEPOSIT_PIVOT_SPECIMEN_BACK_SCORING_POS = 0.00;
 
     // 0.84 sec/360° -> 0.828 sec/355° -> (gear ratio of 5:4) 1.035 sec/355° -> 1035 milliseconds/355°
     public static double DEPOSIT_PIVOT_MOVEMENT_TIME = 1035 + 200; // 200 milliseconds of buffer
@@ -71,14 +72,14 @@ public class Globals {
     public static double INTAKE_PIVOT_MOVEMENT_TIME = 828 + 200; // 200 milliseconds of buffer
 
     // Deposit Claw
-    public static double DEPOSIT_CLAW_OPEN_POS = 0.65;
-    public static double DEPOSIT_CLAW_CLOSE_POS = 0.4;
+    public static double DEPOSIT_CLAW_OPEN_POS = 0.48;
+    public static double DEPOSIT_CLAW_CLOSE_POS = 0.18;
 
     // Deposit Wrist
     public static double WRIST_SCORING = 0.5;
     public static double WRIST_FRONT_SPECIMEN_SCORING = 0.5;
     public static double WRIST_BACK_SPECIMEN_SCORING = 0.5;
-    public static double WRIST_FRONT_SPECIMEN_INTAKE = 0.5;
+    public static double WRIST_FRONT_SPECIMEN_INTAKE = 0.39;
     public static double WRIST_BACK_SPECIMEN_INTAKE = 0.5;
     public static double WRIST_TRANSFER = 0.5;
     public static double WRIST_MIDDLE_HOLD = 0.5;

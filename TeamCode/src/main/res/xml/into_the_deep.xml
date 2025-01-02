@@ -8,7 +8,7 @@
             <Servo name="rightIntakePivot" port="0"/>
 <!--        gearboxSwitcher not plugged in right now -->
             <Servo name="gearboxSwitcher" port="2"/>
-            <Servo name="leftHang" port="3"/>
+            <ContinuousRotationServo name="leftHang" port="3"/>
             <Servo name="leftIntakePivot" port="5"/>
 
             <goBILDA5202SeriesMotor name="liftTop" port="0"/>-->
@@ -36,7 +36,7 @@
             <Servo name="depositClaw" port="2"/>
             <Servo name="rightDepositPivot" port="3"/>
             <Servo name="depositWrist" port="4"/>
-            <Servo name="rightHang" port="5"/>
+            <ContinuousRotationServo name="rightHang" port="5"/>
 
         </LynxModule>
     </LynxUsbDevice>

@@ -100,28 +100,28 @@ public class Deposit extends SubsystemBase {
     }
 
     public void setPivot(DepositPivotState depositPivotState) {
-        switch (depositPivotState) {
-            case SCORING:
-                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SCORING_POS);
-                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SCORING_POS);
-                break;
-            case SPECIMEN_SCORING:
-                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_SCORING_POS);
-                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_SCORING_POS);
-                break;
-            case TRANSFER:
-                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
-                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
-                break;
-            case SPECIMEN_INTAKE:
-                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS);
-                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS);
-                break;
-            case MIDDLE_HOLD:
-                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_MIDDLE_POS);
-                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_MIDDLE_POS);
-                break;
-        }
+//        switch (depositPivotState) {
+//            case SCORING:
+//                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SCORING_POS);
+//                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SCORING_POS);
+//                break;
+//            case SPECIMEN_SCORING:
+//                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS);
+//                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_SCORING_POS);
+//                break;
+//            case TRANSFER:
+//                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
+//                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
+//                break;
+//            case SPECIMEN_INTAKE:
+//                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS);
+//                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS);
+//                break;
+//            case MIDDLE_HOLD:
+//                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_MIDDLE_POS);
+//                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_MIDDLE_POS);
+//                break;
+//        }
 
         Deposit.depositPivotState = depositPivotState;
     }

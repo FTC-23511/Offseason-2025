@@ -22,6 +22,8 @@ public class extendoPIDF extends OpMode {
     public static int setPoint = 0;
     public static double maxPowerConstant = 1;
 
+    public static int divideConstant = 65;
+
     private static final PIDFController extendoPIDF = new PIDFController(p,i,d, f);
     private final Robot robot = Robot.getInstance();
 
@@ -46,7 +48,7 @@ public class extendoPIDF extends OpMode {
     public void loop() {
         timer.reset();
 
-        motorPos = robot.extensionEncoder.getPosition();
+        motorPos = robot.extensionEncoder.getPosition() /  divideConstant;
 
         extendoPIDF.setP(p);
         extendoPIDF.setI(i);

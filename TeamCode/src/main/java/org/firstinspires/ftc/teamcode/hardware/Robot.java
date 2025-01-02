@@ -10,7 +10,6 @@ import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -70,7 +69,7 @@ public class Robot {
 
     public LynxModule ControlHub;
 
-    public Limelight3A limelight;
+//    public Limelight3A limelight;
 
     public Deposit deposit;
     public Intake intake;
@@ -128,8 +127,7 @@ public class Robot {
 
         liftEncoder = new Motor(hardwareMap, "liftTop").encoder;
         extensionEncoder = new Motor(hardwareMap, "extension").encoder;
-
-//        liftEncoder.setDirection(Motor.Direction.REVERSE);
+        liftEncoder.setDirection(Motor.Direction.REVERSE);
 
         leftIntakePivot = new SolversServo(hardwareMap.get(Servo.class, "leftIntakePivot"), 0.01);
         rightIntakePivot = new SolversServo(hardwareMap.get(Servo.class, "rightIntakePivot"), 0.01);
@@ -143,13 +141,13 @@ public class Robot {
 
         leftIntakePivot.setDirection(Servo.Direction.REVERSE);
         leftDepositPivot.setDirection(Servo.Direction.REVERSE);
-        leftHang.setDirection(CRServo.Direction.REVERSE);
+        rightHang.setDirection(CRServo.Direction.REVERSE);
 
         colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
 
         colorSensor.enableLed(true);
 
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+//        limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
         initializeImu(hardwareMap);
 
@@ -182,8 +180,8 @@ public class Robot {
             follower.startTeleopDrive();
             INTAKE_HOLD_SPEED = 0;
         } else {
-            limelight.pipelineSwitch(1);
-            limelight.start();
+//            limelight.pipelineSwitch(1);
+//            limelight.start();
             INTAKE_HOLD_SPEED = 0.15;
         }
     }

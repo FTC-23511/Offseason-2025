@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 public class Transfer extends SequentialCommandGroup {
     public Transfer(Robot robot) {
         addCommands(
-                new SetDeposit(robot, Deposit.DepositPivotState.TRANSFER, 0, true),
+                new SetDeposit(robot, Deposit.DepositPivotState.TRANSFER, Deposit.DepositWristState.TRANSFER, 0, true),
                 new WaitCommand(300),
                 new InstantCommand(() -> robot.deposit.setClawOpen(false)),
                 new WaitCommand(200)

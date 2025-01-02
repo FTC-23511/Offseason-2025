@@ -31,17 +31,19 @@ public class depositServosTuner extends OpMode {
         robot.leftDepositPivot.setPosition(CENTER_SERVO_POS);
         robot.rightDepositPivot.setPosition(CENTER_SERVO_POS);
         robot.depositWrist.setPosition(WRIST_SERVO_POS);
+        robot.depositClaw.setPosition(CLAW_SERVO_POS);
     }
 
     @Override
     public void loop() {
-
         robot.leftDepositPivot.setPosition(CENTER_SERVO_POS);
         robot.rightDepositPivot.setPosition(CENTER_SERVO_POS);
         robot.depositWrist.setPosition(WRIST_SERVO_POS);
+        robot.depositClaw.setPosition(CLAW_SERVO_POS);
 
         CENTER_SERVO_POS = Math.max(Math.min(CENTER_SERVO_POS, 1), 0);
         WRIST_SERVO_POS = Math.max(Math.min(WRIST_SERVO_POS, 1), 0);
+        CLAW_SERVO_POS = Math.max(Math.min(CLAW_SERVO_POS, 1), 0);
 
         currentGamepad1.copy(gamepad1);
 
@@ -54,7 +56,8 @@ public class depositServosTuner extends OpMode {
 
         telemetry.addData("leftDepositPivot getPosition", robot.leftDepositPivot.getPosition());
         telemetry.addData("rightDepositPivot getPosition",robot.rightDepositPivot.getPosition());
-        telemetry.addData("servoPos", round(CENTER_SERVO_POS, 2));
+        telemetry.addData("depositWrist getPosition",robot.depositWrist.getPosition());
+        telemetry.addData("depositClaw getPosition",robot.depositClaw.getPosition());
         telemetry.update();
 
         // DO NOT REMOVE! Removing this will return stale data since bulk caching is on Manual mode

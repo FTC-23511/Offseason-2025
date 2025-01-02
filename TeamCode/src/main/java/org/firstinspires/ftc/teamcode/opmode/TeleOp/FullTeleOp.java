@@ -19,9 +19,6 @@ import org.firstinspires.ftc.teamcode.commandbase.commands.*;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.hardware.TelemetryData;
 
-import org.firstinspires.ftc.teamcode.commandbase.Deposit;
-import org.firstinspires.ftc.teamcode.commandbase.Intake;
-
 @TeleOp
 public class FullTeleOp extends CommandOpMode {
     public GamepadEx driver;
@@ -74,14 +71,14 @@ public class FullTeleOp extends CommandOpMode {
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new UninterruptibleCommand(
-                        new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, ENDGAME_ASCENT_HEIGHT, false)
+                        new SetDeposit(robot, DepositPivotState.SPECIMEN_SCORING, DepositWristState.SCORING, ENDGAME_ASCENT_HEIGHT, false)
                 )
         );
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new UninterruptibleCommand(
                         new ParallelCommandGroup(
-                                new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, 0, false),
+                                new SetDeposit(robot, DepositPivotState.SPECIMEN_SCORING, DepositWristState.FRONT_SPECIMEN_SCORING, 0, false),
                                 new SetIntake(robot, intakePivotState, intakeMotorState, 0, false)
 
                         )
@@ -91,10 +88,10 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.INTAKE_READY)));
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
-                new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.TRANSFER)));
+                new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.TRANSFER)));
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
-                new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)));
+                new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.INTAKE)));
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
                 new UninterruptibleCommand(
@@ -117,25 +114,25 @@ public class FullTeleOp extends CommandOpMode {
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new UninterruptibleCommand(
-                        new SetDeposit(robot, DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false)
+                        new SetDeposit(robot, DepositPivotState.SCORING, DepositWristState.SCORING, HIGH_BUCKET_HEIGHT, false)
                 )
         );
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new UninterruptibleCommand(
-                        new SetDeposit(robot, DepositPivotState.SCORING, LOW_BUCKET_HEIGHT, false)
+                        new SetDeposit(robot, DepositPivotState.SCORING, DepositWristState.SCORING, LOW_BUCKET_HEIGHT, false)
                 )
         );
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
                 new UninterruptibleCommand(
-                        new SetDeposit(robot, DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false)
+                        new SetDeposit(robot, DepositPivotState.SPECIMEN_SCORING, DepositWristState.FRONT_SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false)
                 )
         );
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
                 new UninterruptibleCommand(
-                        new SetDeposit(robot, DepositPivotState.SPECIMEN_INTAKE, 0, true)
+                        new SetDeposit(robot, DepositPivotState.SPECIMEN_INTAKE, DepositWristState.BACK_SPECIMEN_INTAKE, 0, true)
                 )
         );
 
@@ -147,7 +144,7 @@ public class FullTeleOp extends CommandOpMode {
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
                 new UninterruptibleCommand(
-                        new SetDeposit(robot, DepositPivotState.TRANSFER, SLIDES_PIVOT_READY_EXTENSION + 50, true)
+                        new SetDeposit(robot, DepositPivotState.TRANSFER, DepositWristState.TRANSFER, SLIDES_PIVOT_READY_EXTENSION + 50, true)
                 )
         );
 
@@ -193,7 +190,7 @@ public class FullTeleOp extends CommandOpMode {
         robot.follower.update();
 
         if (gamepad1.right_trigger > 0.01 &&
-                !depositPivotState.equals(Deposit.DepositPivotState.TRANSFER) &&
+                !depositPivotState.equals(DepositPivotState.TRANSFER) &&
                 robot.extensionEncoder.getPosition() <= (MAX_EXTENDO_EXTENSION - 5)) {
 
             robot.intake.target += 5;
