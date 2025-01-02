@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.acmerobotics.dashboard.config.Config;
 
+import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
+
 @Config
 public class Globals {
     public enum OpModeType {
@@ -32,6 +34,10 @@ public class Globals {
     public static OpModeType opModeType;
     public static AllianceColor allianceColor;
     public static PoseLocationName poseLocationName;
+
+    public static Pose subSample1;
+    public static Pose subSample2;
+
 
     // Robot Width and Length (in inches)
     public static double ROBOT_WIDTH = 11.5;
