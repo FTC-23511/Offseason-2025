@@ -9,6 +9,7 @@ import com.pedropathing.localization.PoseUpdater;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
+import com.pedropathing.util.Constants;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
@@ -167,12 +168,15 @@ public class Robot {
         intake = new Intake();
         deposit = new Deposit();
         drive = new Drive();
-        follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
+
+        Constants.setConstants(FConstants.class, LConstants.class);
+
+        follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose(0, 0, 0));
 
         FollowerConstants.useBrakeModeInTeleOp = true;
 
-        poseUpdater = new PoseUpdater(hardwareMap, FConstants.class, LConstants.class);
+        poseUpdater = new PoseUpdater(hardwareMap);
 
         if (opModeType.equals(OpModeType.TELEOP)) {
             follower.startTeleopDrive();

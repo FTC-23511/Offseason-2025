@@ -7,6 +7,7 @@ import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
+import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
@@ -17,7 +18,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
 
 /**
- * This is the Circle autonomous OpMode.
+ * This is the Triangle autonomous OpMode.
  * It runs the robot in a triangle, with the starting point being the bottom-middle point.
  *
  * @author Baron Henderson - 20077 The Indubitables
@@ -57,7 +58,8 @@ public class Triangle extends OpMode {
      */
     @Override
     public void init() {
-        follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
+        Constants.setConstants(FConstants.class, LConstants.class);
+        follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
 
         triangle = follower.pathBuilder()
