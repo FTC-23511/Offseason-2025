@@ -6,16 +6,16 @@ import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.ConditionalCommand;
-import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
-import com.arcrobotics.ftclib.command.ParallelRaceGroup;
-import com.arcrobotics.ftclib.command.RunCommand;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
-import com.arcrobotics.ftclib.command.WaitUntilCommand;
+import com.seattlesolvers.solverslib.command.CommandOpMode;
+import com.seattlesolvers.solverslib.command.CommandScheduler;
+import com.seattlesolvers.solverslib.command.ConditionalCommand;
+import com.seattlesolvers.solverslib.command.InstantCommand;
+import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
+import com.seattlesolvers.solverslib.command.ParallelRaceGroup;
+import com.seattlesolvers.solverslib.command.RunCommand;
+import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
+import com.seattlesolvers.solverslib.command.WaitCommand;
+import com.seattlesolvers.solverslib.command.WaitUntilCommand;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -26,7 +26,6 @@ import org.firstinspires.ftc.teamcode.commandbase.commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.UndoTransfer;
-import org.firstinspires.ftc.teamcode.commandbase.solversCommands.SolversSequentialCommandGroup;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.util.Drawing;
@@ -115,13 +114,13 @@ public class SubAuto extends CommandOpMode {
                 // DO NOT REMOVE: updates follower to follow path
                 new RunCommand(() -> robot.follower.update()),
 
-                new SolversSequentialCommandGroup(
+                new SequentialCommandGroup(
                         // Need to get to sub clear position and sub clear first tho
 
                         new InstantCommand(() -> robot.intake.setPivot(Intake.IntakePivotState.INTAKE)),
 
                         new ParallelRaceGroup(
-                                new SolversSequentialCommandGroup(
+                                new SequentialCommandGroup(
                                         new ParallelRaceGroup(
                                                 new SetIntake(robot, Intake.IntakePivotState.INTAKE, FORWARD, MAX_EXTENDO_EXTENSION, false),
                                                 new WaitCommand(1000)
@@ -143,7 +142,7 @@ public class SubAuto extends CommandOpMode {
 
                         new ParallelRaceGroup(
                                 new WaitUntilCommand(Intake::correctSampleDetected),
-                                new SolversSequentialCommandGroup(
+                                new SequentialCommandGroup(
                                         new SetIntake(robot, Intake.IntakePivotState.INTAKE_READY, FORWARD, 50, true),
 
                                         new FollowPathCommand(robot.follower, paths.get(0)),

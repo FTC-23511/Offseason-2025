@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
-import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.localization.PoseUpdater;

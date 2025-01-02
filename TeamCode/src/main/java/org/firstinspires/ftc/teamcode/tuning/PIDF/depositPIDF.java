@@ -5,7 +5,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.arcrobotics.ftclib.controller.PIDFController;
+import com.seattlesolvers.solverslib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -18,10 +18,10 @@ import org.firstinspires.ftc.teamcode.tuning.example.ExampleRobot;
 @Config
 @TeleOp
 public class depositPIDF extends OpMode {
-    public static double p = 0.011;
+    public static double p = 0.00; // Old: 0.011
     public static double i = 0;
-    public static double d = 0.0002;
-    public static double f = 0.00016;
+    public static double d = 0.000; // Old: 0.0002
+    public static double f = 0.000; // Old: 0.00016
 
     public static int setPoint = 0;
     public static double maxPowerConstant = 1.0;

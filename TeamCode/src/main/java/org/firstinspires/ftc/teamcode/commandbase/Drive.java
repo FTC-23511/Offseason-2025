@@ -2,8 +2,7 @@ package org.firstinspires.ftc.teamcode.commandbase;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
-
-import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
