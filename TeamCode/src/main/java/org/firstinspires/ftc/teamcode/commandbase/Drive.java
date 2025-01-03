@@ -10,9 +10,9 @@ public class Drive extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
 
     public enum HangState {
-        HANG_RETRACTED,
-        HANG_EXTENDED,
-        HANG_SWINGING
+        RETRACT_HANG,
+        EXTEND_HANG,
+        STOP_HANG
     }
 
     public enum GearboxState {
@@ -24,23 +24,23 @@ public class Drive extends SubsystemBase {
     public static GearboxState gearboxState;
 
     public void init() {
-        setHang(HangState.HANG_RETRACTED);
+        setHang(HangState.RETRACT_HANG);
         setGearbox(GearboxState.DEPOSIT_GEAR);
     }
 
     public void setHang(HangState hangState) {
         switch (hangState) {
-            case HANG_RETRACTED:
-                robot.leftHang.setPower(HANG_RETRACTED_POS);
-                robot.rightHang.setPower(HANG_RETRACTED_POS);
+            case RETRACT_HANG:
+                robot.leftHang.setPower(-LEFT_HANG_FULL_POWER);
+                robot.rightHang.setPower(RIGHT_HANG_FULL_POWER);
                 break;
-            case HANG_EXTENDED:
-                robot.leftHang.setPower(HANG_EXTENDED_POS);
-                robot.rightHang.setPower(HANG_EXTENDED_POS);
+            case EXTEND_HANG:
+                robot.leftHang.setPower(LEFT_HANG_FULL_POWER);
+                robot.rightHang.setPower(RIGHT_HANG_FULL_POWER);
                 break;
-            case HANG_SWINGING:
-                robot.leftHang.setPower(HANG_SWINGING_POS);
-                robot.rightHang.setPower(HANG_SWINGING_POS);
+            case STOP_HANG:
+                robot.leftHang.setPower(0);
+                robot.rightHang.setPower(0);
                 break;
         }
 

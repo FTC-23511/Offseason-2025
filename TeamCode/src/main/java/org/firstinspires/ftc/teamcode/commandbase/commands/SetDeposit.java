@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 public class SetDeposit extends CommandBase {
     private final Robot robot;
     private final Deposit.DepositPivotState pivotState;
-    private final Deposit.DepositWristState wristState;
     private final double target;
     private final boolean clawOpen;
 
@@ -23,10 +22,9 @@ public class SetDeposit extends CommandBase {
     private double previousServoPos;
     private double currentServoPos;
 
-    public SetDeposit(Robot robot, Deposit.DepositPivotState pivotState, Deposit.DepositWristState wristState, double target, boolean clawOpen) {
+    public SetDeposit(Robot robot, Deposit.DepositPivotState pivotState, double target, boolean clawOpen) {
         this.robot = robot;
         this.pivotState = pivotState;
-        this.wristState = wristState;
         this.target = target;
         this.clawOpen = clawOpen;
         this.timer = new ElapsedTime();
@@ -37,7 +35,7 @@ public class SetDeposit extends CommandBase {
     @Override
     public void initialize() {
 
-        if (Deposit.depositPivotState.equals(this.pivotState) && Deposit.depositWristState.equals(this.wristState) && robot.deposit.target == this.target) {
+        if (Deposit.depositPivotState.equals(this.pivotState) && robot.deposit.target == this.target) {
             index = 3;
         } else {
             // Always close claw first in case of any arm movements that need to be done
@@ -49,7 +47,7 @@ public class SetDeposit extends CommandBase {
                 robot.deposit.setSlideTarget(target);
 
                 // Index for moving the arm
-                if (pivotState.equals(Deposit.DepositPivotState.SPECIMEN_SCORING)) {
+                if (pivotState.equals(Deposit.DepositPivotState.FRONT_SPECIMEN_SCORING) || pivotState.equals(Deposit.DepositPivotState.BACK_SPECIMEN_SCORING)) {
                     index = 0.5;
                 } else {
                     index = 1;
@@ -84,7 +82,6 @@ public class SetDeposit extends CommandBase {
             previousServoPos = robot.leftDepositPivot.getPosition();
 
             robot.deposit.setPivot(pivotState);
-            robot.deposit.setWrist(wristState);
 
             currentServoPos = robot.leftDepositPivot.getPosition();
             timer.reset();
@@ -111,7 +108,7 @@ public class SetDeposit extends CommandBase {
                     new UninterruptibleCommand(
                             new SequentialCommandGroup(
                                     new RealTransfer(robot),
-                                    new SetDeposit(robot, pivotState, wristState, target, clawOpen)
+                                    new SetDeposit(robot, pivotState, target, clawOpen)
                             )
                     )
             );

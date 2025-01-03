@@ -22,7 +22,7 @@ public class SetRobot extends ParallelCommandGroup {
             case MIDDLE_RESTING:
                 if (!Robot.robotState.equals(Robot.RobotState.TRANSFERRED)) {
                     addCommands(
-                            new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, Deposit.DepositWristState.MIDDLE_HOLD, 0, true),
+                            new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
                             new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, true)
                     );
 //                    addRequirements(robot.intake, robot.deposit);
@@ -49,7 +49,7 @@ public class SetRobot extends ParallelCommandGroup {
             case SPECIMEN_SCORING:
                 if (Robot.robotState.equals(Robot.RobotState.SPECIMEN_INTAKING)) {
                     addCommands(
-                            new SetDeposit(robot, Deposit.DepositPivotState.SPECIMEN_SCORING, Deposit.DepositWristState.FRONT_SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false)
+                            new SetDeposit(robot, Deposit.DepositPivotState.FRONT_SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false)
                     );
                     addRequirements(robot.deposit);
 

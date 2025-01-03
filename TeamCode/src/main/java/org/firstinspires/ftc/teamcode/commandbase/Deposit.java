@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 public class Deposit extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
-
+    private final double divideConstant = 30.0;
     private static final PIDFController slidePIDF = new PIDFController(0.0125,0,0.0002, 0.00016);
 
     // Between open and closed
@@ -25,14 +25,6 @@ public class Deposit extends SubsystemBase {
 
     public enum DepositPivotState {
         SCORING,
-        SPECIMEN_SCORING,
-        TRANSFER,
-        MIDDLE_HOLD,
-        SPECIMEN_INTAKE
-    }
-
-    public enum DepositWristState {
-        SCORING,
         FRONT_SPECIMEN_SCORING,
         BACK_SPECIMEN_SCORING,
         FRONT_SPECIMEN_INTAKE,
@@ -40,9 +32,7 @@ public class Deposit extends SubsystemBase {
         TRANSFER,
         MIDDLE_HOLD,
     }
-
     public static DepositPivotState depositPivotState;
-    public static DepositWristState depositWristState;
 
     public void init() {
         slidePIDF.setTolerance(12, 10);
@@ -53,7 +43,7 @@ public class Deposit extends SubsystemBase {
             if (depositInit.equals(DepositInit.BUCKET_SCORING)) {
                 setPivot(DepositPivotState.SCORING);
             } else {
-                setPivot(DepositPivotState.SPECIMEN_SCORING);
+                setPivot(DepositPivotState.FRONT_SPECIMEN_SCORING);
             }
             setClawOpen(false);
 
@@ -63,14 +53,18 @@ public class Deposit extends SubsystemBase {
         }
     }
 
+    public double getLiftScaledPosition() {
+        return robot.liftEncoder.getPosition() / divideConstant;
+    }
+
     public void setSlideTarget(double target) {
         this.target = Range.clip(target, 0, MAX_SLIDES_EXTENSION);
         slidePIDF.setSetPoint(target);
     }
 
     public void autoUpdateSlides() {
-        double power = slidePIDF.calculate(robot.liftEncoder.getPosition(), target);
-        slidesReached = slidePIDF.atSetPoint() || (robot.liftEncoder.getPosition() >= target && target == HIGH_BUCKET_HEIGHT);
+        double power = slidePIDF.calculate(getLiftScaledPosition(), target);
+        slidesReached = slidePIDF.atSetPoint() || (getLiftScaledPosition() >= target && target == HIGH_BUCKET_HEIGHT);
         slidesRetracted = (target <= 0) && slidesReached;
 
         // Just make sure it gets to fully retracted if target is 0
@@ -100,58 +94,44 @@ public class Deposit extends SubsystemBase {
     }
 
     public void setPivot(DepositPivotState depositPivotState) {
-//        switch (depositPivotState) {
-//            case SCORING:
-//                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SCORING_POS);
-//                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SCORING_POS);
-//                break;
-//            case SPECIMEN_SCORING:
-//                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS);
-//                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_SCORING_POS);
-//                break;
-//            case TRANSFER:
-//                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
-//                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
-//                break;
-//            case SPECIMEN_INTAKE:
-//                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS);
-//                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS);
-//                break;
-//            case MIDDLE_HOLD:
-//                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_MIDDLE_POS);
-//                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_MIDDLE_POS);
-//                break;
-//        }
-
-        Deposit.depositPivotState = depositPivotState;
-    }
-
-    public void setWrist(DepositWristState depositWristState) {
-        switch (depositWristState) {
+        switch (depositPivotState) {
             case SCORING:
+                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SCORING_POS);
+                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SCORING_POS);
                 robot.depositWrist.setPosition(WRIST_SCORING);
                 break;
             case FRONT_SPECIMEN_SCORING:
+                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_FRONT_SCORING_POS);
+                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_FRONT_SCORING_POS);
                 robot.depositWrist.setPosition(WRIST_FRONT_SPECIMEN_SCORING);
                 break;
             case BACK_SPECIMEN_SCORING:
+                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_BACK_SCORING_POS);
+                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_BACK_SCORING_POS);
                 robot.depositWrist.setPosition(WRIST_BACK_SPECIMEN_SCORING);
                 break;
+            case TRANSFER:
+                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
+                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
+                robot.depositWrist.setPosition(WRIST_TRANSFER);
+                break;
             case FRONT_SPECIMEN_INTAKE:
+                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS);
+                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS);
                 robot.depositWrist.setPosition(WRIST_FRONT_SPECIMEN_INTAKE);
                 break;
             case BACK_SPECIMEN_INTAKE:
+                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_BACK_INTAKE_POS);
+                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_BACK_INTAKE_POS);
                 robot.depositWrist.setPosition(WRIST_BACK_SPECIMEN_INTAKE);
                 break;
-            case TRANSFER:
-                robot.depositWrist.setPosition(WRIST_TRANSFER);
-                break;
             case MIDDLE_HOLD:
+                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_MIDDLE_POS);
+                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_MIDDLE_POS);
                 robot.depositWrist.setPosition(WRIST_MIDDLE_HOLD);
                 break;
         }
-
-        Deposit.depositWristState = depositWristState;
+        Deposit.depositPivotState = depositPivotState;
     }
 
     @Override

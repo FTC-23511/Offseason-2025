@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.tuning.servo;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
-import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.CENTER_SERVO_POWER;
+import static org.firstinspires.ftc.teamcode.tuning.example.ExampleConstants.*;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -35,11 +35,11 @@ public class hangCRServosTester extends OpMode {
     @Override
     public void loop() {
 
-        robot.leftHang.setPower(CENTER_SERVO_POWER);
-        robot.rightHang.setPower(CENTER_SERVO_POWER);
+        robot.leftHang.setPower(LEFT_SERVO_POWER);
+        robot.rightHang.setPower(RIGHT_SERVO_POWER);
 
-
-        CENTER_SERVO_POWER = Math.max(Math.min(CENTER_SERVO_POWER, 1), -1);
+        LEFT_SERVO_POWER = Math.max(Math.min(LEFT_SERVO_POWER, 1), -1);
+        RIGHT_SERVO_POWER = Math.max(Math.min(RIGHT_SERVO_POWER, 1), -1);
 
         currentGamepad1.copy(gamepad1);
 

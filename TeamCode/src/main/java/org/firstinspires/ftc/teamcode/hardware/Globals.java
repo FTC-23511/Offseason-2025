@@ -95,9 +95,8 @@ public class Globals {
     public static double ENDGAME_ASCENT_HEIGHT = 1150;
 
     // Hang Servos
-    public static double HANG_RETRACTED_POS = 0.0;
-    public static double HANG_EXTENDED_POS = 1.0;
-    public static double HANG_SWINGING_POS = 0.5;
+    public static double LEFT_HANG_FULL_POWER = 0.9;
+    public static double RIGHT_HANG_FULL_POWER = 1.0;
 
     // Gearbox Switcher Servo
     public static double HANG_GEAR_POS = 0.0;
