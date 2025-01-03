@@ -8,11 +8,11 @@ import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState
 
 import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
+import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
 import com.seattlesolvers.solverslib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
-import org.firstinspires.ftc.teamcode.commandbase.commands.UninterruptibleCommand;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 public class Intake extends SubsystemBase {

@@ -6,6 +6,7 @@ import com.seattlesolvers.solverslib.command.CommandBase;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
 
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.commandbase.commands;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
+import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
 
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;

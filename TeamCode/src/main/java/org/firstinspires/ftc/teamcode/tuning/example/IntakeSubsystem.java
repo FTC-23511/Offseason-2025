@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 
-import org.firstinspires.ftc.teamcode.hardware.caching.SolversMotor;
-import org.firstinspires.ftc.teamcode.hardware.caching.SolversServo;
+import com.seattlesolvers.solverslib.solversHardware.SolversMotor;
+import com.seattlesolvers.solverslib.solversHardware.SolversServo;
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 
