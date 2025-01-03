@@ -128,6 +128,7 @@ public class Robot {
         liftEncoder = new Motor(hardwareMap, "liftTop").encoder;
         extensionEncoder = new Motor(hardwareMap, "extension").encoder;
         liftEncoder.setDirection(Motor.Direction.REVERSE);
+        extensionEncoder.setDirection(Motor.Direction.REVERSE);
 
         leftIntakePivot = new SolversServo(hardwareMap.get(Servo.class, "leftIntakePivot"), 0.01);
         rightIntakePivot = new SolversServo(hardwareMap.get(Servo.class, "rightIntakePivot"), 0.01);
@@ -142,6 +143,7 @@ public class Robot {
         leftIntakePivot.setDirection(Servo.Direction.REVERSE);
         leftDepositPivot.setDirection(Servo.Direction.REVERSE);
         rightHang.setDirection(CRServo.Direction.REVERSE);
+        extension.setDirection(CRServo.Direction.REVERSE);
 
         colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
 

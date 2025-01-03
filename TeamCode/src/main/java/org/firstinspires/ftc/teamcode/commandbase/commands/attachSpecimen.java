@@ -19,7 +19,7 @@ public class attachSpecimen extends CommandBase {
 
     @Override
     public void initialize() {
-        deposit.setSlideTarget(HIGH_SPECIMEN_ATTACH_HEIGHT);
+        deposit.setSlideTarget(BACK_HIGH_SPECIMEN_ATTACH_HEIGHT);
         timer.reset();
     }
 

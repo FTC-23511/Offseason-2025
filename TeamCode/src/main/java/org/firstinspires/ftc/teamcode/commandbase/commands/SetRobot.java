@@ -49,7 +49,7 @@ public class SetRobot extends ParallelCommandGroup {
             case SPECIMEN_SCORING:
                 if (Robot.robotState.equals(Robot.RobotState.SPECIMEN_INTAKING)) {
                     addCommands(
-                            new SetDeposit(robot, Deposit.DepositPivotState.FRONT_SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false)
+                            new SetDeposit(robot, Deposit.DepositPivotState.FRONT_SPECIMEN_SCORING, FRONT_HIGH_SPECIMEN_HEIGHT, false)
                     );
                     addRequirements(robot.deposit);
 

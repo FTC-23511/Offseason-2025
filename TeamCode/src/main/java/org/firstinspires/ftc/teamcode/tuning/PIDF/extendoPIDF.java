@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.tuning.PIDF;
 
+import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -9,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.hardware.Globals;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 @Config
@@ -33,6 +36,8 @@ public class extendoPIDF extends OpMode {
 
     @Override
     public void init() {
+        opModeType = Globals.OpModeType.TELEOP;
+
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         robot.init(hardwareMap);
         extendoPIDF.setTolerance(5, 10);

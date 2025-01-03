@@ -13,15 +13,14 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.hardware.Globals;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.tuning.example.ExampleRobot;
 
 @Config
 @TeleOp
 public class depositPIDF extends OpMode {
-    public static double p = 0.00; // Old: 0.011
+    public static double p = 0.005; // Old: 0.011
     public static double i = 0;
-    public static double d = 0.000; // Old: 0.0002
-    public static double f = 0.000; // Old: 0.00016
+    public static double d = 0.00017; // Old: 0.0002
+    public static double f = 0.00023; // Old: 0.00016
 
     public static int setPoint = 0;
     public static double maxPowerConstant = 1.0;

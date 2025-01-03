@@ -126,10 +126,10 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
                 new ConditionalCommand(
                         new UninterruptibleCommand(
-                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false)
+                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, FRONT_HIGH_SPECIMEN_HEIGHT, false)
                         ),
                         new UninterruptibleCommand(
-                                new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false)
+                                new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_SCORING, BACK_HIGH_SPECIMEN_HEIGHT, false)
                         ),
                         () -> frontSpecimenScoring
                 )
@@ -138,10 +138,10 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(
                 new ConditionalCommand(
                         new UninterruptibleCommand(
-                                new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, HIGH_SPECIMEN_HEIGHT, false)
+                                new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, 0, false)
                         ),
                         new UninterruptibleCommand(
-                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_INTAKE, HIGH_SPECIMEN_HEIGHT, false)
+                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_INTAKE, 0, false)
                         ),
                         () -> frontSpecimenScoring
                 )
@@ -177,10 +177,10 @@ public class FullTeleOp extends CommandOpMode {
         );
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
-                new InstantCommand(() -> robot.deposit.setClawOpen(true)));
+                new InstantCommand(() -> robot.deposit.setClawOpen(false)));
 
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
-                new InstantCommand(() -> robot.deposit.setClawOpen(false)));
+                new InstantCommand(() -> robot.deposit.setClawOpen(true)));
 
         super.run();
     }
@@ -217,6 +217,8 @@ public class FullTeleOp extends CommandOpMode {
             gamepad1.setLedColor(0, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
             gamepad2.setLedColor(0, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
         }
+
+        // green is default spec scoring, purple is other spec scoring
 
         // OTOS Field Centric Code
         double speedMultiplier = 0.35 + (1 - 0.35) * gamepad1.left_trigger;

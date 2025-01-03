@@ -24,7 +24,7 @@ public class Drive extends SubsystemBase {
     public static GearboxState gearboxState;
 
     public void init() {
-        setHang(HangState.RETRACT_HANG);
+        setHang(HangState.STOP_HANG);
         setGearbox(GearboxState.DEPOSIT_GEAR);
     }
 

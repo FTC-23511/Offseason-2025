@@ -7,12 +7,14 @@ import static org.firstinspires.ftc.teamcode.commandbase.Intake.SampleColorTarge
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState.*;
 
 import com.seattlesolvers.solverslib.command.CommandScheduler;
+import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
 import com.seattlesolvers.solverslib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
+import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 public class Intake extends SubsystemBase {
@@ -148,7 +150,10 @@ public class Intake extends SubsystemBase {
                             if (opModeType.equals(OpModeType.TELEOP)) {
                                 CommandScheduler.getInstance().schedule(
                                         new UninterruptibleCommand(
-                                                new RealTransfer(robot)
+                                                new SequentialCommandGroup(
+                                                        new RealTransfer(robot),
+                                                        new SetDeposit(robot, Deposit.DepositPivotState.SCORING, SLIDES_PIVOT_READY_EXTENSION + 50, false)
+                                                )
                                         )
                                 );
                             }
