@@ -43,16 +43,19 @@ public class Globals {
     public static double INTAKE_FORWARD_SPEED = 1.0;
     public static double INTAKE_REVERSE_SPEED = -1.0;
     public static double INTAKE_HOLD_SPEED = 0.15;
-    public static final double SAMPLE_DISTANCE_THRESHOLD = 2.15;
+    public static final double MIN_DISTANCE_THRESHOLD = 1;
+    public static final double MAX_DISTANCE_THRESHOLD = 1.4;
 
     // Intake Pivot
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.01;
+    public static double INTAKE_PIVOT_READY_TRANSFER_POS = 0.1;
     public static double INTAKE_PIVOT_INTAKE_POS = 0.70;
     public static double INTAKE_PIVOT_READY_INTAKE_POS = 0.50;
 
     // Intake Extendo
     public static double MAX_EXTENDO_EXTENSION = 500;
     public static double AUTO_EXTENDO_EXTENSION;
+    public static double EXTENDO_PIVOT_TRANSFER = 100;
 
     // Deposit Pivot
     public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.97;

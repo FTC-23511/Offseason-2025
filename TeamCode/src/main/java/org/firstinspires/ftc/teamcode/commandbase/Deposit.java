@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 public class Deposit extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
-    private final double divideConstant = 30.0;
-    private static final PIDFController slidePIDF = new PIDFController(0.005,0, 0.00017, 0.00023);
+    private final int divideConstant = 30;
+    private static final PIDFController slidePIDF = new PIDFController(0.006,0, 0.00017, 0.00023);
 
     // Between open and closed
     public boolean clawOpen;
@@ -48,8 +48,8 @@ public class Deposit extends SubsystemBase {
         }
     }
 
-    public double getLiftScaledPosition() {
-        return robot.liftEncoder.getPosition() / divideConstant;
+    public int getLiftScaledPosition() {
+        return (robot.liftEncoder.getPosition() / divideConstant);
     }
 
     public void setSlideTarget(double target) {
@@ -65,8 +65,6 @@ public class Deposit extends SubsystemBase {
         // Just make sure it gets to fully retracted if target is 0
         if (target == 0 && !slidesReached) {
             power -= 0.1;
-        } else if (target >= HIGH_BUCKET_HEIGHT && !slidesReached) {
-            power += 0.6;
         }
 
         if (slidesRetracted) {
@@ -132,5 +130,11 @@ public class Deposit extends SubsystemBase {
     @Override
     public void periodic() {
         autoUpdateSlides();
+
+        if (this.target <= SLIDES_PIVOT_READY_EXTENSION && !slidesReached) {
+            slidePIDF.setP(0.007);
+        } else {
+            slidePIDF.setP(0.00575);
+        }
     }
 }

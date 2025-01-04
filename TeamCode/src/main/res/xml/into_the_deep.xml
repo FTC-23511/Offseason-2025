@@ -27,9 +27,9 @@
         <LynxModule name="Expansion Hub 2" port="2">
 
             <goBILDA5202SeriesMotor name="FR" port="0"/>
-            <goBILDA5202SeriesMotor name="BR" port="1"/>
+            <goBILDA5202SeriesMotor name="FL" port="1"/>
             <goBILDA5202SeriesMotor name="BL" port="2"/>
-            <goBILDA5202SeriesMotor name="FL" port="3"/>
+            <goBILDA5202SeriesMotor name="BR" port="3"/>
 
             <Servo name="subPusher" port="0"/>
             <Servo name="leftDepositPivot" port="1"/>

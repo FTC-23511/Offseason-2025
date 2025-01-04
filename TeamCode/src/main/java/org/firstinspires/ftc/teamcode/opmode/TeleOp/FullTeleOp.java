@@ -67,7 +67,13 @@ public class FullTeleOp extends CommandOpMode {
         );
 
         driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
-                new InstantCommand(() -> robot.follower.setPose(new Pose(robot.follower.getPose().getX(), robot.follower.getPose().getY(), 0)))
+                new InstantCommand(() -> {
+                    try {
+                        robot.follower.resetIMU();
+                    } catch (InterruptedException ignored) {
+
+                    }
+                })
         );
 
         driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
@@ -253,8 +259,8 @@ public class FullTeleOp extends CommandOpMode {
         telemetryData.addData("liftBottom.getPower()", robot.liftBottom.getPower());
         telemetryData.addData("extension.getPower()", robot.extension.getPower());
 
-        telemetryData.addData("extensionEncoder.getPosition()", robot.extensionEncoder.getPosition());
-        telemetryData.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());
+        telemetryData.addData("getExtendoScaledPosition()", robot.intake.getExtendoScaledPosition());
+        telemetryData.addData("getLiftScaledPosition()", robot.deposit.getLiftScaledPosition());
 
         telemetryData.addData("slides target", robot.deposit.target);
         telemetryData.addData("extendo target", robot.intake.target);

@@ -51,8 +51,9 @@ dependencies {
     implementation "com.acmerobotics.dashboard:dashboard:0.4.16"
 
     // Pedro Pathing
-    implementation 'com.pedropathing:pedro:1.0.3'
+    implementation 'com.pedropathing:pedro:1.0.4'
     //noinspection GradleDependency
+    
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
     //noinspection GradleDependency,DifferentStdlibGradleVersion
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.20'

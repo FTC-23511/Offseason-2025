@@ -19,6 +19,8 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 public class Intake extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
+
+    private final double divideConstant = 65.0;
     public double target;
     public boolean extendoReached;
     // Between retracted and extended
@@ -28,7 +30,8 @@ public class Intake extends SubsystemBase {
     public enum IntakePivotState {
         INTAKE,
         INTAKE_READY,
-        TRANSFER
+        TRANSFER,
+        TRANSFER_READY
     }
 
     public enum IntakeMotorState {
@@ -64,14 +67,14 @@ public class Intake extends SubsystemBase {
     }
 
     public void autoUpdateExtendo() {
-        double extendoPower = extendoPIDF.calculate(robot.extensionEncoder.getPosition(), this.target);
-        extendoReached = (extendoPIDF.atSetPoint() && target > 0) || (robot.extensionEncoder.getPosition() <= 3 && target == 0);
+        double extendoPower = extendoPIDF.calculate(getExtendoScaledPosition(), this.target);
+        extendoReached = (extendoPIDF.atSetPoint() && target > 0) || (getExtendoScaledPosition() <= 8 && target == 0);
         extendoRetracted = (target <= 0) && extendoReached;
 
         // Just make sure it gets to fully retracted if target is 0
-        if (target == 0) {
+        if (target == 0 && !extendoReached) {
             extendoPower -= 0.2;
-        } else {
+        } else if (!extendoReached) {
             extendoPower += 0.2;
         }
 
@@ -80,6 +83,10 @@ public class Intake extends SubsystemBase {
         } else {
             robot.extension.setPower(extendoPower);
         }
+    }
+
+    public double getExtendoScaledPosition() {
+        return robot.extensionEncoder.getPosition() / divideConstant;
     }
 
     public void setExtendoTarget(double target) {
@@ -92,6 +99,11 @@ public class Intake extends SubsystemBase {
             case TRANSFER:
                 robot.leftIntakePivot.setPosition(INTAKE_PIVOT_TRANSFER_POS);
                 robot.rightIntakePivot.setPosition(INTAKE_PIVOT_TRANSFER_POS);
+                break;
+
+            case TRANSFER_READY:
+                robot.leftIntakePivot.setPosition(INTAKE_PIVOT_READY_TRANSFER_POS);
+                robot.rightIntakePivot.setPosition(INTAKE_PIVOT_READY_TRANSFER_POS);
                 break;
 
             case INTAKE:
@@ -150,10 +162,7 @@ public class Intake extends SubsystemBase {
                             if (opModeType.equals(OpModeType.TELEOP)) {
                                 CommandScheduler.getInstance().schedule(
                                         new UninterruptibleCommand(
-                                                new SequentialCommandGroup(
-                                                        new RealTransfer(robot),
-                                                        new SetDeposit(robot, Deposit.DepositPivotState.SCORING, SLIDES_PIVOT_READY_EXTENSION + 50, false)
-                                                )
+                                                new RealTransfer(robot)
                                         )
                                 );
                             }
@@ -184,7 +193,7 @@ public class Intake extends SubsystemBase {
     }
 
     public static SampleColorDetected sampleColorDetected(int red, int green, int blue) {
-        if ((blue + green + red) >= 900) { // If it's less than 900, then there isn't a sample fully in yet
+        if ((blue + green + red) >= 0) { // If it's less than 900, then there isn't a sample fully in yet
             if (blue >= green && blue >= red) {
                 return BLUE;
             } else if (green >= red) {
@@ -218,7 +227,8 @@ public class Intake extends SubsystemBase {
     }
 
     public boolean hasSample() {
-        return robot.colorSensor.getDistance(DistanceUnit.CM) < SAMPLE_DISTANCE_THRESHOLD;
+        double distance = robot.colorSensor.getDistance(DistanceUnit.CM);
+        return distance > MIN_DISTANCE_THRESHOLD && distance < MAX_DISTANCE_THRESHOLD;
     }
 
     @Override

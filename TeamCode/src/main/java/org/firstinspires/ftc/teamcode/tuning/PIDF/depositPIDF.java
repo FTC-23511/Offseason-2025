@@ -24,7 +24,7 @@ public class depositPIDF extends OpMode {
 
     public static int setPoint = 0;
     public static double maxPowerConstant = 1.0;
-    public static int divideConstant = 30;
+    private final static int divideConstant = 30;
 
     private static final PIDFController slidePIDF = new PIDFController(p,i,d, f);
     private final Robot robot = Robot.getInstance();
