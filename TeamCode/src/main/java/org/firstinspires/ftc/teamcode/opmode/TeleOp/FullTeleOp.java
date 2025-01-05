@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
 
+import com.pedropathing.localization.Pose;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.ConditionalCommand;
 import com.seattlesolvers.solverslib.command.InstantCommand;
@@ -12,7 +13,6 @@ import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
-import com.pedropathing.localization.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -67,26 +67,18 @@ public class FullTeleOp extends CommandOpMode {
         );
 
         driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
-                new InstantCommand(() -> {
-                    try {
-                        robot.follower.resetIMU();
-                    } catch (InterruptedException ignored) {
-
-                    }
-                })
+                new InstantCommand(() -> robot.follower.setPose(new Pose(0, 0, 0)))
         );
 
         driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
-                new UninterruptibleCommand(
-                        new SetIntake(robot, IntakePivotState.INTAKE_READY, intakeMotorState, MAX_EXTENDO_EXTENSION, false)
-                )
+                new SetIntake(robot, IntakePivotState.INTAKE_READY, intakeMotorState, MAX_EXTENDO_EXTENSION, true)
         );
 
-        driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
-                new UninterruptibleCommand(
-                        new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, ENDGAME_ASCENT_HEIGHT, false)
-                )
-        );
+//        driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
+//                new UninterruptibleCommand(
+//                        new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, ENDGAME_ASCENT_HEIGHT, false)
+//                )
+//        );
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new UninterruptibleCommand(
@@ -97,8 +89,13 @@ public class FullTeleOp extends CommandOpMode {
                         )
                 )
         );
+
         driver.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.INTAKE_READY))
+        );
+
+        driver.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
+                new InstantCommand(() -> robot.drive.setSubPusher(!Drive.subPusherOut))
         );
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
@@ -188,6 +185,13 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.deposit.setClawOpen(true)));
 
+        operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
+                new ParallelCommandGroup(
+                        new InstantCommand(() -> robot.drive.setHang(Drive.HangState.RETRACT)),
+                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, FRONT_HIGH_SPECIMEN_HEIGHT, false)
+                )
+        );
+
         super.run();
     }
 
@@ -212,25 +216,27 @@ public class FullTeleOp extends CommandOpMode {
 
         if (sampleColor.equals(SampleColorDetected.RED)) {
             gamepad1.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
-            gamepad2.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
         } else if (sampleColor.equals(SampleColorDetected.BLUE)) {
             gamepad1.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
-            gamepad2.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
         } else if (sampleColor.equals(SampleColorDetected.YELLOW)) {
             gamepad1.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
-            gamepad2.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
         } else {
             gamepad1.setLedColor(0, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
-            gamepad2.setLedColor(0, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
         }
 
-        // green is default spec scoring, purple is other spec scoring
+        // purple is back (default) spec scoring, green is front spec scoring
+        if (frontSpecimenScoring) {
+            gamepad2.setLedColor(0, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        } else {
+            gamepad2.setLedColor(1, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
+        }
 
         // OTOS Field Centric Code
         double speedMultiplier = 0.35 + (1 - 0.35) * gamepad1.left_trigger;
         robot.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y * speedMultiplier, -gamepad1.left_stick_x * speedMultiplier, -gamepad1.right_stick_x * speedMultiplier, false);
         robot.follower.update();
 
+        // Manual control of extendo
         if (gamepad1.right_trigger > 0.01 &&
                 !depositPivotState.equals(DepositPivotState.TRANSFER) &&
                 robot.extensionEncoder.getPosition() <= (MAX_EXTENDO_EXTENSION - 5)) {
@@ -238,12 +244,11 @@ public class FullTeleOp extends CommandOpMode {
             robot.intake.target += 5;
         }
 
-        if (gamepad2.right_trigger > 0.0) {
-            robot.drive.setHang(Drive.HangState.EXTEND_HANG);
-        } else if (gamepad2.left_trigger > 0.0) {
-            robot.drive.setHang(Drive.HangState.RETRACT_HANG);
-        } else {
-            robot.drive.setHang(Drive.HangState.STOP_HANG);
+        // Hang
+        if (gamepad2.ps) {
+            robot.drive.setHang(Drive.HangState.EXTEND);
+        } else if (gamepad2.left_trigger > 0.5) {
+            robot.drive.setHang(Drive.HangState.STOP);
         }
 
         // DO NOT REMOVE! Runs FTCLib Command Scheduler

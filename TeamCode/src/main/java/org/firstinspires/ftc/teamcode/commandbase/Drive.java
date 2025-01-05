@@ -10,9 +10,9 @@ public class Drive extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
 
     public enum HangState {
-        RETRACT_HANG,
-        EXTEND_HANG,
-        STOP_HANG
+        RETRACT,
+        EXTEND,
+        STOP
     }
 
     public enum GearboxState {
@@ -22,23 +22,25 @@ public class Drive extends SubsystemBase {
 
     public static HangState hangState;
     public static GearboxState gearboxState;
+    public static boolean subPusherOut = false;
 
     public void init() {
-        setHang(HangState.STOP_HANG);
+        setHang(HangState.STOP);
         setGearbox(GearboxState.DEPOSIT_GEAR);
+        setSubPusher(false);
     }
 
     public void setHang(HangState hangState) {
         switch (hangState) {
-            case RETRACT_HANG:
+            case RETRACT:
                 robot.leftHang.setPower(-LEFT_HANG_FULL_POWER);
-                robot.rightHang.setPower(RIGHT_HANG_FULL_POWER);
+                robot.rightHang.setPower(-RIGHT_HANG_FULL_POWER);
                 break;
-            case EXTEND_HANG:
+            case EXTEND:
                 robot.leftHang.setPower(LEFT_HANG_FULL_POWER);
                 robot.rightHang.setPower(RIGHT_HANG_FULL_POWER);
                 break;
-            case STOP_HANG:
+            case STOP:
                 robot.leftHang.setPower(0);
                 robot.rightHang.setPower(0);
                 break;
@@ -58,5 +60,15 @@ public class Drive extends SubsystemBase {
         }
 
         Drive.gearboxState = gearboxState;
+    }
+
+    public void setSubPusher(boolean subPusherOut) {
+        if (subPusherOut) {
+            robot.subPusher.setPosition(SUB_PUSHER_OUT);
+        } else {
+            robot.subPusher.setPosition(SUB_PUSHER_IN);
+        }
+
+        Drive.subPusherOut = subPusherOut;
     }
 }

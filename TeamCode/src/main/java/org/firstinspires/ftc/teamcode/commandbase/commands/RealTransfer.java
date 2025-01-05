@@ -15,8 +15,9 @@ public class RealTransfer extends SequentialCommandGroup {
         addCommands(new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new SetDeposit(robot, Deposit.DepositPivotState.TRANSFER, SLIDES_PIVOT_READY_EXTENSION + 50, true),
-                        new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, false)
+                        new SetIntake(robot, Intake.IntakePivotState.TRANSFER_READY, Intake.IntakeMotorState.HOLD, 0, false)
                 ),
+                new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, false),
                 new Transfer(robot)
         ));
     }

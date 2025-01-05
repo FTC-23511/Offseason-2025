@@ -15,6 +15,7 @@ import com.seattlesolvers.solverslib.controller.PIDFController;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
+import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 public class Intake extends SubsystemBase {
@@ -160,11 +161,17 @@ public class Intake extends SubsystemBase {
                         if (correctSampleDetected()) {
                             setActiveIntake(STOP);
                             if (opModeType.equals(OpModeType.TELEOP)) {
-                                CommandScheduler.getInstance().schedule(
-                                        new UninterruptibleCommand(
-                                                new RealTransfer(robot)
-                                        )
-                                );
+                                if (sampleColorTarget.equals(ANY_COLOR)) {
+                                    CommandScheduler.getInstance().schedule(
+                                            new UninterruptibleCommand(
+                                                    new RealTransfer(robot)
+                                            )
+                                    );
+                                } else {
+                                    CommandScheduler.getInstance().schedule(
+                                            new SetIntake(robot, TRANSFER_READY, HOLD, this.target, false)
+                                    );
+                                }
                             }
                         } else if (!sampleColor.equals(NONE)) {
                             setActiveIntake(REVERSE);
@@ -228,7 +235,28 @@ public class Intake extends SubsystemBase {
 
     public boolean hasSample() {
         double distance = robot.colorSensor.getDistance(DistanceUnit.CM);
-        return distance > MIN_DISTANCE_THRESHOLD && distance < MAX_DISTANCE_THRESHOLD;
+
+        // For edge case intake
+        boolean colorSensingHasSample = true;
+        switch (sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue())) {
+            case YELLOW:
+                if (robot.colorSensor.green() > 2000) {
+                    colorSensingHasSample = false;
+                }
+                break;
+            case RED:
+                if (robot.colorSensor.red() > 1200) {
+                    colorSensingHasSample = false;
+                }
+                break;
+            case BLUE:
+                if (robot.colorSensor.blue() > 1200) {
+                    colorSensingHasSample = false;
+                }
+                break;
+        }
+
+        return distance > MIN_DISTANCE_THRESHOLD && distance < MAX_DISTANCE_THRESHOLD && colorSensingHasSample;
     }
 
     @Override

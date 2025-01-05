@@ -45,6 +45,7 @@ public class UndoTransfer extends CommandBase {
         // Move arm
         if (robot.liftEncoder.getPosition() >= SLIDES_PIVOT_READY_EXTENSION && index == 1) {
             // Close claw so that it doesn't hit slides
+            robot.deposit.setPivot(Deposit.DepositPivotState.MIDDLE_HOLD);
             robot.deposit.setClawOpen(false);
 
             index = 2;

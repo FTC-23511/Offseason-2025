@@ -139,6 +139,7 @@ public class Robot {
         leftHang = new SolversCRServo(hardwareMap.get(CRServo.class, "leftHang"), 0.01);
         rightHang = new SolversCRServo(hardwareMap.get(CRServo.class, "rightHang"), 0.01);
         gearboxSwitcher = new SolversServo(hardwareMap.get(Servo.class, "gearboxSwitcher"), 0.01);
+        subPusher = new SolversServo(hardwareMap.get(Servo.class, "subPusher"), 0.01);
 
         leftIntakePivot.setDirection(Servo.Direction.REVERSE);
         leftDepositPivot.setDirection(Servo.Direction.REVERSE);

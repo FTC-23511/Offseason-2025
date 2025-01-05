@@ -31,6 +31,7 @@ public class Deposit extends SubsystemBase {
         BACK_SPECIMEN_INTAKE,
         TRANSFER,
         MIDDLE_HOLD,
+        AUTO_TOUCH_BAR
     }
     public static DepositPivotState depositPivotState;
 
@@ -65,6 +66,8 @@ public class Deposit extends SubsystemBase {
         // Just make sure it gets to fully retracted if target is 0
         if (target == 0 && !slidesReached) {
             power -= 0.1;
+        } else if (target == SLIDES_PIVOT_READY_EXTENSION + 50 && !slidesReached && getLiftScaledPosition() < SLIDES_PIVOT_READY_EXTENSION + 50) {
+            power += 0.1;
         }
 
         if (slidesRetracted) {
@@ -122,6 +125,11 @@ public class Deposit extends SubsystemBase {
                 robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_MIDDLE_POS);
                 robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_MIDDLE_POS);
                 robot.depositWrist.setPosition(WRIST_MIDDLE_HOLD);
+                break;
+            case AUTO_TOUCH_BAR:
+                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_AUTO_BAR_POS);
+                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_AUTO_BAR_POS);
+                robot.depositWrist.setPosition(WRIST_AUTO_BAR);
                 break;
         }
         Deposit.depositPivotState = depositPivotState;

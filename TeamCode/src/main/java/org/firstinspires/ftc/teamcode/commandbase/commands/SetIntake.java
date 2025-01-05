@@ -37,11 +37,7 @@ public class SetIntake extends CommandBase {
     public void initialize() {
         // Update pivot and its variables for timing below
         previousServoPos = robot.leftIntakePivot.getPosition();
-        if (robot.intake.getExtendoScaledPosition() > EXTENDO_PIVOT_TRANSFER && pivotState.equals(Intake.IntakePivotState.TRANSFER)) {
-            robot.intake.setPivot(Intake.IntakePivotState.TRANSFER_READY);
-        } else {
-            robot.intake.setPivot(pivotState);
-        }
+        robot.intake.setPivot(pivotState);
         currentServoPos = robot.leftIntakePivot.getPosition();
         timer.reset();
 
@@ -61,9 +57,6 @@ public class SetIntake extends CommandBase {
         if ((timer.milliseconds() > Math.abs(previousServoPos - currentServoPos) * INTAKE_PIVOT_MOVEMENT_TIME) && motorState.equals(Intake.IntakeMotorState.REVERSE) && waitForPivot) {
             robot.intake.setActiveIntake(motorState);
             waitForPivot = false;
-        }
-        if (Intake.intakePivotState.equals(Intake.IntakePivotState.TRANSFER_READY) && this.pivotState.equals(Intake.IntakePivotState.TRANSFER) && robot.intake.getExtendoScaledPosition() <= 100) {
-            robot.intake.setPivot(Intake.IntakePivotState.TRANSFER);
         }
     }
 

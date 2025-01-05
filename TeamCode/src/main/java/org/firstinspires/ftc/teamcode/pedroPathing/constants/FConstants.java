@@ -40,10 +40,10 @@ public class FConstants {
         FollowerConstants.secondaryHeadingPIDFCoefficients = new CustomPIDFCoefficients(1.2,0,0.1,0); // @see useSecondaryHeadingPID
 
         FollowerConstants.drivePIDFCoefficients = new CustomFilteredPIDFCoefficients(0.018,0,0.0000012,0.6,0);
-        FollowerConstants.useSecondaryDrivePID = false;
-        FollowerConstants.secondaryDrivePIDFCoefficients = new CustomFilteredPIDFCoefficients(0.02,0,0.0000015,0.6,0); // @see useSecondaryDrivePID
+        FollowerConstants.useSecondaryDrivePID = true;
+        FollowerConstants.secondaryDrivePIDFCoefficients = new CustomFilteredPIDFCoefficients(0.01,0,0.000001,0.6,0); // @see useSecondaryDrivePID
 
-        FollowerConstants.zeroPowerAccelerationMultiplier = 4;
+        FollowerConstants.zeroPowerAccelerationMultiplier = 3.5;
         FollowerConstants.centripetalScaling = 0.0004;
 
         // Controls pause at end of forward and backward test
