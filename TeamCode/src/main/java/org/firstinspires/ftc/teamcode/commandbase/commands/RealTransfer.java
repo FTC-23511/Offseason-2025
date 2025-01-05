@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.SLIDES_PIVOT_READY
 
 import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
+import com.seattlesolvers.solverslib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
@@ -18,6 +19,7 @@ public class RealTransfer extends SequentialCommandGroup {
                         new SetIntake(robot, Intake.IntakePivotState.TRANSFER_READY, Intake.IntakeMotorState.HOLD, 0, false)
                 ),
                 new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, false),
+                new WaitCommand(200),
                 new Transfer(robot)
         ));
     }

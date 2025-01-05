@@ -59,6 +59,12 @@ public class Deposit extends SubsystemBase {
     }
 
     public void autoUpdateSlides() {
+        if (this.target <= SLIDES_PIVOT_READY_EXTENSION && !slidesReached) {
+            slidePIDF.setP(0.007);
+        } else {
+            slidePIDF.setP(0.00575);
+        }
+
         double power = slidePIDF.calculate(getLiftScaledPosition(), target);
         slidesReached = slidePIDF.atSetPoint() || (getLiftScaledPosition() >= target && target == HIGH_BUCKET_HEIGHT);
         slidesRetracted = (target <= 0) && slidesReached;
@@ -67,7 +73,7 @@ public class Deposit extends SubsystemBase {
         if (target == 0 && !slidesReached) {
             power -= 0.1;
         } else if (target == SLIDES_PIVOT_READY_EXTENSION + 50 && !slidesReached && getLiftScaledPosition() < SLIDES_PIVOT_READY_EXTENSION + 50) {
-            power += 0.1;
+            power += 0.2;
         }
 
         if (slidesRetracted) {
@@ -138,11 +144,5 @@ public class Deposit extends SubsystemBase {
     @Override
     public void periodic() {
         autoUpdateSlides();
-
-        if (this.target <= SLIDES_PIVOT_READY_EXTENSION && !slidesReached) {
-            slidePIDF.setP(0.007);
-        } else {
-            slidePIDF.setP(0.00575);
-        }
     }
 }

@@ -41,6 +41,8 @@ public class FullTeleOp extends CommandOpMode {
     public void initialize() {
         // Must have for all opModes
         opModeType = OpModeType.TELEOP;
+        depositInit = DepositPivotState.MIDDLE_HOLD;
+
 
         INTAKE_HOLD_SPEED = 0;
 
@@ -80,15 +82,15 @@ public class FullTeleOp extends CommandOpMode {
 //                )
 //        );
 
-        driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
-                new UninterruptibleCommand(
-                        new ParallelCommandGroup(
-                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, 0, false),
-                                new SetIntake(robot, intakePivotState, intakeMotorState, 0, false)
-
-                        )
-                )
-        );
+//        driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
+//                new UninterruptibleCommand(
+//                        new ParallelCommandGroup(
+//                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, 0, false),
+//                                new SetIntake(robot, intakePivotState, intakeMotorState, 0, false)
+//
+//                        )
+//                )
+//        );
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.INTAKE_READY))

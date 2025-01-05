@@ -43,8 +43,13 @@ public class Globals {
     public static double INTAKE_FORWARD_SPEED = 1.0;
     public static double INTAKE_REVERSE_SPEED = -1.0;
     public static double INTAKE_HOLD_SPEED = 0.15;
+
+    // Intake Color Sensor
     public static final double MIN_DISTANCE_THRESHOLD = 1;
     public static final double MAX_DISTANCE_THRESHOLD = 1.4;
+    public static final int YELLOW_THRESHOLD = 2000; // 1500?
+    public static final int RED_THRESHOLD = 1200;
+    public static final int BLUE_THRESHOLD = 1200;
 
     // Intake Pivot
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.01;
@@ -57,8 +62,8 @@ public class Globals {
 
     // Deposit Pivot
     public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.97;
-    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.3;
-    public static double DEPOSIT_PIVOT_AUTO_BAR_POS = 1.00;
+    public static double DEPOSIT_PIVOT_MIDDLE_POS = 1.00;
+    public static double DEPOSIT_PIVOT_AUTO_BAR_POS = 0.3;
     public static double DEPOSIT_PIVOT_SCORING_POS = 0.3;
     public static double DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS = 0.07;
     public static double DEPOSIT_PIVOT_SPECIMEN_BACK_INTAKE_POS = 0.88;
@@ -81,7 +86,7 @@ public class Globals {
     public static double WRIST_BACK_SPECIMEN_SCORING = 0.43;
     public static double WRIST_FRONT_SPECIMEN_INTAKE = 0.33;
     public static double WRIST_BACK_SPECIMEN_INTAKE = 0.53;
-    public static double WRIST_TRANSFER = 0.41;
+    public static double WRIST_TRANSFER = 0.395;
     public static double WRIST_MIDDLE_HOLD = 0.4;
 
     // Deposit Slides
