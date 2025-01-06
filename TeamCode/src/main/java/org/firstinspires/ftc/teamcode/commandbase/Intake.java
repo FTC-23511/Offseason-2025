@@ -200,7 +200,6 @@ public class Intake extends SubsystemBase {
     }
 
     public static SampleColorDetected sampleColorDetected(int red, int green, int blue) {
-        if ((blue + green + red) >= 0) { // If it's less than 900, then there isn't a sample fully in yet
             if (blue >= green && blue >= red) {
                 return BLUE;
             } else if (green >= red) {
@@ -208,10 +207,6 @@ public class Intake extends SubsystemBase {
             } else {
                 return RED;
             }
-        }
-        else {
-            return NONE;
-        }
     }
 
     public static boolean correctSampleDetected() {
@@ -240,9 +235,16 @@ public class Intake extends SubsystemBase {
 
         double distance = robot.colorSensor.getDistance(DistanceUnit.CM);
 
+        SampleColorDetected sampleColor = sampleColorDetected(red, green, blue);
+
+        // TeleOp Case
+        if (!correctSampleDetected() && opModeType.equals(OpModeType.TELEOP)) {
+            return false;
+        }
+
         // For edge case intake
         boolean colorSensingHasSample = true;
-        switch (sampleColorDetected(red, green, blue)) {
+        switch (sampleColor) {
             case YELLOW:
                 if (green > YELLOW_THRESHOLD) {
                     colorSensingHasSample = false;

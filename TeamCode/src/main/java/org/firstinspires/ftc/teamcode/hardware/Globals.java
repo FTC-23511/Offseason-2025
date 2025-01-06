@@ -47,13 +47,13 @@ public class Globals {
     // Intake Color Sensor
     public static final double MIN_DISTANCE_THRESHOLD = 1;
     public static final double MAX_DISTANCE_THRESHOLD = 1.4;
-    public static final int YELLOW_THRESHOLD = 2000; // 1500?
-    public static final int RED_THRESHOLD = 1200;
-    public static final int BLUE_THRESHOLD = 1200;
+    public static final int YELLOW_THRESHOLD = 1500;
+    public static final int RED_THRESHOLD = 900;
+    public static final int BLUE_THRESHOLD = 1150;
 
     // Intake Pivot
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.01;
-    public static double INTAKE_PIVOT_READY_TRANSFER_POS = 0.1;
+    public static double INTAKE_PIVOT_READY_TRANSFER_POS = 0.15;
     public static double INTAKE_PIVOT_INTAKE_POS = 0.70;
     public static double INTAKE_PIVOT_READY_INTAKE_POS = 0.50;
 

@@ -19,7 +19,7 @@ public class RealTransfer extends SequentialCommandGroup {
                         new SetIntake(robot, Intake.IntakePivotState.TRANSFER_READY, Intake.IntakeMotorState.HOLD, 0, false)
                 ),
                 new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, false),
-                new WaitCommand(200),
+                new WaitCommand(300),
                 new Transfer(robot)
         ));
     }

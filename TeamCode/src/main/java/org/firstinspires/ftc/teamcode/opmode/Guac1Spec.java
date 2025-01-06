@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.Auto;
+package org.firstinspires.ftc.teamcode.opmode;
 
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.DepositPivotState;
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.depositPivotState;
@@ -42,9 +42,9 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 import java.util.ArrayList;
 
 @Config
-@Autonomous(name = "Guacamole (5spec+0sample)", group = "Chipotle Menu", preselectTeleOp = "FullTeleOp")
+@Autonomous(name = "Guacamole (1spec+0sample)", group = "Chipotle Menu", preselectTeleOp = "FullTeleOp")
 
-public class Guacamole extends CommandOpMode {
+public class Guac1Spec extends CommandOpMode {
     private final Robot robot = Robot.getInstance();
     private ElapsedTime timer;
 
@@ -71,6 +71,18 @@ public class Guacamole extends CommandOpMode {
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
+        // sussy park
+        paths.add(
+                // Move to first specimen intake minus a few inches to give human player time to align specimen
+                robot.follower.pathBuilder()
+                        .addPath(
+                                // Line 6 (8 in Guacamole pathing)
+                                new BezierLine(
+                                        new Point(40.250, 66.250, Point.CARTESIAN),
+                                        new Point(12.000, 26.000, Point.CARTESIAN)
+                                )
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0)).build());
 
         paths.add(
                 // Drive to first sample spike mark
@@ -247,13 +259,6 @@ public class Guacamole extends CommandOpMode {
 
         generatePath();
 
-        ParallelCommandGroup attachSpecimen = new ParallelCommandGroup(
-                new SetDeposit(robot, Deposit.depositPivotState, BACK_HIGH_SPECIMEN_ATTACH_HEIGHT, false),
-                new SequentialCommandGroup(
-                        new WaitCommand(300),
-                        new InstantCommand(() -> robot.deposit.setClawOpen(true))
-                )
-        );
 
         schedule(
                 // DO NOT REMOVE: updates follower to follow path
@@ -265,135 +270,16 @@ public class Guacamole extends CommandOpMode {
                                 new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, FRONT_HIGH_SPECIMEN_HEIGHT, false),
                                 new FollowPathCommand(robot.follower, paths.get(0))
                         ),
-                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
 
-//                        new MT2Relocalization(robot), RIP :(
-
-                        // Sample 1
+                        new WaitCommand(1000),
+                        new InstantCommand(() -> robot.deposit.setClawOpen(true)),
+                        new WaitCommand(3000),
                         new ParallelCommandGroup(
+                                new FollowPathCommand(robot.follower, paths.get(1)),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(400),
-                                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, 0, true)
-                                ),
-                                new FollowPathCommand(robot.follower, paths.get(1))
-                        ),
-                        new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 0, true),
-                        new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 200, true),
-                        new ParallelRaceGroup(
-                                new WaitUntilCommand(Intake::correctSampleDetected),
-                                new WaitCommand(2000)
-                        ),
-                        new FollowPathCommand(robot.follower, paths.get(2)),
-                        new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.REVERSE, 300, true),
-                        new WaitUntilCommand(() -> !robot.intake.hasSample()),
-
-                        // Sample 2
-                        new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 100, true),
-                        new FollowPathCommand(robot.follower, paths.get(3)),
-                        new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 300, true),
-                        new ParallelRaceGroup(
-                                new WaitUntilCommand(Intake::correctSampleDetected),
-                                new WaitCommand(2000)
-                        ),
-                        new FollowPathCommand(robot.follower, paths.get(4)),
-                        new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.REVERSE, 300, true),
-                        new WaitUntilCommand(() -> !robot.intake.hasSample()),
-
-                        // Intake Specimen 2
-                        new ParallelCommandGroup(
-                            new SetIntake(robot, IntakePivotState.TRANSFER, IntakeMotorState.REVERSE, 0, false),
-                            new FollowPathCommand(robot.follower, paths.get(5)),
-                            new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, 0, true)
-                        ),
-                        new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.STOP)),
-                        new InstantCommand(() -> robot.follower.setMaxPower(0.25)),
-                        new WaitCommand(500),
-                        new ParallelRaceGroup(
-                                new FollowPathCommand(robot.follower, paths.get(6)),
-                                new WaitCommand(400)
-                        ),
-                        new InstantCommand(() -> robot.deposit.setClawOpen(false)),
-                        new WaitCommand(200),
-
-                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
-                        // Score Specimen 2
-                        new ParallelCommandGroup(
-                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, FRONT_HIGH_SPECIMEN_HEIGHT, false),
-                                new FollowPathCommand(robot.follower, paths.get(7)),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(1000),
-                                        new InstantCommand(() -> robot.follower.setMaxPower(0.35))
+                                        new WaitCommand(500),
+                                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, 0, false)
                                 )
-                        ),
-                        attachSpecimen,
-                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
-
-                        // Intake Specimen 3
-                        new ParallelRaceGroup(
-                            new ParallelCommandGroup(
-                                    new FollowPathCommand(robot.follower, paths.get(8)),
-                                    new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, 0, true),
-                                    new SequentialCommandGroup(
-                                            new WaitCommand(1000),
-                                            new InstantCommand(() -> robot.follower.setMaxPower(0.25))
-                                    )
-                            ),
-                            new WaitCommand(2500)
-                        ),
-                        new InstantCommand(() -> robot.deposit.setClawOpen(false)),
-                        new WaitCommand(200),
-
-                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
-                        // Scoring Sample 3
-                        new ParallelCommandGroup(
-                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, FRONT_HIGH_SPECIMEN_HEIGHT, false),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(200),
-                                        new FollowPathCommand(robot.follower, paths.get(9))
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(1200),
-                                        new InstantCommand(() -> robot.follower.setMaxPower(0.35))
-                                )
-                        ),
-                        attachSpecimen,
-
-                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
-                        // Intake Specimen 4
-                        new ParallelRaceGroup(
-                                new ParallelCommandGroup(
-                                        new FollowPathCommand(robot.follower, paths.get(10)),
-                                        new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, 0, true),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1000),
-                                                new InstantCommand(() -> robot.follower.setMaxPower(0.25))
-                                        )
-                                ),
-                                new WaitCommand(2500)
-                        ),
-                        new InstantCommand(() -> robot.deposit.setClawOpen(false)),
-                        new WaitCommand(200),
-
-                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
-                        // Scoring Specimen 4
-                        new ParallelCommandGroup(
-                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, FRONT_HIGH_SPECIMEN_HEIGHT, false),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(200),
-                                        new FollowPathCommand(robot.follower, paths.get(11))
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(1400),
-                                        new InstantCommand(() -> robot.follower.setMaxPower(0.35))
-                                )
-                        ),
-                        attachSpecimen,
-                        new InstantCommand(() -> robot.follower.setMaxPower(1)),
-
-                        // Parking
-                        new ParallelCommandGroup(
-                                new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, 0, true),
-                                new FollowPathCommand(robot.follower, paths.get(12))
                         )
                 )
         );

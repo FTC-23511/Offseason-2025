@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
 
 import com.pedropathing.localization.Pose;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
+import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.ConditionalCommand;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
@@ -253,6 +254,11 @@ public class FullTeleOp extends CommandOpMode {
             robot.drive.setHang(Drive.HangState.STOP);
         }
 
+        // Reset CommandScheduler
+        if (gamepad1.ps) {
+            super.reset();
+        }
+
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();
 
@@ -271,6 +277,8 @@ public class FullTeleOp extends CommandOpMode {
 
         telemetryData.addData("slides target", robot.deposit.target);
         telemetryData.addData("extendo target", robot.intake.target);
+
+        telemetryData.addData("Sigma", "Arush");
 
         telemetryData.addData("intakePivotState", intakePivotState);
         telemetryData.addData("depositPivotState", depositPivotState);

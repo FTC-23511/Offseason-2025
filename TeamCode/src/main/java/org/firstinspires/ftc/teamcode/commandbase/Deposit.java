@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 public class Deposit extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
     private final int divideConstant = 30;
-    private static final PIDFController slidePIDF = new PIDFController(0.006,0, 0.00017, 0.00023);
+    private static final PIDFController slidePIDF = new PIDFController(0.007,0, 0.00017, 0.00023);
 
     // Between open and closed
     public boolean clawOpen;
@@ -59,10 +59,12 @@ public class Deposit extends SubsystemBase {
     }
 
     public void autoUpdateSlides() {
-        if (this.target <= SLIDES_PIVOT_READY_EXTENSION && !slidesReached) {
-            slidePIDF.setP(0.007);
+        if (this.target == BACK_HIGH_SPECIMEN_ATTACH_HEIGHT && !slidesReached) {
+            slidePIDF.setP(0.01);
+        } else if (this.target <= SLIDES_PIVOT_READY_EXTENSION && !slidesReached) {
+            slidePIDF.setP(0.0085);
         } else {
-            slidePIDF.setP(0.00575);
+            slidePIDF.setP(0.007);
         }
 
         double power = slidePIDF.calculate(getLiftScaledPosition(), target);
