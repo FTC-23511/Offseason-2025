@@ -31,6 +31,7 @@ public class Intake extends SubsystemBase {
     public enum IntakePivotState {
         INTAKE,
         INTAKE_READY,
+        INTAKE_HOVER,
         TRANSFER,
         TRANSFER_READY
     }
@@ -115,6 +116,11 @@ public class Intake extends SubsystemBase {
             case INTAKE_READY:
                 robot.leftIntakePivot.setPosition(INTAKE_PIVOT_READY_INTAKE_POS);
                 robot.rightIntakePivot.setPosition(INTAKE_PIVOT_READY_INTAKE_POS);
+                break;
+
+            case INTAKE_HOVER:
+                robot.leftIntakePivot.setPosition(INTAKE_PIVOT_HOVER_INTAKE_POS);
+                robot.rightIntakePivot.setPosition(INTAKE_PIVOT_HOVER_INTAKE_POS);
                 break;
         }
 
