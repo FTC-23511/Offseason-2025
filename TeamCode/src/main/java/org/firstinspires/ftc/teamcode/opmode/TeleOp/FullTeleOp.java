@@ -18,6 +18,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.Drive;
 import org.firstinspires.ftc.teamcode.commandbase.commands.*;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
@@ -43,7 +44,6 @@ public class FullTeleOp extends CommandOpMode {
         // Must have for all opModes
         opModeType = OpModeType.TELEOP;
         depositInit = DepositPivotState.MIDDLE_HOLD;
-
 
         INTAKE_HOLD_SPEED = 0;
 
@@ -97,8 +97,12 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.INTAKE_READY))
         );
 
+        // TO-DO: need to make into 1 method in Drive.java
         driver.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
-                new InstantCommand(() -> robot.drive.setSubPusher(!Drive.subPusherOut))
+                new ConditionalCommand(
+                        new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.OUT)),
+                        new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.IN)),
+                        () -> Drive.subPusherState.equals(Drive.SubPusherState.IN))
         );
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
@@ -242,7 +246,7 @@ public class FullTeleOp extends CommandOpMode {
         // Manual control of extendo
         if (gamepad1.right_trigger > 0.01 &&
                 !depositPivotState.equals(DepositPivotState.TRANSFER) &&
-                robot.extensionEncoder.getPosition() <= (MAX_EXTENDO_EXTENSION - 5)) {
+                robot.intake.getExtendoScaledPosition() <= (MAX_EXTENDO_EXTENSION - 5)) {
 
             robot.intake.target += 5;
         }
@@ -267,6 +271,10 @@ public class FullTeleOp extends CommandOpMode {
         telemetryData.addData("slidesRetracted", robot.deposit.slidesRetracted);
         telemetryData.addData("slidesReached", robot.deposit.slidesReached);
         telemetryData.addData("robotState", Robot.robotState);
+        telemetryData.addData("opModeType", opModeType.name());
+
+        telemetryData.addData("hasSample()", robot.intake.hasSample());
+        telemetryData.addData("colorSensor getDistance", robot.colorSensor.getDistance(DistanceUnit.CM));
 
         telemetryData.addData("liftTop.getPower()", robot.liftTop.getPower());
         telemetryData.addData("liftBottom.getPower()", robot.liftBottom.getPower());

@@ -75,7 +75,7 @@ public class Deposit extends SubsystemBase {
         if (target == 0 && !slidesReached) {
             power -= 0.1;
         } else if (target == SLIDES_PIVOT_READY_EXTENSION + 50 && !slidesReached && getLiftScaledPosition() < SLIDES_PIVOT_READY_EXTENSION + 50) {
-            power += 0.2;
+            power += 0.1;
         }
 
         if (slidesRetracted) {

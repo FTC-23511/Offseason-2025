@@ -165,20 +165,20 @@ public class Intake extends SubsystemBase {
                     if (hasSample()) {
                         sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
                         if (correctSampleDetected()) {
-//                            setActiveIntake(STOP);
-//                            if (opModeType.equals(OpModeType.TELEOP)) {
-//                                if (sampleColorTarget.equals(ANY_COLOR)) {
-//                                    CommandScheduler.getInstance().schedule(
-//                                            new UninterruptibleCommand(
-//                                                    new RealTransfer(robot)
-//                                            )
-//                                    );
-//                                } else {
-//                                    CommandScheduler.getInstance().schedule(
-//                                            new SetIntake(robot, TRANSFER_READY, HOLD, this.target, false)
-//                                    );
-//                                }
-//                            }
+                            setActiveIntake(STOP);
+                            if (opModeType.equals(OpModeType.TELEOP)) {
+                                if (sampleColorTarget.equals(ANY_COLOR)) {
+                                    CommandScheduler.getInstance().schedule(
+                                            new UninterruptibleCommand(
+                                                    new RealTransfer(robot)
+                                            )
+                                    );
+                                } else {
+                                    CommandScheduler.getInstance().schedule(
+                                            new SetIntake(robot, TRANSFER_READY, HOLD, this.target, false)
+                                    );
+                                }
+                            }
                         } else if (!sampleColor.equals(NONE)) {
                             setActiveIntake(REVERSE);
                         } else {
@@ -243,27 +243,22 @@ public class Intake extends SubsystemBase {
 
         SampleColorDetected sampleColor = sampleColorDetected(red, green, blue);
 
-        // TeleOp Case
-        if (!correctSampleDetected() && opModeType.equals(OpModeType.TELEOP)) {
-            return false;
-        }
-
-        // For edge case intake
+        // For edge case intake - currently set to always true
         boolean colorSensingHasSample = true;
         switch (sampleColor) {
             case YELLOW:
                 if (green > YELLOW_THRESHOLD) {
-                    colorSensingHasSample = false;
+                    colorSensingHasSample = true;
                 }
                 break;
             case RED:
                 if (red > RED_THRESHOLD) {
-                    colorSensingHasSample = false;
+                    colorSensingHasSample = true;
                 }
                 break;
             case BLUE:
                     if (blue > BLUE_THRESHOLD) {
-                    colorSensingHasSample = false;
+                    colorSensingHasSample = true;
                 }
                 break;
         }

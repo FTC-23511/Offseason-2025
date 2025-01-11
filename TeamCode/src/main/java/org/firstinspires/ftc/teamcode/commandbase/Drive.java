@@ -20,14 +20,20 @@ public class Drive extends SubsystemBase {
         DEPOSIT_GEAR
     }
 
+    public enum SubPusherState {
+        IN,
+        OUT,
+        AUTO_PUSH
+    }
+
     public static HangState hangState;
     public static GearboxState gearboxState;
-    public static boolean subPusherOut = false;
+    public static SubPusherState subPusherState = SubPusherState.IN;
 
     public void init() {
         setHang(HangState.STOP);
         setGearbox(GearboxState.DEPOSIT_GEAR);
-        setSubPusher(false);
+        setSubPusher(SubPusherState.IN);
     }
 
     public void setHang(HangState hangState) {
@@ -62,13 +68,19 @@ public class Drive extends SubsystemBase {
         Drive.gearboxState = gearboxState;
     }
 
-    public void setSubPusher(boolean subPusherOut) {
-        if (subPusherOut) {
-            robot.subPusher.setPosition(SUB_PUSHER_OUT);
-        } else {
-            robot.subPusher.setPosition(SUB_PUSHER_IN);
+    public void setSubPusher(SubPusherState subPusherState) {
+        switch (subPusherState) {
+            case IN:
+                robot.subPusher.setPosition(SUB_PUSHER_IN);
+                break;
+            case OUT:
+                robot.subPusher.setPosition(SUB_PUSHER_OUT);
+                break;
+            case AUTO_PUSH:
+                robot.subPusher.setPosition(SUB_PUSHER_AUTO);
+                break;
         }
 
-        Drive.subPusherOut = subPusherOut;
+        Drive.subPusherState = subPusherState;
     }
 }

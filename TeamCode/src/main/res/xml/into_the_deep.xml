@@ -5,10 +5,10 @@
     <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
         <LynxModule name="Control Hub" port="173">
 
-            <Servo name="rightIntakePivot" port="0"/>
+            <ContinuousRotationServo name="leftHang" port="0"/>
 <!--        gearboxSwitcher not plugged in right now -->
             <Servo name="gearboxSwitcher" port="2"/>
-            <ContinuousRotationServo name="leftHang" port="3"/>
+            <Servo name="rightIntakePivot" port="3"/>
             <Servo name="leftIntakePivot" port="5"/>
 
             <goBILDA5202SeriesMotor name="liftTop" port="0"/>-->

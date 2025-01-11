@@ -13,14 +13,14 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 public class RealTransfer extends SequentialCommandGroup {
 
     public RealTransfer(Robot robot) {
-        addCommands(new SequentialCommandGroup(
+        addCommands(
                 new ParallelCommandGroup(
                         new SetDeposit(robot, Deposit.DepositPivotState.TRANSFER, SLIDES_PIVOT_READY_EXTENSION + 50, true),
                         new SetIntake(robot, Intake.IntakePivotState.TRANSFER_READY, Intake.IntakeMotorState.HOLD, 0, false)
                 ),
                 new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, false),
-                new WaitCommand(300),
+                new WaitCommand(100),
                 new Transfer(robot)
-        ));
+        );
     }
 }

@@ -37,7 +37,7 @@ public class FConstants {
 
         FollowerConstants.headingPIDFCoefficients = new CustomPIDFCoefficients(1.5,0,0.1,0);
         FollowerConstants.useSecondaryHeadingPID = true;
-        FollowerConstants.secondaryHeadingPIDFCoefficients = new CustomPIDFCoefficients(1.2,0,0.1,0); // @see useSecondaryHeadingPID
+        FollowerConstants.secondaryHeadingPIDFCoefficients = new CustomPIDFCoefficients(0.9,0,0.08,0); // @see useSecondaryHeadingPID
 
         FollowerConstants.drivePIDFCoefficients = new CustomFilteredPIDFCoefficients(0.018,0,0.0000012,0.6,0);
         FollowerConstants.useSecondaryDrivePID = true;
@@ -48,9 +48,9 @@ public class FConstants {
 
         // Controls pause at end of forward and backward test
         FollowerConstants.pathEndTimeoutConstraint = 50;
-        FollowerConstants.pathEndTValueConstraint = 0.975;
+        FollowerConstants.pathEndTValueConstraint = 0.98;
         FollowerConstants.pathEndVelocityConstraint = 0.1;
         FollowerConstants.pathEndTranslationalConstraint = 0.1;
-        FollowerConstants.pathEndHeadingConstraint = 0.007;
+        FollowerConstants.pathEndHeadingConstraint = 0.006;
     }
 }

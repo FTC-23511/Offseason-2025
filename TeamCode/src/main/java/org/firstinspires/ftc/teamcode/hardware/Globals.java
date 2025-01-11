@@ -46,28 +46,28 @@ public class Globals {
 
     // Intake Color Sensor
     public static final double MIN_DISTANCE_THRESHOLD = 1;
-    public static final double MAX_DISTANCE_THRESHOLD = 1.4;
-    public static final int YELLOW_THRESHOLD = 1500;
-    public static final int RED_THRESHOLD = 900;
-    public static final int BLUE_THRESHOLD = 1150;
+    public static final double MAX_DISTANCE_THRESHOLD = 1.6;
+    public static final int YELLOW_THRESHOLD = 0;
+    public static final int RED_THRESHOLD = 0;
+    public static final int BLUE_THRESHOLD = 0;
 
     // Intake Pivot
-    public static double INTAKE_PIVOT_TRANSFER_POS = 0.01;
-    public static double INTAKE_PIVOT_READY_TRANSFER_POS = 0.15;
-    public static double INTAKE_PIVOT_INTAKE_POS = 0.70;
-    public static double INTAKE_PIVOT_READY_INTAKE_POS = 0.50;
-    public static double INTAKE_PIVOT_HOVER_INTAKE_POS = 0.67;
+    public static double INTAKE_PIVOT_TRANSFER_POS = 0.05;
+    public static double INTAKE_PIVOT_READY_TRANSFER_POS = 0.19;
+    public static double INTAKE_PIVOT_INTAKE_POS = 0.735;
+    public static double INTAKE_PIVOT_READY_INTAKE_POS = 0.54;
+    public static double INTAKE_PIVOT_HOVER_INTAKE_POS = 0.71;
 
     // Intake Extendo
     public static double MAX_EXTENDO_EXTENSION = 500;
 
     // Deposit Pivot
-    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.97;
-    public static double DEPOSIT_PIVOT_MIDDLE_POS = 1.00;
-    public static double DEPOSIT_PIVOT_AUTO_BAR_POS = 0.3;
+    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.9442;
+    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.98;
+    public static double DEPOSIT_PIVOT_AUTO_BAR_POS = 0.35;
     public static double DEPOSIT_PIVOT_SCORING_POS = 0.3;
     public static double DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS = 0.07;
-    public static double DEPOSIT_PIVOT_SPECIMEN_BACK_INTAKE_POS = 0.88;
+    public static double DEPOSIT_PIVOT_SPECIMEN_BACK_INTAKE_POS = 0.83;
     public static double DEPOSIT_PIVOT_SPECIMEN_FRONT_SCORING_POS = 0.20;
     public static double DEPOSIT_PIVOT_SPECIMEN_BACK_SCORING_POS = 0.71;
 
@@ -81,13 +81,13 @@ public class Globals {
     public static double DEPOSIT_CLAW_CLOSE_POS = 0.18;
 
     // Deposit Wrist
-    public static double WRIST_SCORING = 0.35;
+    public static double WRIST_SCORING = 0.37;
     public static double WRIST_AUTO_BAR = 0.3;
     public static double WRIST_FRONT_SPECIMEN_SCORING = 0.60;
     public static double WRIST_BACK_SPECIMEN_SCORING = 0.43;
     public static double WRIST_FRONT_SPECIMEN_INTAKE = 0.33;
-    public static double WRIST_BACK_SPECIMEN_INTAKE = 0.53;
-    public static double WRIST_TRANSFER = 0.395;
+    public static double WRIST_BACK_SPECIMEN_INTAKE = 0.5;
+    public static double WRIST_TRANSFER = 0.4;
     public static double WRIST_MIDDLE_HOLD = 0.4;
 
     // Deposit Slides
@@ -95,7 +95,7 @@ public class Globals {
     public static double SLIDES_PIVOT_READY_EXTENSION = 450;
     public static double LOW_BUCKET_HEIGHT = 450;
     public static double HIGH_BUCKET_HEIGHT = 1900;
-    public static double FRONT_HIGH_SPECIMEN_HEIGHT = 1150;
+    public static double FRONT_HIGH_SPECIMEN_HEIGHT = 1050;
     public static double BACK_HIGH_SPECIMEN_HEIGHT = 800;
     public static double BACK_HIGH_SPECIMEN_ATTACH_HEIGHT = 1400;
     public static double AUTO_ASCENT_HEIGHT = 800;
@@ -112,6 +112,7 @@ public class Globals {
     // Sub Pusher / Sweeper Servo
     public static double SUB_PUSHER_OUT = 0.54;
     public static double SUB_PUSHER_IN = 0.08;
+    public static double SUB_PUSHER_AUTO = 0.5;
 
     // command timeout
     public final static int MAX_COMMAND_RUN_TIME_MS = 3000;
