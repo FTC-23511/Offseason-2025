@@ -190,17 +190,6 @@ public class Intake extends SubsystemBase {
                             }
                         } else if (!sampleColor.equals(NONE)) {
                             setActiveIntake(REVERSE);
-                        } else {
-                            CommandScheduler.getInstance().schedule(
-                                    new ConditionalCommand(
-                                            new SequentialCommandGroup(
-                                                    new WaitCommand(200),
-                                                    new InstantCommand(() -> robot.intake.setActiveIntake(FORWARD))
-                                            ),
-                                            new InstantCommand(),
-                                            () -> intakeMotorState.equals(REVERSE)
-                                    )
-                            );
                         }
                     } else {
                         sampleColor = NONE;
@@ -275,7 +264,7 @@ public class Intake extends SubsystemBase {
                 }
                 break;
             case BLUE:
-                    if (blue > BLUE_THRESHOLD) {
+                if (blue > BLUE_THRESHOLD) {
                     colorSensingHasSample = true;
                 }
                 break;

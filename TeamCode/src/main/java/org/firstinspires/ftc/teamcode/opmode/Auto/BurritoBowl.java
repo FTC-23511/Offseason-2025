@@ -173,7 +173,7 @@ public class BurritoBowl extends CommandOpMode {
 
         robot.initHasMovement();
 
-        robot.follower.setMaxPower(0.5);
+        robot.follower.setMaxPower(0.52);
         FollowerConstants.zeroPowerAccelerationMultiplier = 1.5;
 
         generatePath();
@@ -195,23 +195,22 @@ public class BurritoBowl extends CommandOpMode {
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
 
                         // Sample 2
-                        new ParallelCommandGroup(
-                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 250, true),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(250),
-                                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, SLIDES_PIVOT_READY_EXTENSION + 50, true).withTimeout(1000),
-                                        new InstantCommand(() -> robot.deposit.target = SLIDES_PIVOT_READY_EXTENSION + 50)
-                                )
+                        new SequentialCommandGroup(
+                                new WaitCommand(250),
+                                new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, SLIDES_PIVOT_READY_EXTENSION + 50, true).withTimeout(1000)
                         ),
-
                         new FollowPathCommand(robot.follower, paths.get(1)).setHoldEnd(true),
+                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 120, true),
                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 320, true),
 
                         new ParallelRaceGroup(
-                                new WaitUntilCommand(robot.intake::hasSample),
+                                new ParallelCommandGroup(
+                                        new WaitUntilCommand(robot.intake::hasSample),
+                                        new FollowPathCommand(robot.follower, robot.jiggle(5))
+                                ),
                                 new WaitCommand(1000)
                         ),
-
+                        new WaitCommand(300),
                         new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
                         new WaitCommand(300),
                         new RealTransfer(robot),
@@ -234,7 +233,7 @@ public class BurritoBowl extends CommandOpMode {
                                 new WaitUntilCommand(robot.intake::hasSample),
                                 new WaitCommand(1000)
                         ),
-                        new WaitCommand(100),
+                        new WaitCommand(200),
                         new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
                         new WaitCommand(400),
                         new RealTransfer(robot),
@@ -261,7 +260,7 @@ public class BurritoBowl extends CommandOpMode {
                                 new WaitUntilCommand(robot.intake::hasSample),
                                 new WaitCommand(1000)
                         ),
-                        new WaitCommand(100),
+                        new WaitCommand(200),
                         new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
                         new WaitCommand(200),
                         new RealTransfer(robot),

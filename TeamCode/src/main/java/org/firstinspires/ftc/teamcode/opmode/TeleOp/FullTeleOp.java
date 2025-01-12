@@ -159,9 +159,7 @@ public class FullTeleOp extends CommandOpMode {
 
         operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
                 new ConditionalCommand(
-                        new UninterruptibleCommand(
-                                new attachSpecimen(robot.deposit)
-                        ),
+                        new attachSpecimen(robot.deposit),
                         new InstantCommand(),
                         () -> depositPivotState.equals(DepositPivotState.BACK_SPECIMEN_SCORING)
                 )
@@ -261,6 +259,7 @@ public class FullTeleOp extends CommandOpMode {
         // Reset CommandScheduler
         if (gamepad1.ps) {
             CommandScheduler.getInstance().reset();
+            robot.deposit.setSlideTarget(robot.deposit.getLiftScaledPosition());
         }
 
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
@@ -288,6 +287,7 @@ public class FullTeleOp extends CommandOpMode {
 
         telemetryData.addData("intakePivotState", intakePivotState);
         telemetryData.addData("depositPivotState", depositPivotState);
+        telemetryData.addData("Sigma", "Saket");
 
         telemetryData.addData("INTAKE_HOLD_SPEED", INTAKE_HOLD_SPEED);
         telemetryData.addData("intakeMotorState", intakeMotorState);;

@@ -105,20 +105,20 @@ public class SetDeposit extends CommandBase {
     public boolean isFinished() {
         if (timer.milliseconds() > (Math.abs(previousServoPos - currentServoPos) * DEPOSIT_PIVOT_MOVEMENT_TIME)
             && robot.intake.hasSample() && pivotState.equals(Deposit.DepositPivotState.SCORING)) { //  && target == HIGH_BUCKET_HEIGHT || target == HIGH_BUCKET_HEIGHT
-            CommandScheduler.getInstance().schedule(
-                    new UninterruptibleCommand(
-                            new SequentialCommandGroup(
-                                    new RealTransfer(robot),
-                                    new ConditionalCommand(
-                                            new SetDeposit(robot, pivotState, target, true).withTimeout(1000),
-                                            new SetDeposit(robot, pivotState, target, clawOpen).withTimeout(1000),
-                                            () -> opModeType.equals(OpModeType.AUTO)
-                                    )
-                            )
-                    )
-            );
-            
-            return true;
+//            CommandScheduler.getInstance().schedule(
+//                    new UninterruptibleCommand(
+//                            new SequentialCommandGroup(
+//                                    new RealTransfer(robot),
+//                                    new ConditionalCommand(
+//                                            new SetDeposit(robot, pivotState, target, true).withTimeout(1000),
+//                                            new SetDeposit(robot, pivotState, target, clawOpen).withTimeout(1000),
+//                                            () -> opModeType.equals(OpModeType.AUTO)
+//                                    )
+//                            )
+//                    )
+//            );
+//
+//            return true;
         }
 
         return robot.deposit.slidesReached && index == 3;
