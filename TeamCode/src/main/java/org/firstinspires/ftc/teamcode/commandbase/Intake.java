@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
+import java.nio.file.Watchable;
 import java.util.function.BooleanSupplier;
 
 public class Intake extends SubsystemBase {
@@ -175,7 +176,10 @@ public class Intake extends SubsystemBase {
                                 if (sampleColorTarget.equals(ANY_COLOR)) {
                                     CommandScheduler.getInstance().schedule(
                                             new UninterruptibleCommand(
-                                                    new RealTransfer(robot)
+                                                    new SequentialCommandGroup(
+                                                            new WaitCommand(150),
+                                                            new RealTransfer(robot)
+                                                    )
                                             )
                                     );
                                 } else {

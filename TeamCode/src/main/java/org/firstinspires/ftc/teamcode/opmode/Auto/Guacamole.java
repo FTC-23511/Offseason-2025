@@ -189,7 +189,7 @@ public class Guacamole extends CommandOpMode {
                                 // Line 10
                                 new BezierLine(
                                         new Point(8.500, 32.000, Point.CARTESIAN),
-                                        new Point(41.250, 66.000, Point.CARTESIAN)
+                                        new Point(41.250, 68.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -200,7 +200,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 11
                                 new BezierCurve(
-                                        new Point(41.250, 66.000, Point.CARTESIAN),
+                                        new Point(41.250, 68.000, Point.CARTESIAN),
                                         new Point(30.000, 32.000, Point.CARTESIAN),
                                         new Point(14.000, 32.000, Point.CARTESIAN)
                                 )
@@ -214,7 +214,7 @@ public class Guacamole extends CommandOpMode {
                                 // Line 12
                                 new BezierLine(
                                         new Point(14.000, 32.000, Point.CARTESIAN),
-                                        new Point(41.250, 66.000, Point.CARTESIAN)
+                                        new Point(41.250, 68.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -225,7 +225,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 13
                                 new BezierCurve(
-                                        new Point(41.250, 66.000, Point.CARTESIAN),
+                                        new Point(41.250, 68.000, Point.CARTESIAN),
                                         new Point(30.000, 32.000, Point.CARTESIAN),
                                         new Point(14.000, 32.000, Point.CARTESIAN)
                                 )
@@ -239,7 +239,7 @@ public class Guacamole extends CommandOpMode {
                                 // Line 14
                                 new BezierLine(
                                         new Point(14.000, 32.000, Point.CARTESIAN),
-                                        new Point(41.250, 66.000, Point.CARTESIAN)
+                                        new Point(41.250, 68.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -250,7 +250,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 15
                                 new BezierCurve(
-                                        new Point(41.250, 66.000, Point.CARTESIAN),
+                                        new Point(41.250, 68.000, Point.CARTESIAN),
                                         new Point(30.000, 32.000, Point.CARTESIAN),
                                         new Point(14.000, 32.000, Point.CARTESIAN)
                                 )
@@ -264,7 +264,7 @@ public class Guacamole extends CommandOpMode {
                                 // Line 16
                                 new BezierLine(
                                         new Point(14.000, 32.000, Point.CARTESIAN),
-                                        new Point(41.250, 66.000, Point.CARTESIAN)
+                                        new Point(41.250, 68.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -385,11 +385,11 @@ public class Guacamole extends CommandOpMode {
                         new FollowPathCommand(robot.follower, paths.get(6)),
 
                         // Intake Specimen 2
-                        new InstantCommand(() -> robot.follower.setMaxPower(0.5)),
+                        new InstantCommand(() -> FollowerConstants.zeroPowerAccelerationMultiplier = 1),
+                        new InstantCommand(() -> robot.follower.setMaxPower(0.4)),
                         new FollowPathCommand(robot.follower, paths.get(7)).setHoldEnd(true),
 
                         new InstantCommand(() -> robot.follower.setMaxPower(0.3)),
-                        new InstantCommand(() -> FollowerConstants.zeroPowerAccelerationMultiplier = 1),
                         new WaitCommand(500),
 
                         new FollowPathCommand(robot.follower, paths.get(8)).setHoldEnd(true).withTimeout(500),

@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.commandbase.Deposit.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
+import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
@@ -171,7 +172,8 @@ public class BurritoBowl extends CommandOpMode {
 
         robot.initHasMovement();
 
-        robot.follower.setMaxPower(0.5);
+        robot.follower.setMaxPower(0.45);
+        FollowerConstants.zeroPowerAccelerationMultiplier = 1.75;
 
         generatePath();
 
@@ -204,7 +206,8 @@ public class BurritoBowl extends CommandOpMode {
                                 new WaitUntilCommand(robot.intake::hasSample),
                                 new WaitCommand(1000)
                         ),
-                        new WaitCommand(400),
+                        new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
+                        new WaitCommand(200),
                         new RealTransfer(robot),
                         new WaitCommand(250),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
@@ -225,6 +228,9 @@ public class BurritoBowl extends CommandOpMode {
                                 new WaitUntilCommand(robot.intake::hasSample),
                                 new WaitCommand(1000)
                         ),
+                        new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
+                        new WaitCommand(200),
+                        new SetIntake(robot, IntakePivotState.TRANSFER_READY, Intake.intakeMotorState, robot.intake.target, false),
                         new WaitCommand(400),
                         new RealTransfer(robot),
                         new WaitCommand(250),
@@ -250,7 +256,8 @@ public class BurritoBowl extends CommandOpMode {
                                 new WaitUntilCommand(robot.intake::hasSample),
                                 new WaitCommand(1000)
                         ),
-                        new WaitCommand(400),
+                        new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
+                        new WaitCommand(200),
                         new RealTransfer(robot),
                         new WaitCommand(250),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
