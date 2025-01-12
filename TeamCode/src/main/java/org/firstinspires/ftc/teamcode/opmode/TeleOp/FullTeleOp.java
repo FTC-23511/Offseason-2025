@@ -117,7 +117,7 @@ public class FullTeleOp extends CommandOpMode {
                 new UninterruptibleCommand(
                         new SequentialCommandGroup(
                                 new UndoTransfer(robot),
-                                new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.REVERSE, MAX_EXTENDO_EXTENSION, true)
+                                new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.REVERSE, 0, true)
                         )
                 )
         );
@@ -136,10 +136,10 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
                 new ConditionalCommand(
                         new UninterruptibleCommand(
-                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, FRONT_HIGH_SPECIMEN_HEIGHT, false)
+                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, FRONT_HIGH_SPECIMEN_HEIGHT, false).withTimeout(1500)
                         ),
                         new UninterruptibleCommand(
-                                new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_SCORING, BACK_HIGH_SPECIMEN_HEIGHT, false)
+                                new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_SCORING, BACK_HIGH_SPECIMEN_HEIGHT, false).withTimeout(1500)
                         ),
                         () -> frontSpecimenScoring
                 )
@@ -148,10 +148,10 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(
                 new ConditionalCommand(
                         new UninterruptibleCommand(
-                                new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, 0, false)
+                                new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, 0, false).withTimeout(1500)
                         ),
                         new UninterruptibleCommand(
-                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_INTAKE, 0, false)
+                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_INTAKE, 0, false).withTimeout(1500)
                         ),
                         () -> frontSpecimenScoring
                 )
@@ -169,20 +169,20 @@ public class FullTeleOp extends CommandOpMode {
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new UninterruptibleCommand(
-                        new SetDeposit(robot, DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false)
+                        new SetDeposit(robot, DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false).withTimeout(1500)
                 )
         );
 
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new UninterruptibleCommand(
-                        new SetDeposit(robot, DepositPivotState.SCORING, LOW_BUCKET_HEIGHT, false)
+                        new SetDeposit(robot, DepositPivotState.SCORING, LOW_BUCKET_HEIGHT, false).withTimeout(1500)
                 )
         );
 
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
                 new UninterruptibleCommand(
-                        new SetDeposit(robot, DepositPivotState.TRANSFER, SLIDES_PIVOT_READY_EXTENSION + 50, true)
+                        new SetDeposit(robot, DepositPivotState.TRANSFER, SLIDES_PIVOT_READY_EXTENSION + 50, true).withTimeout(1500)
                 )
         );
 
@@ -195,7 +195,7 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> robot.drive.setHang(Drive.HangState.RETRACT)),
-                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, FRONT_HIGH_SPECIMEN_HEIGHT, false)
+                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, FRONT_HIGH_SPECIMEN_HEIGHT, false).withTimeout(1500)
                 )
         );
 
@@ -260,7 +260,7 @@ public class FullTeleOp extends CommandOpMode {
 
         // Reset CommandScheduler
         if (gamepad1.ps) {
-            super.reset();
+            CommandScheduler.getInstance().reset();
         }
 
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
@@ -286,10 +286,11 @@ public class FullTeleOp extends CommandOpMode {
         telemetryData.addData("slides target", robot.deposit.target);
         telemetryData.addData("extendo target", robot.intake.target);
 
-        telemetryData.addData("Sigma", "Arush");
-
         telemetryData.addData("intakePivotState", intakePivotState);
         telemetryData.addData("depositPivotState", depositPivotState);
+
+        telemetryData.addData("INTAKE_HOLD_SPEED", INTAKE_HOLD_SPEED);
+        telemetryData.addData("intakeMotorState", intakeMotorState);;
 
         telemetryData.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();

@@ -7,9 +7,12 @@ import static org.firstinspires.ftc.teamcode.commandbase.Intake.SampleColorTarge
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState.*;
 
 import com.seattlesolvers.solverslib.command.CommandScheduler;
+import com.seattlesolvers.solverslib.command.ConditionalCommand;
+import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
+import com.seattlesolvers.solverslib.command.WaitCommand;
 import com.seattlesolvers.solverslib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -17,6 +20,8 @@ import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
+
+import java.util.function.BooleanSupplier;
 
 public class Intake extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
@@ -128,7 +133,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void setActiveIntake(IntakeMotorState intakeMotorState) {
-        if (intakePivotState.equals(INTAKE) ||intakePivotState.equals(INTAKE_READY)) {
+        if (intakePivotState.equals(INTAKE) || intakePivotState.equals(INTAKE_READY)) {
             switch (intakeMotorState) {
                 case FORWARD:
                     robot.intakeMotor.setPower(INTAKE_FORWARD_SPEED);
@@ -175,14 +180,23 @@ public class Intake extends SubsystemBase {
                                     );
                                 } else {
                                     CommandScheduler.getInstance().schedule(
-                                            new SetIntake(robot, TRANSFER_READY, HOLD, this.target, false)
+                                            new SetIntake(robot, TRANSFER_READY, HOLD, 0, false)
                                     );
                                 }
                             }
                         } else if (!sampleColor.equals(NONE)) {
                             setActiveIntake(REVERSE);
                         } else {
-                            setActiveIntake(FORWARD);
+                            CommandScheduler.getInstance().schedule(
+                                    new ConditionalCommand(
+                                            new SequentialCommandGroup(
+                                                    new WaitCommand(200),
+                                                    new InstantCommand(() -> robot.intake.setActiveIntake(FORWARD))
+                                            ),
+                                            new InstantCommand(),
+                                            () -> intakeMotorState.equals(REVERSE)
+                                    )
+                            );
                         }
                     } else {
                         sampleColor = NONE;
@@ -200,7 +214,7 @@ public class Intake extends SubsystemBase {
 
                 // No point of setting intakeMotor to 0 again
             }
-        } else if (intakePivotState.equals(TRANSFER)) {
+        } else if (intakePivotState.equals(TRANSFER) || intakePivotState.equals(TRANSFER_READY)) {
             setActiveIntake(HOLD);
         }
     }

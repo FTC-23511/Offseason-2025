@@ -30,6 +30,10 @@ public class UndoTransfer extends CommandBase {
         timer.reset();
 
         index = 0;
+
+        if (!Deposit.depositPivotState.equals(Deposit.DepositPivotState.TRANSFER)) {
+            index = 3;
+        }
     }
 
     @Override
