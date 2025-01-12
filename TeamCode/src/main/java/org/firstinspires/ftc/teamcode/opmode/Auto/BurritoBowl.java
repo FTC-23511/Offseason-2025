@@ -34,6 +34,7 @@ import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.UndoTransfer;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
+import org.firstinspires.ftc.teamcode.hardware.TelemetryData;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class BurritoBowl extends CommandOpMode {
     private ElapsedTime timer;
 
     private final ArrayList<PathChain> paths = new ArrayList<>();
-
+    TelemetryData telemetryData = new TelemetryData(telemetry);
     private DashboardPoseTracker dashboardPoseTracker;
     public void generatePath() {
         // If you want to edit the pathing copy and update the json code/.pp file found in the Recipes package into https://pedro-path-generator.vercel.app/
@@ -112,7 +113,7 @@ public class BurritoBowl extends CommandOpMode {
                                 // Line 5
                                 new BezierLine(
                                         new Point(23.958, 130.000, Point.CARTESIAN),
-                                        new Point(13.500, 127.000, Point.CARTESIAN)
+                                        new Point(13.500, 130.000, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(135)).build());
@@ -123,11 +124,11 @@ public class BurritoBowl extends CommandOpMode {
                         .addPath(
                                 // Line 6
                                 new BezierLine(
-                                        new Point(17.000, 134.000, Point.CARTESIAN),
+                                        new Point(13.500, 130.000, Point.CARTESIAN),
                                         new Point(23.709, 132.520, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(-162)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(-157)).build());
 
         paths.add(
                 // Drive to fourth sample scoring
@@ -139,7 +140,7 @@ public class BurritoBowl extends CommandOpMode {
                                         new Point(14.500, 130.000, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(-162), Math.toRadians(135)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(-157), Math.toRadians(135)).build());
 
         paths.add(
                 // Park/ascent level 1
@@ -172,8 +173,8 @@ public class BurritoBowl extends CommandOpMode {
 
         robot.initHasMovement();
 
-        robot.follower.setMaxPower(0.45);
-        FollowerConstants.zeroPowerAccelerationMultiplier = 1.75;
+        robot.follower.setMaxPower(0.5);
+        FollowerConstants.zeroPowerAccelerationMultiplier = 1.5;
 
         generatePath();
 
@@ -182,44 +183,49 @@ public class BurritoBowl extends CommandOpMode {
                 new RunCommand(() -> robot.follower.update()),
 
                 new SequentialCommandGroup(
+
                         // Sample 1
                         new ParallelCommandGroup(
                                 new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
                                 new SequentialCommandGroup(
                                         new WaitCommand(500),
-                                        new FollowPathCommand(robot.follower, paths.get(0))
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(500),
-                                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 250, true)
+                                        new FollowPathCommand(robot.follower, paths.get(0)).setHoldEnd(true)
                                 )
                         ),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
 
                         // Sample 2
-                        new FollowPathCommand(robot.follower, paths.get(1)),
                         new ParallelCommandGroup(
-                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 320, true),
-                                new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, SLIDES_PIVOT_READY_EXTENSION + 50, true)
+                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 250, true),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(250),
+                                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, SLIDES_PIVOT_READY_EXTENSION + 50, true).withTimeout(1000),
+                                        new InstantCommand(() -> robot.deposit.target = SLIDES_PIVOT_READY_EXTENSION + 50)
+                                )
                         ),
+
+                        new FollowPathCommand(robot.follower, paths.get(1)).setHoldEnd(true),
+                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 320, true),
+
                         new ParallelRaceGroup(
                                 new WaitUntilCommand(robot.intake::hasSample),
                                 new WaitCommand(1000)
                         ),
+
                         new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
-                        new WaitCommand(200),
+                        new WaitCommand(300),
                         new RealTransfer(robot),
                         new WaitCommand(250),
-                        new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
+                        new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false).withTimeout(1000),
                         new ParallelCommandGroup(
                                 new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.HOLD, 100, true),
-                                new FollowPathCommand(robot.follower, paths.get(2))
+                                new FollowPathCommand(robot.follower, paths.get(2)).setHoldEnd(true)
                         ),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
                         new WaitCommand(250),
 
                         // Sample 3
-                        new FollowPathCommand(robot.follower, paths.get(3)),
+                        new FollowPathCommand(robot.follower, paths.get(3)).setHoldEnd(true),
                         new ParallelCommandGroup(
                                 new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 320, true),
                                 new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, SLIDES_PIVOT_READY_EXTENSION + 50, true)
@@ -228,23 +234,22 @@ public class BurritoBowl extends CommandOpMode {
                                 new WaitUntilCommand(robot.intake::hasSample),
                                 new WaitCommand(1000)
                         ),
+                        new WaitCommand(100),
                         new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
-                        new WaitCommand(200),
-                        new SetIntake(robot, IntakePivotState.TRANSFER_READY, Intake.intakeMotorState, robot.intake.target, false),
                         new WaitCommand(400),
                         new RealTransfer(robot),
                         new WaitCommand(250),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
                         new ParallelCommandGroup(
                                 new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.HOLD, 100, true),
-                                new FollowPathCommand(robot.follower, paths.get(4))
+                                new FollowPathCommand(robot.follower, paths.get(4)).setHoldEnd(true)
                         ),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
                         new WaitCommand(250),
 
                         // Sample 4
                         new ParallelCommandGroup(
-                                new FollowPathCommand(robot.follower, paths.get(5)),
+                                new FollowPathCommand(robot.follower, paths.get(5)).setHoldEnd(true),
                                 new SequentialCommandGroup(
                                         new WaitCommand(300),
                                         new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true)
@@ -256,15 +261,18 @@ public class BurritoBowl extends CommandOpMode {
                                 new WaitUntilCommand(robot.intake::hasSample),
                                 new WaitCommand(1000)
                         ),
+                        new WaitCommand(100),
                         new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
                         new WaitCommand(200),
                         new RealTransfer(robot),
                         new WaitCommand(250),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
-                        new FollowPathCommand(robot.follower, paths.get(6)),
+                        new FollowPathCommand(robot.follower, paths.get(6)).setHoldEnd(true),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
                         new WaitCommand(250),
-                        new InstantCommand(() -> robot.follower.setMaxPower(0.3)),
+
+                        new InstantCommand(() -> robot.follower.setMaxPower(0.25)),
+                        new InstantCommand(() -> FollowerConstants.zeroPowerAccelerationMultiplier = 1.25),
 
                         // Park
                         new ParallelCommandGroup(
@@ -288,28 +296,28 @@ public class BurritoBowl extends CommandOpMode {
     public void run() {
         super.run();
 
-        telemetry.addData("timer", timer.milliseconds());
-        telemetry.addData("extendoReached", robot.intake.extendoReached);
-        telemetry.addData("slidesRetracted", robot.deposit.slidesRetracted);
-        telemetry.addData("slidesReached", robot.deposit.slidesReached);
-        telemetry.addData("robotState", Robot.robotState);
+        telemetryData.addData("timer", timer.milliseconds());
+        telemetryData.addData("extendoReached", robot.intake.extendoReached);
+        telemetryData.addData("slidesRetracted", robot.deposit.slidesRetracted);
+        telemetryData.addData("slidesReached", robot.deposit.slidesReached);
+        telemetryData.addData("robotState", Robot.robotState);
 
-        telemetry.addData("hasSample()", robot.intake.hasSample());
-        telemetry.addData("colorSensor getDistance", robot.colorSensor.getDistance(DistanceUnit.CM));
+        telemetryData.addData("hasSample()", robot.intake.hasSample());
+        telemetryData.addData("colorSensor getDistance", robot.colorSensor.getDistance(DistanceUnit.CM));
 
-        telemetry.addData("intakePivotState", intakePivotState);
-        telemetry.addData("depositPivotState", depositPivotState);
+        telemetryData.addData("intakePivotState", intakePivotState);
+        telemetryData.addData("depositPivotState", depositPivotState);
 
-        telemetry.addData("UndoTransfer", CommandScheduler.getInstance().isScheduled(new UndoTransfer(robot)));
-        telemetry.addData("liftTop.getPower()", robot.liftTop.getPower());
-        telemetry.addData("liftBottom.getPower()", robot.liftBottom.getPower());
+        telemetryData.addData("UndoTransfer", CommandScheduler.getInstance().isScheduled(new UndoTransfer(robot)));
+        telemetryData.addData("liftTop.getPower()", robot.liftTop.getPower());
+        telemetryData.addData("liftBottom.getPower()", robot.liftBottom.getPower());
 
-        telemetry.addData("deposit target", robot.deposit.target);
-        telemetry.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());
-        telemetry.addData("extendo target", robot.intake.target);
-        telemetry.addData("extensionEncoder.getPosition()", robot.extensionEncoder.getPosition());
+        telemetryData.addData("deposit target", robot.deposit.target);
+        telemetryData.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());
+        telemetryData.addData("extendo target", robot.intake.target);
+        telemetryData.addData("extensionEncoder.getPosition()", robot.extensionEncoder.getPosition());
 
-        telemetry.update(); // DO NOT REMOVE! Needed for telemetry
+        telemetryData.update(); // DO NOT REMOVE! Needed for telemetry
 
         // Pathing telemetry
         dashboardPoseTracker.update();

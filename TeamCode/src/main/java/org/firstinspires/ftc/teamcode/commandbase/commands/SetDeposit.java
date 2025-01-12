@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.seattlesolvers.solverslib.command.CommandBase;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
+import com.seattlesolvers.solverslib.command.ConditionalCommand;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
@@ -108,7 +109,11 @@ public class SetDeposit extends CommandBase {
                     new UninterruptibleCommand(
                             new SequentialCommandGroup(
                                     new RealTransfer(robot),
-                                    new SetDeposit(robot, pivotState, target, clawOpen)
+                                    new ConditionalCommand(
+                                            new SetDeposit(robot, pivotState, target, true).withTimeout(1000),
+                                            new SetDeposit(robot, pivotState, target, clawOpen).withTimeout(1000),
+                                            () -> opModeType.equals(OpModeType.AUTO)
+                                    )
                             )
                     )
             );
