@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-@TeleOp
+@TeleOp(name = "AAAresetEncoders")
 public class resetEncoders extends CommandOpMode {
     public GamepadEx driver;
     public GamepadEx operator;

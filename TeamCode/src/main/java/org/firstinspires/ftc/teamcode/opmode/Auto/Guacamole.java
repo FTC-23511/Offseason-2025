@@ -52,7 +52,6 @@ import java.util.ArrayList;
 public class Guacamole extends CommandOpMode {
     private final Robot robot = Robot.getInstance();
     private ElapsedTime timer;
-    TelemetryData telemetryData = new TelemetryData(telemetry);
 
     private final ArrayList<PathChain> paths = new ArrayList<>();
 
@@ -73,7 +72,7 @@ public class Guacamole extends CommandOpMode {
                                 // Line 1
                                 new BezierLine(
                                         new Point(6.125, 66.250, Point.CARTESIAN),
-                                        new Point(41.250, 66.250, Point.CARTESIAN)
+                                        new Point(41.800, 66.250, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -84,7 +83,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 2
                                 new BezierCurve(
-                                        new Point(41.250, 66.250, Point.CARTESIAN),
+                                        new Point(41.800, 66.250, Point.CARTESIAN),
                                         new Point(24.707, 37.934, Point.CARTESIAN),
                                         new Point(52.000, 32.000, Point.CARTESIAN)
                                 )
@@ -164,7 +163,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 8
                                 new BezierLine(
-                                        new Point(12.000, 7.250, Point.CARTESIAN),
+                                        new Point(12.000, 7.500, Point.CARTESIAN),
                                         new Point(14.000, 32.000, Point.CARTESIAN)
                                 )
                         )
@@ -180,6 +179,7 @@ public class Guacamole extends CommandOpMode {
                                         new Point(7.500, 32.000, Point.CARTESIAN)
                                 )
                         )
+
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
 
         paths.add(
@@ -188,7 +188,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 10
                                 new BezierLine(
-                                        new Point(8.500, 32.000, Point.CARTESIAN),
+                                        new Point(7.500, 32.000, Point.CARTESIAN),
                                         new Point(41.250, 68.000, Point.CARTESIAN)
                                 )
                         )
@@ -214,7 +214,7 @@ public class Guacamole extends CommandOpMode {
                                 // Line 12
                                 new BezierLine(
                                         new Point(14.000, 32.000, Point.CARTESIAN),
-                                        new Point(41.250, 68.000, Point.CARTESIAN)
+                                        new Point(41.800, 68.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -225,7 +225,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 13
                                 new BezierCurve(
-                                        new Point(41.250, 68.000, Point.CARTESIAN),
+                                        new Point(41.800, 68.000, Point.CARTESIAN),
                                         new Point(30.000, 32.000, Point.CARTESIAN),
                                         new Point(14.000, 32.000, Point.CARTESIAN)
                                 )
@@ -239,7 +239,7 @@ public class Guacamole extends CommandOpMode {
                                 // Line 14
                                 new BezierLine(
                                         new Point(14.000, 32.000, Point.CARTESIAN),
-                                        new Point(41.250, 68.000, Point.CARTESIAN)
+                                        new Point(41.800, 68.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -250,7 +250,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 15
                                 new BezierCurve(
-                                        new Point(41.250, 68.000, Point.CARTESIAN),
+                                        new Point(41.800, 68.000, Point.CARTESIAN),
                                         new Point(30.000, 32.000, Point.CARTESIAN),
                                         new Point(14.000, 32.000, Point.CARTESIAN)
                                 )
@@ -264,7 +264,7 @@ public class Guacamole extends CommandOpMode {
                                 // Line 16
                                 new BezierLine(
                                         new Point(14.000, 32.000, Point.CARTESIAN),
-                                        new Point(41.250, 68.000, Point.CARTESIAN)
+                                        new Point(41.800, 68.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -443,6 +443,12 @@ public class Guacamole extends CommandOpMode {
 
         telemetry.addData("followerIsBusy", robot.follower.isBusy());
         telemetry.addData("target pose", robot.follower.getClosestPose());
+        telemetry.addData("Robot Pose", robot.follower.getPose());
+        telemetry.addData("Heading", Math.toDegrees(robot.follower.getPose().getHeading()));
+
+
+
+        telemetry.addData("Heading Error", Math.toDegrees(robot.follower.headingError));
 
         telemetry.addData("intakePivotState", intakePivotState);
         telemetry.addData("depositPivotState", depositPivotState);
@@ -455,12 +461,7 @@ public class Guacamole extends CommandOpMode {
         telemetry.addData("extendo target", robot.intake.target);
         telemetry.addData("extensionEncoder.getPosition()", robot.extensionEncoder.getPosition());
 
-        telemetryData.addData("Robot Pose", robot.follower.getPose());
-        telemetryData.addData("Heading", Math.toDegrees(robot.follower.getPose().getHeading()));
-
-        telemetryData.addData("Heading Error", Math.toDegrees(robot.follower.headingError));
-
-        telemetryData.update(); // DO NOT REMOVE! Needed for telemetry
+        telemetry.update(); // DO NOT REMOVE! Needed for telemetry
 
         // Pathing telemetry
         dashboardPoseTracker.update();

@@ -177,7 +177,6 @@ public class FullTeleOp extends CommandOpMode {
                 )
         );
 
-
         operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
                 new UninterruptibleCommand(
                         new SetDeposit(robot, DepositPivotState.TRANSFER, SLIDES_PIVOT_READY_EXTENSION + 50, true).withTimeout(1500)
@@ -193,7 +192,7 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> robot.drive.setHang(Drive.HangState.RETRACT)),
-                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, FRONT_HIGH_SPECIMEN_HEIGHT, false).withTimeout(1500)
+                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, ENDGAME_ASCENT_HEIGHT, false).withTimeout(1500)
                 )
         );
 

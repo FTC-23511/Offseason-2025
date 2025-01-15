@@ -45,11 +45,11 @@ public class Globals {
     public static double INTAKE_HOLD_SPEED = 0.15;
 
     // Intake Color Sensor
-    public static final double MIN_DISTANCE_THRESHOLD = 1;
-    public static final double MAX_DISTANCE_THRESHOLD = 1.6;
-    public static final int YELLOW_THRESHOLD = 0;
-    public static final int RED_THRESHOLD = 0;
-    public static final int BLUE_THRESHOLD = 0;
+    public static double MIN_DISTANCE_THRESHOLD = 0.80;
+    public static double MAX_DISTANCE_THRESHOLD = 1.6;
+    public static int YELLOW_THRESHOLD = 0;
+    public static int RED_THRESHOLD = 0;
+    public static int BLUE_THRESHOLD = 0;
 
     // Intake Pivot
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.05;
@@ -77,8 +77,8 @@ public class Globals {
     public static double INTAKE_PIVOT_MOVEMENT_TIME = 828 + 200; // 200 milliseconds of buffer
 
     // Deposit Claw
-    public static double DEPOSIT_CLAW_OPEN_POS = 0.48;
-    public static double DEPOSIT_CLAW_CLOSE_POS = 0.18;
+    public static double DEPOSIT_CLAW_OPEN_POS = 0.46;
+    public static double DEPOSIT_CLAW_CLOSE_POS = 0.14;
 
     // Deposit Wrist
     public static double WRIST_SCORING = 0.37;
@@ -99,7 +99,7 @@ public class Globals {
     public static double BACK_HIGH_SPECIMEN_HEIGHT = 850;
     public static double BACK_HIGH_SPECIMEN_ATTACH_HEIGHT = 1400;
     public static double AUTO_ASCENT_HEIGHT = 800;
-    public static double ENDGAME_ASCENT_HEIGHT = 1150;
+    public static double ENDGAME_ASCENT_HEIGHT = 1300;
 
     // Hang Servos
     public static double LEFT_HANG_FULL_POWER = 0.9;
