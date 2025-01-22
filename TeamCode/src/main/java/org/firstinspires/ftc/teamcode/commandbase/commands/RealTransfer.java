@@ -15,12 +15,12 @@ public class RealTransfer extends SequentialCommandGroup {
     public RealTransfer(Robot robot) {
         addCommands(
                 new ParallelCommandGroup(
-                        new SetDeposit(robot, Deposit.DepositPivotState.TRANSFER, SLIDES_PIVOT_READY_EXTENSION + 50, true),
+                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
                         new SetIntake(robot, Intake.IntakePivotState.TRANSFER_READY, Intake.IntakeMotorState.HOLD, 0, false)
                 ),
                 new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, false),
                 new WaitCommand(100),
-                new Transfer(robot)
+                new ServoOnlyTransfer(robot)
         );
     }
 }

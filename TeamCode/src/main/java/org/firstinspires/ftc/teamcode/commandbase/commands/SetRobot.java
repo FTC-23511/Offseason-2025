@@ -39,7 +39,7 @@ public class SetRobot extends ParallelCommandGroup {
             case TRANSFERRED:
                 if (Robot.robotState.equals(Robot.RobotState.MIDDLE_RESTING)) {
                     addCommands(
-                            new Transfer(robot)
+//                            new Transfer(robot)
                     );
 //                    addRequirements(robot.intake, robot.deposit);
 

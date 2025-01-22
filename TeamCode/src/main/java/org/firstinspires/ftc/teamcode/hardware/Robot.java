@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
+import com.qualcomm.robotcore.hardware.configuration.ServoHubConfiguration;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
@@ -164,6 +165,7 @@ public class Robot {
             if (hub.isParent() && LynxConstants.isEmbeddedSerialNumber(hub.getSerialNumber())) {
                 ControlHub = hub;
             }
+
         }
 
         intake = new Intake();

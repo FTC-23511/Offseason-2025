@@ -179,7 +179,7 @@ public class FullTeleOp extends CommandOpMode {
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
                 new UninterruptibleCommand(
-                        new SetDeposit(robot, DepositPivotState.TRANSFER, SLIDES_PIVOT_READY_EXTENSION + 50, true).withTimeout(1500)
+                        new SetDeposit(robot, DepositPivotState.TRANSFER, 0, true).withTimeout(1500)
                 )
         );
 

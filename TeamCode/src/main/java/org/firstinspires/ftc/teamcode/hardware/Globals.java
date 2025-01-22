@@ -63,7 +63,8 @@ public class Globals {
 
     // Deposit Pivot
     public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.947;
-    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.99;
+    public static double DEPOSIT_PIVOT_READY_TRANSFER_POS = 0.87;
+    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.98;
     public static double DEPOSIT_PIVOT_AUTO_BAR_POS = 0.35;
     public static double DEPOSIT_PIVOT_SCORING_POS = 0.3;
     public static double DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS = 0.03;
@@ -71,13 +72,13 @@ public class Globals {
     public static double DEPOSIT_PIVOT_SPECIMEN_FRONT_SCORING_POS = 0.20;
     public static double DEPOSIT_PIVOT_SPECIMEN_BACK_SCORING_POS = 0.71;
 
-    // 0.84 sec/360° -> 0.828 sec/355° -> (gear ratio of 5:4) 1.035 sec/355° -> 1035 milliseconds/355°
-    public static double DEPOSIT_PIVOT_MOVEMENT_TIME = 1035 + 200; // 200 milliseconds of buffer
     // 0.84 sec/360° -> 0.828 sec/355° -> 828 milliseconds/355°
-    public static double INTAKE_PIVOT_MOVEMENT_TIME = 828 + 200; // 200 milliseconds of buffer
+    public static double DEPOSIT_PIVOT_MOVEMENT_TIME = 828 + 200; // 200 milliseconds of buffer
+    // 0.84 sec/360° -> 0.828 sec/355° -> (gear ratio of 48:80) 0.497 sec/355° -> 497 milliseconds/355°
+    public static double INTAKE_PIVOT_MOVEMENT_TIME = 497 + 200; // 200 milliseconds of buffer
 
     // Deposit Claw
-    public static double DEPOSIT_CLAW_OPEN_POS = 0.46;
+    public static double DEPOSIT_CLAW_OPEN_POS = 0.45;
     public static double DEPOSIT_CLAW_CLOSE_POS = 0.14;
 
     // Deposit Wrist
@@ -88,7 +89,8 @@ public class Globals {
     public static double WRIST_FRONT_SPECIMEN_INTAKE = 0.34;
     public static double WRIST_BACK_SPECIMEN_INTAKE = 0.5;
     public static double WRIST_TRANSFER = 0.38;
-    public static double WRIST_MIDDLE_HOLD = 0.4;
+    public static double WRIST_MIDDLE_HOLD = 0.35;
+    public static double WRIST_READY_TRANSFER = 0.22;
 
     // Deposit Slides
     public static double MAX_SLIDES_EXTENSION = 2000;

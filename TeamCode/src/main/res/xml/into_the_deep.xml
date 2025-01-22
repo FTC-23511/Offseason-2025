@@ -5,9 +5,6 @@
     <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
         <LynxModule name="Control Hub" port="173">
 
-            <ContinuousRotationServo name="leftHang" port="0"/>
-<!--        gearboxSwitcher not plugged in right now -->
-            <Servo name="gearboxSwitcher" port="2"/>
             <Servo name="rightIntakePivot" port="3"/>
             <Servo name="leftIntakePivot" port="5"/>
 
@@ -36,9 +33,12 @@
             <Servo name="depositClaw" port="2"/>
             <Servo name="rightDepositPivot" port="3"/>
             <Servo name="depositWrist" port="4"/>
-            <ContinuousRotationServo name="rightHang" port="5"/>
-
-            <ServoHub name="Servo Hub 3" port="3"> </ServoHub>
         </LynxModule>
+
+        <ServoHub name="Servo Hub 3" port="3">
+            <Servo name="gearboxSwitcher" port="0"/>
+            <ContinuousRotationServo name="leftHang" port="1"/>
+            <ContinuousRotationServo name="rightHang" port="5"/>
+        </ServoHub>
     </LynxUsbDevice>
 </Robot>
