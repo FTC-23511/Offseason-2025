@@ -72,7 +72,7 @@ public class Guacamole extends CommandOpMode {
                                 // Line 1
                                 new BezierLine(
                                         new Point(6.125, 66.250, Point.CARTESIAN),
-                                        new Point(41.800, 66.250, Point.CARTESIAN)
+                                        new Point(42.000, 66.250, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -83,7 +83,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 2
                                 new BezierCurve(
-                                        new Point(41.800, 66.250, Point.CARTESIAN),
+                                        new Point(42.000, 66.250, Point.CARTESIAN),
                                         new Point(24.707, 37.934, Point.CARTESIAN),
                                         new Point(52.000, 32.000, Point.CARTESIAN)
                                 )
@@ -176,7 +176,7 @@ public class Guacamole extends CommandOpMode {
                                 // Line 9
                                 new BezierLine(
                                         new Point(14.000, 32.000, Point.CARTESIAN),
-                                        new Point(7.500, 32.000, Point.CARTESIAN)
+                                        new Point(7.000, 32.000, Point.CARTESIAN)
                                 )
                         )
 
