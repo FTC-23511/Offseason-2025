@@ -27,6 +27,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
+import org.firstinspires.ftc.teamcode.commandbase.Drive;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
@@ -248,6 +249,57 @@ public class LifestyleBowl extends CommandOpMode {
         );
     }
 
+    private SequentialCommandGroup intakeSubSampleCycleHalf(int pathNum) {
+        return new SequentialCommandGroup(
+                new ParallelCommandGroup(
+                        new FollowPathCommand(robot.follower, paths.get(pathNum)).setHoldEnd(true),
+                        new SequentialCommandGroup(
+                                new WaitCommand(250),
+                                new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true).withTimeout(1000)
+                        )
+                ),
+
+                new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.OUT)),
+                new WaitCommand(300),
+                new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.IN)),
+                new WaitCommand(300),
+
+                new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 50, true),
+                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, true),
+
+                new ParallelRaceGroup(
+                        new WaitUntilCommand(robot.intake::hasSample)
+//                        ,
+//                        new SequentialCommandGroup(
+//                                new FollowPathCommand(robot.follower, robot.jiggle(5)),
+//                                new FollowPathCommand(robot.follower, robot.jiggle(5))
+//                        )
+                ).withTimeout(1000),
+
+                // Allow sample to enter intake fully
+                new WaitCommand(100),
+                new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
+                // Allow tubing to hold onto sample
+                new WaitCommand(100),
+                new RealTransfer(robot)
+        );
+    }
+
+    private SequentialCommandGroup scoreSubSampleCycleHalf(int pathNum) {
+        return new SequentialCommandGroup(
+                new ParallelCommandGroup(
+                        new SequentialCommandGroup(
+                                new WaitCommand(500),
+                                new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false).withTimeout(1000)
+                        ),
+                        new FollowPathCommand(robot.follower, paths.get(pathNum)).setHoldEnd(true)
+                ),
+                new WaitCommand(50),
+                new InstantCommand(() -> robot.deposit.setClawOpen(true)),
+                new WaitCommand(200)
+        );
+    }
+
     @Override
     public void initialize() {
         opModeType = OpModeType.AUTO;
@@ -299,12 +351,17 @@ public class LifestyleBowl extends CommandOpMode {
                         intakeSampleCycleHalf(5, 350),
                         scoreSampleCycleHalf(6),
 
-                        // Park
-                        new InstantCommand(() -> robot.follower.setMaxPower(0.6)),
-                        new InstantCommand(() -> FollowerConstants.zeroPowerAccelerationMultiplier = 1.5),
+                        // Sub Sample 1
+                        intakeSubSampleCycleHalf(7),
+                        scoreSubSampleCycleHalf(8),
 
+                        // Sub Sample 2
+                        intakeSubSampleCycleHalf(9),
+                        scoreSubSampleCycleHalf(10),
+
+                        // Park
                         new ParallelCommandGroup(
-                                new FollowPathCommand(robot.follower, paths.get(7)),
+                                new FollowPathCommand(robot.follower, paths.get(11)),
                                 new SequentialCommandGroup(
                                         new WaitCommand(300),
                                         new SetDeposit(robot, DepositPivotState.AUTO_TOUCH_BAR, 0, false)
