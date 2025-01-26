@@ -62,19 +62,19 @@ public class FullTeleOp extends CommandOpMode {
         operator = new GamepadEx(gamepad2);
 
         // Driver Gamepad controls
-        driver.getGamepadButton(GamepadKeys.Button.B).whenPressed(
+        driver.getGamepadButton(GamepadKeys.Button.CIRCLE).whenPressed(
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ANY_COLOR))
         );
 
-        driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
+        driver.getGamepadButton(GamepadKeys.Button.CROSS).whenPressed(
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ALLIANCE_ONLY))
         );
 
-        driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
+        driver.getGamepadButton(GamepadKeys.Button.SQUARE).whenPressed(
                 new InstantCommand(() -> robot.follower.setPose(new Pose(0, 0, 0)))
         );
 
-        driver.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
+        driver.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenPressed(
                 new SetIntake(robot, IntakePivotState.INTAKE_READY, intakeMotorState, MAX_EXTENDO_EXTENSION, true)
         );
 
@@ -129,12 +129,22 @@ public class FullTeleOp extends CommandOpMode {
                 )
         );
 
+        // Reset CommandScheduler + make slides reached true
+        driver.getGamepadButton(GamepadKeys.Button.PS).whenPressed(
+                new UninterruptibleCommand(
+                        new SequentialCommandGroup(
+                                new InstantCommand(super::reset),
+                                new InstantCommand(() -> robot.deposit.setSlideTarget(robot.deposit.getLiftScaledPosition()))
+                        )
+                )
+        );
+
         // Operator Gamepad controls
-        operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(
+        operator.getGamepadButton(GamepadKeys.Button.SQUARE).whenPressed(
                 new InstantCommand(() -> frontSpecimenScoring = !frontSpecimenScoring)
         );
 
-        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
+        operator.getGamepadButton(GamepadKeys.Button.CIRCLE).whenPressed(
                 new ConditionalCommand(
                         new UninterruptibleCommand(
                                 new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, FRONT_HIGH_SPECIMEN_HEIGHT, false).withTimeout(1500)
@@ -146,7 +156,7 @@ public class FullTeleOp extends CommandOpMode {
                 )
         );
 
-        operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(
+        operator.getGamepadButton(GamepadKeys.Button.CROSS).whenPressed(
                 new ConditionalCommand(
                         new UninterruptibleCommand(
                                 new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, 0, false).withTimeout(1500)
@@ -158,7 +168,7 @@ public class FullTeleOp extends CommandOpMode {
                 )
         );
 
-        operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
+        operator.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenPressed(
                 new ConditionalCommand(
                         new attachSpecimen(robot.deposit),
                         new InstantCommand(),
@@ -185,12 +195,14 @@ public class FullTeleOp extends CommandOpMode {
         );
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
-                new InstantCommand(() -> robot.deposit.setClawOpen(false)));
+                new InstantCommand(() -> robot.deposit.setClawOpen(false))
+        );
 
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
-                new InstantCommand(() -> robot.deposit.setClawOpen(true)));
+                new InstantCommand(() -> robot.deposit.setClawOpen(true))
+        );
 
-        operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
+        operator.getGamepadButton(GamepadKeys.Button.OPTIONS).whenPressed(
                 new SequentialCommandGroup(
                         new ParallelCommandGroup(
                                 new InstantCommand(() -> robot.drive.setHang(Drive.HangState.RETRACT)),
@@ -205,12 +217,16 @@ public class FullTeleOp extends CommandOpMode {
 //                        new ParallelCommandGroup(
 //                                new SequentialCommandGroup(
 //                                        new InstantCommand(() -> robot.drive.setHang(Drive.HangState.EXTEND)),
-//                                        new WaitCommand(3000),
-//                                        new InstantCommand(() -> robot.drive.setHang(Drive.HangState.STOP))
+//                                        new InstantCommand(() -> robot.drive.setHang(Drive.HangState.STOP)).beforeStarting(new WaitCommand(3000))
 //                                ),
 //                                new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, 0, false)
 //                        )
                 )
+        );
+
+        // Hang
+        operator.getGamepadButton(GamepadKeys.Button.PS).whenPressed(
+                new InstantCommand(() -> robot.drive.setHang(Drive.HangState.EXTEND))
         );
 
         super.run();
@@ -252,7 +268,7 @@ public class FullTeleOp extends CommandOpMode {
             gamepad2.setLedColor(1, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
         }
 
-        // OTOS Field Centric Code
+        // Pinpoint Field Centric Code
         double speedMultiplier = 0.35 + (1 - 0.35) * gamepad1.left_trigger;
         robot.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y * speedMultiplier, -gamepad1.left_stick_x * speedMultiplier, -gamepad1.right_stick_x * speedMultiplier, false);
         robot.follower.update();
@@ -266,16 +282,8 @@ public class FullTeleOp extends CommandOpMode {
         }
 
         // Hang
-        if (gamepad2.ps) {
-            robot.drive.setHang(Drive.HangState.EXTEND);
-        } else if (gamepad2.left_trigger > 0.5) {
+        if (gamepad2.left_trigger > 0.5) {
             robot.drive.setHang(Drive.HangState.STOP);
-        }
-
-        // Reset CommandScheduler
-        if (gamepad1.ps) {
-            CommandScheduler.getInstance().reset();
-            robot.deposit.setSlideTarget(robot.deposit.getLiftScaledPosition());
         }
 
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
@@ -306,7 +314,7 @@ public class FullTeleOp extends CommandOpMode {
 
         telemetryData.addData("intakePivotState", intakePivotState);
         telemetryData.addData("depositPivotState", depositPivotState);
-        telemetryData.addData("Sigma", "Saket");
+        telemetryData.addData("Sigma", "j5");
 
         telemetryData.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();

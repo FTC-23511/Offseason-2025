@@ -161,10 +161,8 @@ public class BurritoBowl extends CommandOpMode {
                 new ParallelCommandGroup(
                         new FollowPathCommand(robot.follower, paths.get(pathNum)).setHoldEnd(true),
                         new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 120, true),
-                        new SequentialCommandGroup(
-                                new WaitCommand(250),
-                                new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true).withTimeout(1000)
-                        )
+                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true).withTimeout(1000).beforeStarting(new WaitCommand(250))
+
                 ),
                 new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, extendoTarget, true),
 
@@ -227,10 +225,8 @@ public class BurritoBowl extends CommandOpMode {
                         // Sample 1
                         new ParallelCommandGroup(
                                 new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(500),
-                                        new FollowPathCommand(robot.follower, paths.get(0)).setHoldEnd(true)
-                                )
+                                new FollowPathCommand(robot.follower, paths.get(0)).setHoldEnd(true).beforeStarting(new WaitCommand(500))
+
                         ),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
                         new WaitCommand(250),
@@ -253,10 +249,7 @@ public class BurritoBowl extends CommandOpMode {
 
                         new ParallelCommandGroup(
                                 new FollowPathCommand(robot.follower, paths.get(7)),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(300),
-                                        new SetDeposit(robot, DepositPivotState.AUTO_TOUCH_BAR, 0, false)
-                                )
+                                new SetDeposit(robot, DepositPivotState.AUTO_TOUCH_BAR, 0, false).beforeStarting(new WaitCommand(300))
                         )
                 )
         );
