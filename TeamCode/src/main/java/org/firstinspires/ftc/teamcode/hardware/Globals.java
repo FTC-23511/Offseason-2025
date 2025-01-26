@@ -31,8 +31,8 @@ public class Globals {
     public static AllianceColor allianceColor;
     public static PoseLocationName poseLocationName;
 
-    public static Pose subSample1 = new Pose(62.000, 94.750, Math.toRadians(90));
-    public static Pose subSample2 = new Pose(62.000, 94.750, Math.toRadians(90));
+    public static Pose subSample1 = new Pose(62.000, 93.500, Math.toRadians(90));
+    public static Pose subSample2 = new Pose(62.000, 93.500, Math.toRadians(90));
 
 
     // Robot Width and Length (in inches)
@@ -63,7 +63,7 @@ public class Globals {
 
     // Deposit Pivot
     public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.94;
-    public static double DEPOSIT_PIVOT_READY_TRANSFER_POS = 0.89;
+    public static double DEPOSIT_PIVOT_READY_TRANSFER_POS = 0.90;
     public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.985;
     public static double DEPOSIT_PIVOT_AUTO_BAR_POS = 0.35;
     public static double DEPOSIT_PIVOT_SCORING_POS = 0.3;

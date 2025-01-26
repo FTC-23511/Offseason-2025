@@ -242,35 +242,9 @@ public class Intake extends SubsystemBase {
     }
 
     public boolean hasSample() {
-        int red = robot.colorSensor.red();
-        int green = robot.colorSensor.green();
-        int blue = robot.colorSensor.blue();
-
         double distance = robot.colorSensor.getDistance(DistanceUnit.CM);
 
-        SampleColorDetected sampleColor = sampleColorDetected(red, green, blue);
-
-        // For edge case intake - currently set to always true
-        boolean colorSensingHasSample = true;
-        switch (sampleColor) {
-            case YELLOW:
-                if (green > YELLOW_THRESHOLD) {
-                    colorSensingHasSample = true;
-                }
-                break;
-            case RED:
-                if (red > RED_THRESHOLD) {
-                    colorSensingHasSample = true;
-                }
-                break;
-            case BLUE:
-                if (blue > BLUE_THRESHOLD) {
-                    colorSensingHasSample = true;
-                }
-                break;
-        }
-
-        return distance > MIN_DISTANCE_THRESHOLD && distance < MAX_DISTANCE_THRESHOLD && colorSensingHasSample;
+        return distance > MIN_DISTANCE_THRESHOLD && distance < MAX_DISTANCE_THRESHOLD;
     }
 
     @Override

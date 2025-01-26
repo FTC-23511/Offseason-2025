@@ -53,10 +53,10 @@ public class AlliancePoseSelector extends LinearOpMode {
                 buttonTimer.reset();
             }
 
-            if (gamepad1.dpad_up && buttonTimer.milliseconds() > 250) {
+            if (gamepad1.dpad_right && buttonTimer.milliseconds() > 250) {
                 subSample2.add(new Pose(1, 0, 0));
                 buttonTimer.reset();
-            } else if (gamepad1.dpad_down && buttonTimer.milliseconds() > 250) {
+            } else if (gamepad1.dpad_left && buttonTimer.milliseconds() > 250) {
                 subSample2.subtract(new Pose(1, 0, 0));
                 buttonTimer.reset();
             }

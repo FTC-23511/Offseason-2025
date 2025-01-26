@@ -103,8 +103,8 @@ public class SetDeposit extends CommandBase {
     // Command finishes when slides have reached and all arm movements are finished
     @Override
     public boolean isFinished() {
-        if (timer.milliseconds() > (Math.abs(previousServoPos - currentServoPos) * DEPOSIT_PIVOT_MOVEMENT_TIME)
-            && robot.intake.hasSample() && pivotState.equals(Deposit.DepositPivotState.SCORING)) { //  && target == HIGH_BUCKET_HEIGHT || target == HIGH_BUCKET_HEIGHT
+//        if (timer.milliseconds() > (Math.abs(previousServoPos - currentServoPos) * DEPOSIT_PIVOT_MOVEMENT_TIME)
+//            && robot.intake.hasSample() && pivotState.equals(Deposit.DepositPivotState.SCORING)) { //  && target == HIGH_BUCKET_HEIGHT || target == HIGH_BUCKET_HEIGHT
 //            CommandScheduler.getInstance().schedule(
 //                    new UninterruptibleCommand(
 //                            new SequentialCommandGroup(
@@ -119,7 +119,7 @@ public class SetDeposit extends CommandBase {
 //            );
 //
 //            return true;
-        }
+//        }
 
         return robot.deposit.slidesReached && index == 3;
     }

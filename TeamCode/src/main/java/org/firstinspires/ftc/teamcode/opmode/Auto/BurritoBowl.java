@@ -80,7 +80,7 @@ public class BurritoBowl extends CommandOpMode {
                                         new Point(22.960, 127.000, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(130), Math.toRadians(162)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(130), Math.toRadians(163)).build());
 
         paths.add(
                 // Drive to second sample scoring
@@ -92,7 +92,7 @@ public class BurritoBowl extends CommandOpMode {
                                         new Point(13.500, 127.000, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(162), Math.toRadians(135)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(163), Math.toRadians(135)).build());
 
         paths.add(
                 // Drive to third sample intake
