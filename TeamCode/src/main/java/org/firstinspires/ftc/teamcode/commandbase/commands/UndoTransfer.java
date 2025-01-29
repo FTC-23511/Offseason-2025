@@ -58,7 +58,7 @@ public class UndoTransfer extends CommandBase {
         // Move the slides back down
         if (index == 2 && timer.milliseconds() > (Math.abs(previousServoPos - currentServoPos) * DEPOSIT_PIVOT_MOVEMENT_TIME)) {
             robot.deposit.setClawOpen(true);
-
+            robot.deposit.setSlideTarget(0);
             index = 3;
         }
     }
@@ -66,7 +66,7 @@ public class UndoTransfer extends CommandBase {
     // Command finishes when all execute commands have finished (index == 3), and slides have retracted
     @Override
     public boolean isFinished() {
-        return robot.deposit.slidesReached && index == 3;
+        return robot.deposit.slidesReached && index == 4;
     }
 }
 

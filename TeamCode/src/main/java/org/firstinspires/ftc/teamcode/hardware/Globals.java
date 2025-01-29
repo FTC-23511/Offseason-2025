@@ -46,11 +46,15 @@ public class Globals {
     public static int REVERSE_TIME_MS = 300;
 
     // Intake Color Sensor
-    public static double MIN_DISTANCE_THRESHOLD = 0.80;
-    public static double MAX_DISTANCE_THRESHOLD = 1.6;
+    public static double MIN_DISTANCE_THRESHOLD = 1.25;
+    public static double MAX_DISTANCE_THRESHOLD = 1.5;
     public static int YELLOW_THRESHOLD = 800;
     public static int RED_THRESHOLD = 0;
     public static int BLUE_THRESHOLD = 0;
+
+    public static int YELLOW_EDGE_CASE_THRESHOLD = 1450;
+    public static int RED_EDGE_CASE_THRESHOLD = 700;
+    public static int BLUE_EDGE_CASE_THRESHOLD = 675;
 
     // Intake Pivot
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.05;

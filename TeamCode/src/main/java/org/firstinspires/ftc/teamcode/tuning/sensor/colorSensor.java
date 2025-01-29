@@ -8,24 +8,32 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.seattlesolvers.solverslib.solversHardware.SolversMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp(name = "colorSensor", group = "Sensor")
 @Config
 public class colorSensor extends LinearOpMode {
-
+    public static double INTAKE_SPEED = 0.0;
     @SuppressLint("DefaultLocale")
     @Override
     public void runOpMode() {
         RevColorSensorV3 colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
+        SolversMotor intakeMotor = new SolversMotor(hardwareMap.get(DcMotor.class, "intakeMotor"), 0.01);
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         ElapsedTime timer = new ElapsedTime();
 
         waitForStart();
         while(opModeIsActive()) {
+
+            intakeMotor.setPower(INTAKE_SPEED);
             timer.reset();
 
             colorSensor.enableLed(true);
