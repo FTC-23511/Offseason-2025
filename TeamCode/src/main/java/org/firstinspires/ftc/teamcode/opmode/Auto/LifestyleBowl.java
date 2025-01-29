@@ -66,7 +66,7 @@ public class LifestyleBowl extends CommandOpMode {
                                 new BezierCurve(
                                         new Point(6.125, 102.125, Point.CARTESIAN),
                                         new Point(13.726, 104.818, Point.CARTESIAN),
-                                        new Point(13.500, 125.000, Point.CARTESIAN)
+                                        new Point(14.000, 126.000, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(130)).build());
@@ -77,7 +77,7 @@ public class LifestyleBowl extends CommandOpMode {
                         .addPath(
                                 // Line 2
                                 new BezierLine(
-                                        new Point(13.500, 125.000, Point.CARTESIAN),
+                                        new Point(14.000, 126.000, Point.CARTESIAN),
                                         new Point(22.960, 127.000, Point.CARTESIAN)
                                 )
                         )
@@ -219,7 +219,7 @@ public class LifestyleBowl extends CommandOpMode {
                                 new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true).withTimeout(1000)
                         )
                 ),
-                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, extendoTarget, true),
+                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, extendoTarget, true).withTimeout(1000),
 
                 new ParallelRaceGroup(
                         new WaitUntilCommand(robot.intake::hasSample)
