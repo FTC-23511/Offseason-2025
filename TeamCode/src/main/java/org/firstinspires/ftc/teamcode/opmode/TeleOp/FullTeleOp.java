@@ -21,6 +21,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.Drive;
+import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.*;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.hardware.TelemetryData;
@@ -78,24 +79,15 @@ public class FullTeleOp extends CommandOpMode {
                 new SetIntake(robot, IntakePivotState.INTAKE_READY, intakeMotorState, MAX_EXTENDO_EXTENSION, true)
         );
 
-//        driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
-//                new UninterruptibleCommand(
-//                        new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, ENDGAME_ASCENT_HEIGHT, false)
-//                )
-//        );
-
-//        driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
-//                new UninterruptibleCommand(
-//                        new ParallelCommandGroup(
-//                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, 0, false),
-//                                new SetIntake(robot, intakePivotState, intakeMotorState, 0, false)
-//
-//                        )
-//                )
-//        );
+        driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.INTAKE_READY)),
+                        new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD))
+                )
+        );
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
-                new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.INTAKE_READY))
+                new InstantCommand(() -> robot.intake.setExtendoTarget(0))
         );
 
         // TO-DO: need to make into 1 method in Drive.java
@@ -118,7 +110,7 @@ public class FullTeleOp extends CommandOpMode {
                 new UninterruptibleCommand(
                         new SequentialCommandGroup(
                                 new UndoTransfer(robot),
-                                new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.REVERSE, 0, true)
+                                new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.REVERSE, MAX_EXTENDO_EXTENSION, true)
                         )
                 )
         );
@@ -291,16 +283,16 @@ public class FullTeleOp extends CommandOpMode {
 
         telemetryData.addData("timer", timer.milliseconds());
         telemetryData.addData("extendoReached", robot.intake.extendoReached);
+        telemetryData.addData("extendoRetracted", robot.intake.extendoRetracted);
         telemetryData.addData("slidesRetracted", robot.deposit.slidesRetracted);
         telemetryData.addData("slidesReached", robot.deposit.slidesReached);
-        telemetryData.addData("robotState", Robot.robotState);
         telemetryData.addData("opModeType", opModeType.name());
-
-        telemetryData.addData("gamepad1 left stick x", gamepad1.left_stick_x);
-        telemetryData.addData("gamepad1 left stick x", gamepad1.left_stick_y);
 
         telemetryData.addData("hasSample()", robot.intake.hasSample());
         telemetryData.addData("colorSensor getDistance", robot.colorSensor.getDistance(DistanceUnit.CM));
+        telemetryData.addData("Intake sampleColor", Intake.sampleColor);
+        telemetryData.addData("correctSampleDetected", Intake.correctSampleDetected());
+        telemetryData.addData("intakeMotorState", Intake.intakeMotorState);
 
         telemetryData.addData("liftTop.getPower()", robot.liftTop.getPower());
         telemetryData.addData("liftBottom.getPower()", robot.liftBottom.getPower());

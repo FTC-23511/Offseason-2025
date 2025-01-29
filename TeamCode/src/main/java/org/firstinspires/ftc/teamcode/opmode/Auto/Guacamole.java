@@ -187,9 +187,10 @@ public class Guacamole extends CommandOpMode {
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 10
-                                new BezierLine(
+                                new BezierCurve(
                                         new Point(7.500, 32.000, Point.CARTESIAN),
-                                        new Point(42.000, 68.000, Point.CARTESIAN)
+                                        new Point(20.000, 56.000, Point.CARTESIAN),
+                                        new Point(42.000, 70.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -200,7 +201,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 11
                                 new BezierCurve(
-                                        new Point(42.000, 68.000, Point.CARTESIAN),
+                                        new Point(42.000, 70.000, Point.CARTESIAN),
                                         new Point(30.000, 32.000, Point.CARTESIAN),
                                         new Point(14.000, 32.000, Point.CARTESIAN)
                                 )
@@ -212,9 +213,10 @@ public class Guacamole extends CommandOpMode {
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 12
-                                new BezierLine(
-                                        new Point(14.000, 32.000, Point.CARTESIAN),
-                                        new Point(42.000, 68.000, Point.CARTESIAN)
+                                new BezierCurve(
+                                        new Point(7.500, 32.000, Point.CARTESIAN),
+                                        new Point(20.000, 56.000, Point.CARTESIAN),
+                                        new Point(42.000, 68.500, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -225,7 +227,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 13
                                 new BezierCurve(
-                                        new Point(42.000, 68.000, Point.CARTESIAN),
+                                        new Point(42.000, 68.500, Point.CARTESIAN),
                                         new Point(30.000, 32.000, Point.CARTESIAN),
                                         new Point(14.000, 32.000, Point.CARTESIAN)
                                 )
@@ -237,9 +239,10 @@ public class Guacamole extends CommandOpMode {
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 14
-                                new BezierLine(
-                                        new Point(14.000, 32.000, Point.CARTESIAN),
-                                        new Point(42.000, 68.000, Point.CARTESIAN)
+                                new BezierCurve(
+                                        new Point(7.500, 32.000, Point.CARTESIAN),
+                                        new Point(20.000, 56.000, Point.CARTESIAN),
+                                        new Point(42.000, 67.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -250,7 +253,7 @@ public class Guacamole extends CommandOpMode {
                         .addPath(
                                 // Line 15
                                 new BezierCurve(
-                                        new Point(42.000, 68.000, Point.CARTESIAN),
+                                        new Point(42.000, 67.000, Point.CARTESIAN),
                                         new Point(30.000, 32.000, Point.CARTESIAN),
                                         new Point(14.000, 32.000, Point.CARTESIAN)
                                 )
@@ -262,9 +265,23 @@ public class Guacamole extends CommandOpMode {
                 robot.follower.pathBuilder()
                         .addPath(
                                 // Line 16
-                                new BezierLine(
-                                        new Point(14.000, 32.000, Point.CARTESIAN),
-                                        new Point(42.000, 68.000, Point.CARTESIAN)
+                                new BezierCurve(
+                                        new Point(7.500, 32.000, Point.CARTESIAN),
+                                        new Point(20.000, 56.000, Point.CARTESIAN),
+                                        new Point(42.000, 65.000, Point.CARTESIAN)
+                                )
+                        )
+                        .setConstantHeadingInterpolation(Math.toRadians(0)).build());
+
+        paths.add(
+                // Park
+                robot.follower.pathBuilder()
+                        .addPath(
+                                // Line 15
+                                new BezierCurve(
+                                        new Point(42.000, 65.000, Point.CARTESIAN),
+                                        new Point(30.000, 32.000, Point.CARTESIAN),
+                                        new Point(16.000, 30.000, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
@@ -283,10 +300,7 @@ public class Guacamole extends CommandOpMode {
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new FollowPathCommand(robot.follower, paths.get(pathNum)),
-                        new SequentialCommandGroup(
-                                new WaitCommand(200),
-                                new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, 0, true)
-                        )
+                        new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, 0, true)
                 ).withTimeout(4000),
 
                 new FollowPathCommand(robot.follower, paths.get(8)).setHoldEnd(true).withTimeout(500),
@@ -389,8 +403,11 @@ public class Guacamole extends CommandOpMode {
                         // Scoring Specimen 5
                         scoreSpecimenCycleHalf(15),
 
-                        // Retract slides
-                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, SLIDES_PIVOT_READY_EXTENSION + 50, false)
+                        // Park
+                        new ParallelCommandGroup(
+                                new FollowPathCommand(robot.follower, paths.get(16)),
+                                new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, SLIDES_PIVOT_READY_EXTENSION + 50, false)
+                        )
                 )
         );
 

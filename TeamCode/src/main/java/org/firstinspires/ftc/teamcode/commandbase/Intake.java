@@ -6,9 +6,8 @@ import static org.firstinspires.ftc.teamcode.commandbase.Intake.SampleColorDetec
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.SampleColorTarget.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState.*;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
-import com.seattlesolvers.solverslib.command.ConditionalCommand;
-import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
@@ -17,15 +16,13 @@ import com.seattlesolvers.solverslib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
-import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-import java.nio.file.Watchable;
-import java.util.function.BooleanSupplier;
-
 public class Intake extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
+    private final ElapsedTime reverseIntakeTimer = new ElapsedTime();
+    private boolean waitingForReverse = false;
 
     private final double divideConstant = 65.0;
     public double target;
@@ -141,9 +138,13 @@ public class Intake extends SubsystemBase {
                     break;
                 case REVERSE:
                     robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
+                    reverseIntakeTimer.reset();
                     break;
                 case STOP:
                     robot.intakeMotor.setPower(0);
+                    break;
+                case HOLD:
+                    robot.intakeMotor.setPower(INTAKE_HOLD_SPEED);
                     break;
             }
             Intake.intakeMotorState = intakeMotorState;
@@ -171,7 +172,7 @@ public class Intake extends SubsystemBase {
                     if (hasSample()) {
                         sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
                         if (correctSampleDetected()) {
-                            setActiveIntake(STOP);
+                            setActiveIntake(HOLD);
                             if (opModeType.equals(OpModeType.TELEOP)) {
                                 if (sampleColorTarget.equals(ANY_COLOR)) {
                                     CommandScheduler.getInstance().schedule(
@@ -189,6 +190,7 @@ public class Intake extends SubsystemBase {
                                 }
                             }
                         } else if (!sampleColor.equals(NONE)) {
+                            reverseIntakeTimer.reset();
                             setActiveIntake(REVERSE);
                         }
                     } else {
@@ -196,7 +198,11 @@ public class Intake extends SubsystemBase {
                     }
                     break;
                 case REVERSE:
-                    if (!hasSample()) {
+                    if (!hasSample() && !waitingForReverse) {
+                        reverseIntakeTimer.reset();
+                        waitingForReverse = true;
+                    } else if (!hasSample() && waitingForReverse && reverseIntakeTimer.milliseconds() > REVERSE_TIME_MS) {
+                        waitingForReverse = false;
                         if (opModeType.equals(OpModeType.TELEOP)) {
                             setActiveIntake(FORWARD);
                         } else {
@@ -204,8 +210,12 @@ public class Intake extends SubsystemBase {
                         }
                     }
                     break;
-
-                // No point of setting intakeMotor to 0 again
+                case STOP:
+                case HOLD:
+                    if (!correctSampleDetected() && hasSample() && Intake.intakePivotState.equals(INTAKE)) {
+                        setActiveIntake(REVERSE);
+                    }
+                    break;
             }
         } else if (intakePivotState.equals(TRANSFER) || intakePivotState.equals(TRANSFER_READY)) {
             setActiveIntake(HOLD);
@@ -213,7 +223,7 @@ public class Intake extends SubsystemBase {
     }
 
     public static SampleColorDetected sampleColorDetected(int red, int green, int blue) {
-            if (blue >= green && blue >= red) {
+            if (blue >= green && blue >= red || (blue <= green && green <= YELLOW_THRESHOLD)) {
                 return BLUE;
             } else if (green >= red) {
                 return YELLOW;
@@ -232,8 +242,8 @@ public class Intake extends SubsystemBase {
                 }
                 break;
             case ALLIANCE_ONLY:
-                if (sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BLUE) ||
-                    sampleColor.equals(RED) && allianceColor.equals(AllianceColor.RED)) {
+                if ((sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BLUE)) ||
+                    (sampleColor.equals(RED) && allianceColor.equals(AllianceColor.RED))) {
                     return true;
                 }
                 break;

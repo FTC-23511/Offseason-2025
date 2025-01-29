@@ -41,13 +41,14 @@ public class Globals {
 
     // Intake Motor
     public static double INTAKE_FORWARD_SPEED = 1.0;
-    public static double INTAKE_REVERSE_SPEED = -1.0;
+    public static double INTAKE_REVERSE_SPEED = -0.7;
     public static double INTAKE_HOLD_SPEED = 0.15;
+    public static int REVERSE_TIME_MS = 300;
 
     // Intake Color Sensor
     public static double MIN_DISTANCE_THRESHOLD = 0.80;
     public static double MAX_DISTANCE_THRESHOLD = 1.6;
-    public static int YELLOW_THRESHOLD = 0;
+    public static int YELLOW_THRESHOLD = 800;
     public static int RED_THRESHOLD = 0;
     public static int BLUE_THRESHOLD = 0;
 
@@ -86,7 +87,7 @@ public class Globals {
     public static double WRIST_AUTO_BAR = 0.3;
     public static double WRIST_FRONT_SPECIMEN_SCORING = 0.60;
     public static double WRIST_BACK_SPECIMEN_SCORING = 0.43;
-    public static double WRIST_FRONT_SPECIMEN_INTAKE = 0.34;
+    public static double WRIST_FRONT_SPECIMEN_INTAKE = 0.3;
     public static double WRIST_BACK_SPECIMEN_INTAKE = 0.485;
     public static double WRIST_TRANSFER = 0.38;
     public static double WRIST_MIDDLE_HOLD = 0.33;

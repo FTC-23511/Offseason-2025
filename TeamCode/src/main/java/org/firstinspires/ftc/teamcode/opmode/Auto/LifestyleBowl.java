@@ -40,7 +40,7 @@ import org.firstinspires.ftc.teamcode.hardware.TelemetryData;
 import java.util.ArrayList;
 
 @Config
-@Autonomous(name = "Lifestyle Bowl (0spec+5sample)", group = "Chipotle Menu", preselectTeleOp = "FullTeleOp")
+@Autonomous(name = "Lifestyle Bowl (0spec+6sample)", group = "Chipotle Menu", preselectTeleOp = "FullTeleOp")
 
 public class LifestyleBowl extends CommandOpMode {
     private final Robot robot = Robot.getInstance();
