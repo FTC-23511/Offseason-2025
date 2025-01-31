@@ -41,12 +41,12 @@ public class Globals {
 
     // Intake Motor
     public static double INTAKE_FORWARD_SPEED = 1.0;
-    public static double INTAKE_REVERSE_SPEED = -0.7;
+    public static double INTAKE_REVERSE_SPEED = -0.5;
     public static double INTAKE_HOLD_SPEED = 0.15;
     public static int REVERSE_TIME_MS = 300;
 
     // Intake Color Sensor
-    public static double MIN_DISTANCE_THRESHOLD = 1.05;
+    public static double MIN_DISTANCE_THRESHOLD = 1.0;
     public static double MAX_DISTANCE_THRESHOLD = 1.5;
     public static int YELLOW_THRESHOLD = 800;
     public static int RED_THRESHOLD = 0;

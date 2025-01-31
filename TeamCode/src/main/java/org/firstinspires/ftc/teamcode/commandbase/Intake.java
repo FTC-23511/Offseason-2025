@@ -29,6 +29,8 @@ public class Intake extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
     private final ElapsedTime reverseIntakeTimer = new ElapsedTime();
     private boolean waitingForReverse = false;
+    private final ElapsedTime colorDetectionTimer = new ElapsedTime();
+    private boolean readyForColorDetection = false;
 
     private final double divideConstant = 65.0;
     public double target;
@@ -167,21 +169,28 @@ public class Intake extends SubsystemBase {
             switch (intakeMotorState) {
                 case FORWARD:
                     if (hasSample()) {
-                        sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
-                        if (correctSampleDetected()) {
-                            setActiveIntake(HOLD);
-                            if (opModeType.equals(OpModeType.TELEOP)) {
-//                                if (sampleColorTarget.equals(ANY_COLOR)) {
-//                                    new RealTransfer(robot).beforeStarting(
-//                                            new WaitCommand(300)
-//                                    ).schedule(false);
-//                                } else {
-//                                    new SetIntake(robot, TRANSFER_READY, HOLD, 0, false).schedule(false);
-//                                }
+                        if (!readyForColorDetection) {
+                            colorDetectionTimer.reset();
+                            readyForColorDetection = true;
+                        } else if (readyForColorDetection && colorDetectionTimer.milliseconds() > 50) {
+                            readyForColorDetection = false;
+
+                            sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
+                            if (correctSampleDetected()) {
+                                setActiveIntake(HOLD);
+                                if (opModeType.equals(OpModeType.TELEOP)) {
+                                    if (sampleColorTarget.equals(ANY_COLOR)) {
+                                        new RealTransfer(robot).beforeStarting(
+                                                new WaitCommand(125)
+                                        ).schedule(false);
+                                    } else {
+                                        new SetIntake(robot, TRANSFER_READY, HOLD, 0, false).schedule(false);
+                                    }
+                                }
+                            } else {
+                                reverseIntakeTimer.reset();
+                                setActiveIntake(REVERSE);
                             }
-                        } else {
-                            reverseIntakeTimer.reset();
-                            setActiveIntake(REVERSE);
                         }
                     }
                     break;
@@ -211,7 +220,7 @@ public class Intake extends SubsystemBase {
     }
 
     public static SampleColorDetected sampleColorDetected(int red, int green, int blue) {
-        if (blue >= green && blue >= red || (blue <= green && green <= YELLOW_THRESHOLD)) {
+        if (blue >= green && blue >= red) {
             return BLUE;
         } else if (green >= red) {
             return YELLOW;

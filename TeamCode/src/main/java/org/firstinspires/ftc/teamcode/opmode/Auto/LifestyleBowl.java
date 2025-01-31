@@ -30,6 +30,7 @@ import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Drive;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.FollowPathCommand;
+import org.firstinspires.ftc.teamcode.commandbase.commands.HoldPointCommand;
 import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
@@ -81,7 +82,7 @@ public class LifestyleBowl extends CommandOpMode {
                                         new Point(22.960, 127.000, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(130), Math.toRadians(161)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(130), Math.toRadians(160)).build());
 
         paths.add(
                 // Drive to second sample scoring
@@ -93,7 +94,7 @@ public class LifestyleBowl extends CommandOpMode {
                                         new Point(15.500, 133.000, Point.CARTESIAN)
                                 )
                         )
-                        .setConstantHeadingInterpolation(Math.toRadians(161)).build());
+                        .setConstantHeadingInterpolation(Math.toRadians(160)).build());
 
         paths.add(
                 // Drive to third sample intake
@@ -105,7 +106,7 @@ public class LifestyleBowl extends CommandOpMode {
                                         new Point(23.958, 130.100, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(161), Math.toRadians(180)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(160), Math.toRadians(180)).build());
 
         paths.add(
                 // Drive to third sample scoring
@@ -117,7 +118,7 @@ public class LifestyleBowl extends CommandOpMode {
                                         new Point(15.500, 133.000, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(161)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(160)).build());
 
         paths.add(
                 // Drive to fourth sample intake
@@ -129,7 +130,7 @@ public class LifestyleBowl extends CommandOpMode {
                                         new Point(23.709, 132.520, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(161), Math.toRadians(-157)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(160), Math.toRadians(-157)).build());
 
         paths.add(
                 // Drive to fourth sample scoring
@@ -154,7 +155,7 @@ public class LifestyleBowl extends CommandOpMode {
                                         new Point(subSample1)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(161), Math.toRadians(90)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(160), Math.toRadians(90)).build());
 
         paths.add(
                 // Drive from submersible to bucket (subSample1)
@@ -222,12 +223,11 @@ public class LifestyleBowl extends CommandOpMode {
                 new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, extendoTarget, true).withTimeout(1000),
 
                 new ParallelRaceGroup(
-                        new WaitUntilCommand(robot.intake::hasSample)
-//                        ,
-//                        new SequentialCommandGroup(
-//                                new FollowPathCommand(robot.follower, robot.jiggle(5)),
-//                                new FollowPathCommand(robot.follower, robot.jiggle(5))
-//                        )
+                        new WaitUntilCommand(robot.intake::hasSample),
+                        new SequentialCommandGroup(
+                                new HoldPointCommand(robot.follower, new Pose(0, 4, 0), false),
+                                new HoldPointCommand(robot.follower, new Pose(0, -6, 0), false)
+                        )
                 ).withTimeout(1000),
 
                 // Allow sample to enter intake fully
@@ -264,11 +264,11 @@ public class LifestyleBowl extends CommandOpMode {
                 ),
 
                 new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.OUT)),
-                new WaitCommand(300),
+                new WaitCommand(200),
                 new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.IN)),
-                new WaitCommand(300),
+                new WaitCommand(200),
 
-                new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 15, true).withTimeout(500),
+                new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 25, true).withTimeout(1000),
                 new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, true).withTimeout(2000),
 
                 new ParallelRaceGroup(
@@ -311,6 +311,7 @@ public class LifestyleBowl extends CommandOpMode {
     public void initialize() {
         opModeType = OpModeType.AUTO;
         depositInit = DepositPivotState.FRONT_SPECIMEN_SCORING;
+        Intake.sampleColorTarget = SampleColorTarget.ANY_COLOR;
 
         timer = new ElapsedTime();
         timer.reset();

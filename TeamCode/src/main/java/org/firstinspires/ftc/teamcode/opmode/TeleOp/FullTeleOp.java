@@ -72,11 +72,15 @@ public class FullTeleOp extends CommandOpMode {
         );
 
         driver.getGamepadButton(GamepadKeys.Button.SQUARE).whenPressed(
-                new InstantCommand(() -> robot.follower.setPose(new Pose(0, 0, 0)))
+                new SetIntake(robot, IntakePivotState.INTAKE_READY, IntakeMotorState.HOLD, MAX_EXTENDO_EXTENSION/2, true)
         );
 
         driver.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenPressed(
                 new SetIntake(robot, IntakePivotState.INTAKE_READY, intakeMotorState, MAX_EXTENDO_EXTENSION, true)
+        );
+
+        driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
+                new InstantCommand(() -> robot.follower.setPose(new Pose(0, 0, 0)))
         );
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(

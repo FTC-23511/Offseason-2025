@@ -198,6 +198,7 @@ public class BurritoBowl extends CommandOpMode {
     public void initialize() {
         opModeType = OpModeType.AUTO;
         depositInit = DepositPivotState.FRONT_SPECIMEN_SCORING;
+        Intake.sampleColorTarget = SampleColorTarget.ANY_COLOR;
 
         timer = new ElapsedTime();
         timer.reset();
