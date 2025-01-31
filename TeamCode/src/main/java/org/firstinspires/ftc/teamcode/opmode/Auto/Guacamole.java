@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Globals.BACK_HIGH_SPECIMEN
 import static org.firstinspires.ftc.teamcode.hardware.Globals.FRONT_HIGH_SPECIMEN_HEIGHT;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.SLIDES_PIVOT_READY_EXTENSION;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.autoEndPose;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.depositInit;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.opModeType;
 
@@ -459,5 +460,10 @@ public class Guacamole extends CommandOpMode {
         // Also only clearing the control hub to decrease loop times
         // This means if we start reading both hubs (which we aren't) we need to clear both
         robot.ControlHub.clearBulkCache();
+    }
+
+    @Override
+    public void end() {
+        autoEndPose = robot.follower.getPose();
     }
 }

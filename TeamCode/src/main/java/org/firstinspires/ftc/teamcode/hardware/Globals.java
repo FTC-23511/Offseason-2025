@@ -33,6 +33,7 @@ public class Globals {
 
     public static Pose subSample1 = new Pose(62.000, 93.700, Math.toRadians(90));
     public static Pose subSample2 = new Pose(62.000, 93.700, Math.toRadians(90));
+    public static Pose autoEndPose = new Pose(0, 0, Math.toRadians(0));
 
 
     // Robot Width and Length (in inches)

@@ -437,4 +437,9 @@ public class Salsa extends CommandOpMode {
         // This means if we start reading both hubs (which we aren't) we need to clear both
         robot.ControlHub.clearBulkCache();
     }
+
+    @Override
+    public void end() {
+        autoEndPose = robot.follower.getPose();
+    }
 }

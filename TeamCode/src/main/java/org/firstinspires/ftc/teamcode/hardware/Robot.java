@@ -175,7 +175,7 @@ public class Robot {
         Constants.setConstants(FConstants.class, LConstants.class);
 
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(new Pose(0, 0, 0));
+
 
         FollowerConstants.useBrakeModeInTeleOp = true;
 
@@ -184,7 +184,10 @@ public class Robot {
         if (opModeType.equals(OpModeType.TELEOP)) {
             follower.startTeleopDrive();
             INTAKE_HOLD_SPEED = 0;
+
+            follower.setStartingPose(autoEndPose);
         } else {
+            follower.setStartingPose(new Pose(0, 0, 0));
 //            limelight.pipelineSwitch(1);
 //            limelight.start();
             INTAKE_HOLD_SPEED = 0.15;
