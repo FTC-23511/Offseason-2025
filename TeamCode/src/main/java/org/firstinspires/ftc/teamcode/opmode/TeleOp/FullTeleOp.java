@@ -311,7 +311,7 @@ public class FullTeleOp extends CommandOpMode {
 
         telemetryData.addData("intakePivotState", intakePivotState);
         telemetryData.addData("depositPivotState", depositPivotState);
-        telemetryData.addData("Sigma", "j5");
+        telemetryData.addData("Sigma", "Oscar");
 
         telemetryData.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();
@@ -319,5 +319,10 @@ public class FullTeleOp extends CommandOpMode {
         // Also only clearing the control hub to decrease loop times
         // This means if we start reading both hubs (which we aren't) we need to clear both
         robot.ControlHub.clearBulkCache();
+    }
+
+    @Override
+    public void end() {
+        autoEndPose = robot.follower.getPose();
     }
 }
