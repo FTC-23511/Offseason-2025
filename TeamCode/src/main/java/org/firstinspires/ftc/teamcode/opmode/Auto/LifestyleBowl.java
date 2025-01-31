@@ -13,6 +13,7 @@ import com.pedropathing.pathgen.Point;
 import com.acmerobotics.dashboard.config.Config;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
+import com.seattlesolvers.solverslib.command.ConditionalCommand;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
 import com.seattlesolvers.solverslib.command.ParallelRaceGroup;
@@ -67,10 +68,10 @@ public class LifestyleBowl extends CommandOpMode {
                                 new BezierCurve(
                                         new Point(6.125, 102.125, Point.CARTESIAN),
                                         new Point(13.726, 104.818, Point.CARTESIAN),
-                                        new Point(14.000, 126.000, Point.CARTESIAN)
+                                        new Point(15.500, 133.000, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(130)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(161)).build());
 
         paths.add(
                 // Drive to second sample intake
@@ -78,11 +79,11 @@ public class LifestyleBowl extends CommandOpMode {
                         .addPath(
                                 // Line 2
                                 new BezierLine(
-                                        new Point(14.000, 126.000, Point.CARTESIAN),
-                                        new Point(22.960, 127.000, Point.CARTESIAN)
+                                        new Point(15.500, 133.000, Point.CARTESIAN),
+                                        new Point(19.500, 128.500, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(130), Math.toRadians(160)).build());
+                        .setConstantHeadingInterpolation(Math.toRadians(161)).build());
 
         paths.add(
                 // Drive to second sample scoring
@@ -90,11 +91,11 @@ public class LifestyleBowl extends CommandOpMode {
                         .addPath(
                                 // Line 3
                                 new BezierLine(
-                                        new Point(22.960, 127.000, Point.CARTESIAN),
+                                        new Point(19.500, 128.500, Point.CARTESIAN),
                                         new Point(15.500, 133.000, Point.CARTESIAN)
                                 )
                         )
-                        .setConstantHeadingInterpolation(Math.toRadians(160)).build());
+                        .setConstantHeadingInterpolation(Math.toRadians(161)).build());
 
         paths.add(
                 // Drive to third sample intake
@@ -103,10 +104,10 @@ public class LifestyleBowl extends CommandOpMode {
                                 // Line 4
                                 new BezierLine(
                                         new Point(15.500, 130.000, Point.CARTESIAN),
-                                        new Point(23.958, 130.100, Point.CARTESIAN)
+                                        new Point(23.958, 130.700, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(160), Math.toRadians(180)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(161), Math.toRadians(180)).build());
 
         paths.add(
                 // Drive to third sample scoring
@@ -114,11 +115,11 @@ public class LifestyleBowl extends CommandOpMode {
                         .addPath(
                                 // Line 5
                                 new BezierLine(
-                                        new Point(23.958, 130.100, Point.CARTESIAN),
+                                        new Point(23.958, 130.700, Point.CARTESIAN),
                                         new Point(15.500, 133.000, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(160)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(161)).build());
 
         paths.add(
                 // Drive to fourth sample intake
@@ -130,7 +131,7 @@ public class LifestyleBowl extends CommandOpMode {
                                         new Point(23.709, 132.520, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(160), Math.toRadians(-157)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(161), Math.toRadians(-158)).build());
 
         paths.add(
                 // Drive to fourth sample scoring
@@ -142,7 +143,7 @@ public class LifestyleBowl extends CommandOpMode {
                                         new Point(15.500, 133.000, Point.CARTESIAN)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(-157), Math.toRadians(161)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(-158), Math.toRadians(161)).build());
 
         paths.add(
                 // Drive from bucket to (subSample1)
@@ -155,7 +156,7 @@ public class LifestyleBowl extends CommandOpMode {
                                         new Point(subSample1)
                                 )
                         )
-                        .setLinearHeadingInterpolation(Math.toRadians(160), Math.toRadians(90)).build());
+                        .setLinearHeadingInterpolation(Math.toRadians(161), Math.toRadians(90)).build());
 
         paths.add(
                 // Drive from submersible to bucket (subSample1)
@@ -210,41 +211,48 @@ public class LifestyleBowl extends CommandOpMode {
                         .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(-90)).build());
     }
 
-    private SequentialCommandGroup intakeSampleCycleHalf(int pathNum, int extendoTarget) {
+    private SequentialCommandGroup intakeSampleCycleHalf(int pathNum) {
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new FollowPathCommand(robot.follower, paths.get(pathNum)).setHoldEnd(true),
-                        new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 120, true),
                         new SequentialCommandGroup(
                                 new WaitCommand(200),
                                 new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true).withTimeout(1000)
                         )
                 ),
-                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, extendoTarget, true).withTimeout(1000),
+                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, true).withTimeout(1000),
 
                 new ParallelRaceGroup(
                         new WaitUntilCommand(robot.intake::hasSample),
                         new SequentialCommandGroup(
+                                new HoldPointCommand(robot.follower, new Pose(0, 0, 0), false), // 0th goofy thing
                                 new HoldPointCommand(robot.follower, new Pose(0, 4, 0), false),
                                 new HoldPointCommand(robot.follower, new Pose(0, -6, 0), false)
                         )
                 ).withTimeout(1000),
 
                 // Allow sample to enter intake fully
-                new WaitCommand(100),
+                new WaitCommand(150),
                 new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
                 // Allow tubing to hold onto sample
-                new WaitCommand(100),
+                new WaitCommand(50),
                 new RealTransfer(robot)
         );
     }
 
-    private SequentialCommandGroup scoreSampleCycleHalf(int pathNum) {
+    private SequentialCommandGroup scoreSampleCycleHalf(int pathNum, int nextSlideTarget) {
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new SequentialCommandGroup(
-                                new WaitCommand(250),
-                                new FollowPathCommand(robot.follower, paths.get(pathNum)).setHoldEnd(true)
+                                new WaitCommand(300),
+                                new ParallelCommandGroup(
+                                        new FollowPathCommand(robot.follower, paths.get(pathNum)).setHoldEnd(true),
+                                        new ConditionalCommand(
+                                                new SetIntake(robot, IntakePivotState.HOVER, IntakeMotorState.FORWARD, nextSlideTarget, false),
+                                                new InstantCommand(),
+                                                () -> nextSlideTarget != -1
+                                        )
+                                )
                         ),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false).withTimeout(1000)
                 ),
@@ -264,11 +272,11 @@ public class LifestyleBowl extends CommandOpMode {
                 ),
 
                 new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.OUT)),
-                new WaitCommand(200),
+                new WaitCommand(300),
                 new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.IN)),
-                new WaitCommand(200),
+                new WaitCommand(300),
 
-                new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 25, true).withTimeout(1000),
+                new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 15, true).withTimeout(500),
                 new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, true).withTimeout(2000),
 
                 new ParallelRaceGroup(
@@ -281,7 +289,7 @@ public class LifestyleBowl extends CommandOpMode {
                 ).withTimeout(1000),
 
                 // Allow sample to enter intake fully
-                new WaitCommand(100),
+                new WaitCommand(200),
                 new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD)),
                 // Allow tubing to hold onto sample
                 new WaitCommand(100)
@@ -340,24 +348,27 @@ public class LifestyleBowl extends CommandOpMode {
                         new ParallelCommandGroup(
                                 new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(500),
-                                        new FollowPathCommand(robot.follower, paths.get(0)).setHoldEnd(true)
+                                        new WaitCommand(400),
+                                        new ParallelCommandGroup(
+                                                new FollowPathCommand(robot.follower, paths.get(0)).setHoldEnd(true),
+                                                new SetIntake(robot, IntakePivotState.HOVER, IntakeMotorState.FORWARD, 240, false)
+                                        )
                                 )
                         ),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
-                        new WaitCommand(250),
+                        new WaitCommand(200),
 
                         // Sample 2
-                        intakeSampleCycleHalf(1, 320),
-                        scoreSampleCycleHalf(2),
+                        intakeSampleCycleHalf(1),
+                        scoreSampleCycleHalf(2, 260),
 
                         // Sample 3
-                        intakeSampleCycleHalf(3, 320),
-                        scoreSampleCycleHalf(4),
+                        intakeSampleCycleHalf(3),
+                        scoreSampleCycleHalf(4, 260),
 
                         // Sample 4
-                        intakeSampleCycleHalf(5, 350),
-                        scoreSampleCycleHalf(6),
+                        intakeSampleCycleHalf(5),
+                        scoreSampleCycleHalf(6, -1),
 
                         // Sub Sample 1
                         intakeSubSampleCycleHalf(7),
