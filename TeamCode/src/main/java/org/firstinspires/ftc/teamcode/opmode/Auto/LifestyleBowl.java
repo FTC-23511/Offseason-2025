@@ -351,7 +351,7 @@ public class LifestyleBowl extends CommandOpMode {
                                         new WaitCommand(400),
                                         new ParallelCommandGroup(
                                                 new FollowPathCommand(robot.follower, paths.get(0)).setHoldEnd(true),
-                                                new SetIntake(robot, IntakePivotState.HOVER, IntakeMotorState.FORWARD, 240, false)
+                                                new SetIntake(robot, IntakePivotState.HOVER, IntakeMotorState.FORWARD, 190, false)
                                         )
                                 )
                         ),

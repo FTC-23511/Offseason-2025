@@ -286,6 +286,7 @@ public class FullTeleOp extends CommandOpMode {
         super.run();
 
         telemetryData.addData("timer", timer.milliseconds());
+        telemetryData.addData("autoEndPose", autoEndPose.toString());
         telemetryData.addData("extendoReached", robot.intake.extendoReached);
         telemetryData.addData("extendoRetracted", robot.intake.extendoRetracted);
         telemetryData.addData("slidesRetracted", robot.deposit.slidesRetracted);
