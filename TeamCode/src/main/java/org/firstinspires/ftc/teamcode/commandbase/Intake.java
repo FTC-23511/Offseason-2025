@@ -7,19 +7,13 @@ import static org.firstinspires.ftc.teamcode.commandbase.Intake.SampleColorTarge
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState.*;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.seattlesolvers.solverslib.command.CommandScheduler;
-import com.seattlesolvers.solverslib.command.ConditionalCommand;
-import com.seattlesolvers.solverslib.command.InstantCommand;
-import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
-import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
 import com.seattlesolvers.solverslib.command.WaitCommand;
+import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import com.seattlesolvers.solverslib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
-import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
-import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 import java.nio.file.Watchable;
@@ -43,7 +37,8 @@ public class Intake extends SubsystemBase {
         INTAKE,
         INTAKE_READY,
         TRANSFER,
-        TRANSFER_READY
+        TRANSFER_READY,
+        HOVER
     }
 
     public enum IntakeMotorState {
@@ -126,6 +121,11 @@ public class Intake extends SubsystemBase {
             case INTAKE_READY:
                 robot.leftIntakePivot.setPosition(INTAKE_PIVOT_READY_INTAKE_POS);
                 robot.rightIntakePivot.setPosition(INTAKE_PIVOT_READY_INTAKE_POS);
+                break;
+
+            case HOVER:
+                robot.leftIntakePivot.setPosition(INTAKE_PIVOT_HOVER_INTAKE_POS);
+                robot.rightIntakePivot.setPosition(INTAKE_PIVOT_HOVER_INTAKE_POS);
                 break;
         }
 
@@ -248,29 +248,31 @@ public class Intake extends SubsystemBase {
         return false;
     }
     public boolean hasSample() {
-//        int red = robot.colorSensor.red();
-//        int green = robot.colorSensor.green();
-//        int blue = robot.colorSensor.blue();
-//
-//        SampleColorDetected sampleColor = sampleColorDetected(red, green, blue);
-//
-//        switch (sampleColor) {
-//            case YELLOW:
-//                if (green > YELLOW_EDGE_CASE_THRESHOLD) {
-//                    return false;
-//                }
-//                break;
-//            case RED:
-//                if (red > RED_EDGE_CASE_THRESHOLD) {
-//                    return false;
-//                }
-//                break;
-//            case BLUE:
-//                if (blue > BLUE_EDGE_CASE_THRESHOLD) {
-//                    return false;
-//                }
-//                break;
-//        }
+        /* Color thresholding (not used)
+        int red = robot.colorSensor.red();
+        int green = robot.colorSensor.green();
+        int blue = robot.colorSensor.blue();
+
+        SampleColorDetected sampleColor = sampleColorDetected(red, green, blue);
+
+        switch (sampleColor) {
+            case YELLOW:
+                if (green > YELLOW_EDGE_CASE_THRESHOLD) {
+                    return false;
+                }
+                break;
+            case RED:
+                if (red > RED_EDGE_CASE_THRESHOLD) {
+                    return false;
+                }
+                break;
+            case BLUE:
+                if (blue > BLUE_EDGE_CASE_THRESHOLD) {
+                    return false;
+                }
+                break;
+        }
+         */
 
         double distance = robot.colorSensor.getDistance(DistanceUnit.CM);
 

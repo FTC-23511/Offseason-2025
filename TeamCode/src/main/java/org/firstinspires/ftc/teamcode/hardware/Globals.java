@@ -31,8 +31,8 @@ public class Globals {
     public static AllianceColor allianceColor;
     public static PoseLocationName poseLocationName;
 
-    public static Pose subSample1 = new Pose(62.000, 93.500, Math.toRadians(90));
-    public static Pose subSample2 = new Pose(62.000, 93.500, Math.toRadians(90));
+    public static Pose subSample1 = new Pose(62.000, 93.700, Math.toRadians(90));
+    public static Pose subSample2 = new Pose(62.000, 93.700, Math.toRadians(90));
 
 
     // Robot Width and Length (in inches)

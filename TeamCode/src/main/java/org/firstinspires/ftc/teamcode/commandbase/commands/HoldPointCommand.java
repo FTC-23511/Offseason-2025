@@ -7,23 +7,26 @@ import com.seattlesolvers.solverslib.command.CommandBase;
 public class HoldPointCommand extends CommandBase {
     private final Follower follower;
     private final Pose pose;
-    private final boolean fieldCentric;
+    private final boolean isFieldCentric;
 
     /**
-     * Moves robot to a new {@link Pose} that is either field or robot centric.
-     * @param follower The follower object.
-     * @param pose The pose that the robot should go to (see fieldCentric parameter).
-     * @param fieldCentric Whether the move should be field centric or robot centric (based off the follower's position at the time of scheduling the command).
+     * Moves robot to a new {@link Pose} that is either field or robot centric
+     * @param follower The follower object
+     * @param pose The pose that the robot should go to (see isFieldCentric parameter)
+     *             {@link Pose#getX()} +X is forwards, -X is backwards
+     *             {@link Pose#getY()} +Y is left, -Y is right
+     *             {@link Pose#getHeading()} Heading is in radians, +heading turns left and -heading turns right
+     * @param isFieldCentric Whether the move should be field centric or robot centric (based off the follower's position at the time of scheduling the command)
      */
-    public HoldPointCommand(Follower follower, Pose pose, boolean fieldCentric) {
+    public HoldPointCommand(Follower follower, Pose pose, boolean isFieldCentric) {
         this.follower = follower;
         this.pose = pose;
-        this.fieldCentric = fieldCentric;
+        this.isFieldCentric = isFieldCentric;
     }
 
     @Override
     public void initialize() {
-        if (!fieldCentric) {
+        if (!isFieldCentric) {
             pose.add(follower.getPose());
         }
 
