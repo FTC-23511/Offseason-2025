@@ -68,7 +68,7 @@ public class LifestyleBowl extends CommandOpMode {
                                 new BezierCurve(
                                         new Point(6.125, 102.125, Point.CARTESIAN),
                                         new Point(13.726, 104.818, Point.CARTESIAN),
-                                        new Point(15.500, 133.000, Point.CARTESIAN)
+                                        new Point(16.000, 133.300, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(161)).build());
@@ -79,7 +79,7 @@ public class LifestyleBowl extends CommandOpMode {
                         .addPath(
                                 // Line 2
                                 new BezierLine(
-                                        new Point(15.500, 133.000, Point.CARTESIAN),
+                                        new Point(16.000, 133.300, Point.CARTESIAN),
                                         new Point(19.500, 128.500, Point.CARTESIAN)
                                 )
                         )
@@ -92,7 +92,7 @@ public class LifestyleBowl extends CommandOpMode {
                                 // Line 3
                                 new BezierLine(
                                         new Point(19.500, 128.500, Point.CARTESIAN),
-                                        new Point(15.500, 133.000, Point.CARTESIAN)
+                                        new Point(16.000, 133.300, Point.CARTESIAN)
                                 )
                         )
                         .setConstantHeadingInterpolation(Math.toRadians(161)).build());
@@ -103,7 +103,7 @@ public class LifestyleBowl extends CommandOpMode {
                         .addPath(
                                 // Line 4
                                 new BezierLine(
-                                        new Point(15.500, 130.000, Point.CARTESIAN),
+                                        new Point(16.000, 133.300, Point.CARTESIAN),
                                         new Point(23.958, 130.700, Point.CARTESIAN)
                                 )
                         )
@@ -116,7 +116,7 @@ public class LifestyleBowl extends CommandOpMode {
                                 // Line 5
                                 new BezierLine(
                                         new Point(23.958, 130.700, Point.CARTESIAN),
-                                        new Point(15.500, 133.000, Point.CARTESIAN)
+                                        new Point(16.000, 133.300, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(161)).build());
@@ -127,7 +127,7 @@ public class LifestyleBowl extends CommandOpMode {
                         .addPath(
                                 // Line 6
                                 new BezierLine(
-                                        new Point(15.500, 133.000, Point.CARTESIAN),
+                                        new Point(16.000, 133.300, Point.CARTESIAN),
                                         new Point(23.709, 132.520, Point.CARTESIAN)
                                 )
                         )
@@ -140,7 +140,7 @@ public class LifestyleBowl extends CommandOpMode {
                                 // Line 7
                                 new BezierLine(
                                         new Point(23.709, 132.520, Point.CARTESIAN),
-                                        new Point(15.500, 133.000, Point.CARTESIAN)
+                                        new Point(16.000, 133.300, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(-158), Math.toRadians(161)).build());
@@ -151,7 +151,7 @@ public class LifestyleBowl extends CommandOpMode {
                         .addPath(
                                 // Line 8
                                 new BezierCurve(
-                                        new Point(13.974, 130.776, Point.CARTESIAN),
+                                        new Point(16.000, 133.300, Point.CARTESIAN),
                                         new Point(subSample1.getX(), 118.000, Point.CARTESIAN),
                                         new Point(subSample1)
                                 )
@@ -277,16 +277,31 @@ public class LifestyleBowl extends CommandOpMode {
                 new WaitCommand(300),
 
                 new SetIntake(robot, Intake.IntakePivotState.INTAKE, IntakeMotorState.FORWARD, 15, true).withTimeout(500),
-                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, true).withTimeout(2000),
+                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, true).raceWith(new WaitUntilCommand(() -> robot.intake.hasSample() && !correctSampleDetected())).withTimeout(2000),
 
                 new ParallelRaceGroup(
-                        new WaitUntilCommand(() -> Intake.correctSampleDetected() && robot.intake.hasSample())
-//                        ,
-//                        new SequentialCommandGroup(
-//                                new FollowPathCommand(robot.follower, robot.jiggle(5)),
-//                                new FollowPathCommand(robot.follower, robot.jiggle(5))
-//                        )
-                ).withTimeout(1000),
+                        new WaitUntilCommand(() -> Intake.correctSampleDetected() && robot.intake.hasSample()),
+                        new SequentialCommandGroup(
+                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, false),
+
+                                new ConditionalCommand(
+                                        new HoldPointCommand(robot.follower, new Pose(-3, 0, 0), false), // Right 3 inches
+                                        new HoldPointCommand(robot.follower, new Pose(3, 0, 0), false), // Left 3 inches
+                                        () -> robot.follower.getPose().getX() > 60
+                                ),
+
+                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, true).raceWith(new WaitUntilCommand(() -> robot.intake.hasSample() && !correctSampleDetected())).withTimeout(2000),
+                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, 0, false),
+
+                                new ConditionalCommand(
+                                        new HoldPointCommand(robot.follower, new Pose(-3, 0, 0), false), // Right 3 inches
+                                        new HoldPointCommand(robot.follower, new Pose(3, 0, 0), false), // Left 3 inches
+                                        () -> robot.follower.getPose().getX() > 60
+                                ),
+
+                                new SetIntake(robot, Intake.IntakePivotState.INTAKE, Intake.IntakeMotorState.FORWARD, MAX_EXTENDO_EXTENSION, true).raceWith(new WaitUntilCommand(() -> robot.intake.hasSample() && !correctSampleDetected())).withTimeout(2000)
+                        )
+                ).withTimeout(6000),
 
                 // Allow sample to enter intake fully
                 new WaitCommand(200),
