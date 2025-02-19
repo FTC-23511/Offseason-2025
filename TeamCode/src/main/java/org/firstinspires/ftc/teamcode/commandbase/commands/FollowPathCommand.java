@@ -12,6 +12,7 @@ public class FollowPathCommand extends CommandBase {
     private final Follower follower;
     private final PathChain path;
     private boolean holdEnd = true;
+    private boolean isTeleOp = true;
 
     public FollowPathCommand(Follower follower, PathChain path) {
         this.follower = follower;
@@ -22,6 +23,13 @@ public class FollowPathCommand extends CommandBase {
         this.follower = follower;
         this.path = path;
         this.holdEnd = holdEnd;
+    }
+
+    public FollowPathCommand(Follower follower, PathChain path, boolean holdEnd, boolean isTeleOp) {
+        this.follower = follower;
+        this.path = path;
+        this.holdEnd = holdEnd;
+        this.isTeleOp = isTeleOp;
     }
 
     /**
@@ -43,5 +51,11 @@ public class FollowPathCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return !follower.isBusy();
+    }
+
+    public void end(boolean interrupted) {
+        if (isTeleOp) {
+            follower.startTeleopDrive();
+        }
     }
 }

@@ -5,6 +5,9 @@ import static org.firstinspires.ftc.teamcode.commandbase.Deposit.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
 
 import com.pedropathing.localization.Pose;
+import com.pedropathing.pathgen.BezierCurve;
+import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.Point;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.ConditionalCommand;
@@ -223,6 +226,24 @@ public class FullTeleOp extends CommandOpMode {
         // Hang
         operator.getGamepadButton(GamepadKeys.Button.PS).whenPressed(
                 new InstantCommand(() -> robot.drive.setHang(Drive.HangState.EXTEND))
+        );
+
+        operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> robot.follower.setStartingPose(new Pose(6.25, 30, Math.toRadians(180)))),
+                        new FollowPathCommand(robot.follower,
+                                robot.follower.pathBuilder()
+                                        .addPath(
+                                                new BezierLine(
+                                                        new Point(robot.follower.getPose().getX(), robot.follower.getPose().getY(), Point.CARTESIAN),
+                                                        new Point(45.757, 69.084, Point.CARTESIAN)
+                                                )
+                                        )
+                                        .setConstantHeadingInterpolation(Math.toRadians(0)).build(),
+                                true,
+                                true
+                        )
+                )
         );
 
         super.run();

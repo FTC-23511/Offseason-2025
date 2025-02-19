@@ -202,19 +202,6 @@ public class Robot {
         robotState = RobotState.MIDDLE_RESTING;
     }
 
-    // Turn right: jiggle(-5)
-    // Turn left: jiggle(5)
-    public PathChain jiggle(double angle) {
-        return follower.pathBuilder()
-                .addPath(
-                        // Line 1
-                        new BezierLine(
-                                new Point(follower.getPose()),
-                                new Point(follower.getPose())
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(follower.getPose().getHeading()), follower.getPose().getHeading() + Math.toRadians(angle)).build();
-    }
 
     public double getYawDegrees() {
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
