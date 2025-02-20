@@ -229,20 +229,23 @@ public class FullTeleOp extends CommandOpMode {
         );
 
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> robot.follower.setStartingPose(new Pose(6.25, 30, Math.toRadians(180)))),
-                        new FollowPathCommand(robot.follower,
-                                robot.follower.pathBuilder()
-                                        .addPath(
-                                                new BezierLine(
-                                                        new Point(robot.follower.getPose().getX(), robot.follower.getPose().getY(), Point.CARTESIAN),
-                                                        new Point(45.757, 69.084, Point.CARTESIAN)
+                new UninterruptibleCommand(
+                        new SequentialCommandGroup(
+                                new InstantCommand(() -> robot.follower.setStartingPose(new Pose(6.25, 30, Math.toRadians(180)))),
+                                new FollowPathCommand(robot.follower,
+                                        robot.follower.pathBuilder()
+                                                .addPath(
+                                                        new BezierLine(
+                                                                new Point(robot.follower.getPose().getX(), robot.follower.getPose().getY(), Point.CARTESIAN),
+                                                                new Point(45.757, 69.084, Point.CARTESIAN)
+                                                        )
                                                 )
-                                        )
-                                        .setConstantHeadingInterpolation(Math.toRadians(0)).build(),
-                                true,
-                                true
+                                                .setConstantHeadingInterpolation(Math.toRadians(0)).build(),
+                                        true
+                                )
                         )
+                ).andThen(
+                        new InstantCommand(() -> robot.follower.startTeleopDrive())
                 )
         );
 
