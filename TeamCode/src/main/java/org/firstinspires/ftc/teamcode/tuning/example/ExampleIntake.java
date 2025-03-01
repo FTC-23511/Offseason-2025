@@ -21,10 +21,9 @@ import java.util.function.BooleanSupplier;
 
 public class ExampleIntake extends SubsystemBase {
     private final ExampleRobot robot = ExampleRobot.getInstance();
-    private final ElapsedTime reverseIntakeTimer = new ElapsedTime();
-    private boolean waitingForReverse = false;
-    private final ElapsedTime colorDetectionTimer = new ElapsedTime();
-    private boolean readyForColorDetection = false;
+    private final ElapsedTime intakeTimer = new ElapsedTime();
+    private boolean pushSampleOut = false;
+    private boolean pushSampleIn = false;
 
     private final double divideConstant = 65.0;
     public double target;
@@ -82,7 +81,7 @@ public class ExampleIntake extends SubsystemBase {
                     break;
                 case REVERSE:
                     robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
-                    reverseIntakeTimer.reset();
+                    intakeTimer.reset();
                     break;
                 case STOP:
                     robot.intakeMotor.setPower(0);
@@ -108,42 +107,24 @@ public class ExampleIntake extends SubsystemBase {
             switch (intakeMotorState) {
                 case FORWARD:
                     if (hasSample()) {
-                        if (!readyForColorDetection) {
-                            colorDetectionTimer.reset();
-                            readyForColorDetection = true;
-                        } else if (readyForColorDetection && colorDetectionTimer.milliseconds() > 50) {
-                            readyForColorDetection = false;
-
+                        if (pushSampleOut) {
+                            pushSampleOut = false;
+                            setActiveIntake(STOP);
+                        } else if (pushSampleIn) {
+                            pushSampleIn = false;
+                            setActiveIntake(STOP);
+                        }
+                        else {
                             sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
                             if (correctSampleDetected()) {
-                                setActiveIntake(HOLD);
-                                if (opModeType.equals(OpModeType.TELEOP)) {
-                                    if (sampleColorTarget.equals(ANY_COLOR)) {
-//                                        new RealTransfer(robot).beforeStarting(
-//                                                new WaitCommand(125)
-//                                        ).schedule(false);
-                                    } else {
-//                                        new SetIntake(robot, TRANSFER_READY, HOLD, 0, false).schedule(false);
-                                    }
-                                }
-                            } else {
-                                reverseIntakeTimer.reset();
-                                setActiveIntake(REVERSE);
+                                pushSampleOut = true;
                             }
                         }
                     }
                     break;
                 case REVERSE:
-                    if (!hasSample() && !waitingForReverse) {
-                        reverseIntakeTimer.reset();
-                        waitingForReverse = true;
-                    } else if (!hasSample() && waitingForReverse && reverseIntakeTimer.milliseconds() > REVERSE_TIME_MS) {
-                        waitingForReverse = false;
-                        if (opModeType.equals(OpModeType.TELEOP)) {
-                            setActiveIntake(FORWARD);
-                        } else {
-                            setActiveIntake(STOP);
-                        }
+                    if (!hasSample()) {
+                        setActiveIntake(STOP);
                     }
                     break;
                 case HOLD:
