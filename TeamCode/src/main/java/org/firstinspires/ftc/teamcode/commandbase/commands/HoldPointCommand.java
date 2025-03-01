@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.commandbase.commands;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.seattlesolvers.solverslib.command.CommandBase;
+import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 public class HoldPointCommand extends CommandBase {
     private final Follower follower;

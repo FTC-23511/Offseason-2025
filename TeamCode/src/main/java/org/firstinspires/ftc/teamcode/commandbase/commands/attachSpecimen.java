@@ -28,8 +28,8 @@ public class attachSpecimen extends CommandBase {
         return deposit.slidesReached && timer.milliseconds() >= 400;
     }
 
-//    @Override
-//    public void end(boolean interruptable) {
-//        deposit.setClawOpen(true);
-//    }
+    @Override
+    public void end(boolean interrupted) {
+        deposit.setClawOpen(true);
+    }
 }
