@@ -29,6 +29,8 @@ import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import com.pedropathing.util.DashboardPoseTracker;
+import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
+
 import org.firstinspires.ftc.teamcode.commandbase.commands.*;
 
 @Config

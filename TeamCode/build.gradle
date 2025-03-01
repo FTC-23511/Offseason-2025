@@ -46,12 +46,12 @@ dependencies {
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 
     // RoadRunner v1.0.x & FTC Dashboard
-    implementation "com.acmerobotics.roadrunner:core:1.0.0"
-    implementation "com.acmerobotics.roadrunner:actions:1.0.0"
+//    implementation "com.acmerobotics.roadrunner:core:1.0.0"
+//    implementation "com.acmerobotics.roadrunner:actions:1.0.0"
     implementation "com.acmerobotics.dashboard:dashboard:0.4.16"
 
     // Pedro Pathing
-    implementation 'com.pedropathing:beta:1.0.8'
+    implementation 'com.pedropathing:pedro:1.0.8'
     //noinspection GradleDependency
     
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
