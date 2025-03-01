@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.tuning.example;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
@@ -10,6 +11,8 @@ import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 import com.seattlesolvers.solverslib.solversHardware.SolversMotor;
 import com.seattlesolvers.solverslib.solversHardware.SolversServo;
 
+import org.firstinspires.ftc.teamcode.commandbase.Intake;
+
 import java.util.List;
 
 public class ExampleRobot {
@@ -18,12 +21,15 @@ public class ExampleRobot {
     public SolversServo rightServo;
     public SolversServo intakeClaw;
     public SolversMotor centerMotor;
+    public SolversMotor intakeMotor;
     public SolversMotor leftMotor;
     public SolversMotor rightMotor;
     public RevColorSensorV3 colorSensor;
     public SolversMotor liftBottom;
     public SolversMotor liftTop;
     public Motor.Encoder encoder;
+
+    public ExampleIntake exampleIntake  ;
 
     private static ExampleRobot instance = null;
     public boolean enabled;
@@ -41,14 +47,14 @@ public class ExampleRobot {
 
     // Make sure to run this after instance has been enabled/made
     public void init(HardwareMap hardwareMap) { // CONFIG: robotTester
-        intakeClaw = new SolversServo(hardwareMap.get(Servo.class, "intakeClaw"), 0.0); // Servo Slot 0 on Control Hub
-        leftServo = new SolversServo(hardwareMap.get(Servo.class, "leftServo"), 0.0); // Servo Slot 1 on Control Hub
-        rightServo = new SolversServo(hardwareMap.get(Servo.class, "rightServo"), 0.0); // Servo Slot 2 on Control Hub
-        wrist = new SolversServo(hardwareMap.get(Servo.class, "wrist"), 0.0); // Servo Slot 2 on Control Hub
+//        intakeClaw = new SolversServo(hardwareMap.get(Servo.class, "intakeClaw"), 0.0); // Servo Slot 0 on Control Hub
+//        leftServo = new SolversServo(hardwareMap.get(Servo.class, "leftServo"), 0.0); // Servo Slot 1 on Control Hub
+//        rightServo = new SolversServo(hardwareMap.get(Servo.class, "rightServo"), 0.0); // Servo Slot 2 on Control Hub
+//        wrist = new SolversServo(hardwareMap.get(Servo.class, "wrist"), 0.0); // Servo Slot 2 on Control Hub
         colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
-        leftServo.setDirection(Servo.Direction.REVERSE);
-//
-//        centerMotor = new SolversDcMotorEx(hardwareMap.get(DcMotorEx.class, "centerMotor"), 0.01); // Motor Slot 0 on Control Hub
+//        leftServo.setDirection(Servo.Direction.REVERSE);
+
+        intakeMotor = new SolversMotor(hardwareMap.get(DcMotor.class, "intakeMotor"), 0.01);
 //        leftMotor = new SolversDcMotorEx(hardwareMap.get(DcMotorEx.class, "leftMotor"), 0.01); // Motor Slot 1 on Control Hub
 //        rightMotor = new SolversDcMotorEx(hardwareMap.get(DcMotorEx.class, "rightMotor"), 0.01); // Motor Slot 2 on Control Hub
 
@@ -58,6 +64,8 @@ public class ExampleRobot {
 
 //        liftTop.setDirection(DcMotorEx.Direction.REVERSE);
 //        encoder.setDirection(MotorEx.Direction.REVERSE);
+
+        exampleIntake = new ExampleIntake();
 
         // Bulk reading enabled!
         // AUTO mode will bulk read by default and will redo and clear cache once the exact same read is done again
