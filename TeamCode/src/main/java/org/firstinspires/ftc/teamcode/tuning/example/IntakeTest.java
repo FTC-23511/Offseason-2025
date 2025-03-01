@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.tuning;
+package org.firstinspires.ftc.teamcode.tuning.example;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.*;
@@ -16,9 +16,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.hardware.TelemetryData;
-import org.firstinspires.ftc.teamcode.tuning.example.ExampleRobot;
 
 @TeleOp
 public class IntakeTest extends CommandOpMode {
@@ -65,6 +63,14 @@ public class IntakeTest extends CommandOpMode {
                 new InstantCommand(() -> robot.exampleIntake.toggleActiveIntake(ALLIANCE_ONLY))
         );
 
+        driver.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenPressed(
+                new InstantCommand(() -> intakePivotState = IntakePivotState.INTAKE)
+        );
+
+        driver.getGamepadButton(GamepadKeys.Button.SQUARE).whenPressed(
+                new InstantCommand(() -> intakePivotState = IntakePivotState.TRANSFER)
+        );
+
         super.run();
     }
 
@@ -100,6 +106,7 @@ public class IntakeTest extends CommandOpMode {
         telemetryData.addData("Intake sampleColor", sampleColor);
         telemetryData.addData("correctSampleDetected", correctSampleDetected());
         telemetryData.addData("intakeMotorState", intakeMotorState);
+        telemetryData.addData("intakePivotState", intakePivotState);
 
         telemetryData.addData("Sigma", "Oscar");
 

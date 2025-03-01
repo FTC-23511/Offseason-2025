@@ -62,7 +62,9 @@ public class ExampleIntake extends SubsystemBase {
 
     public static SampleColorDetected sampleColor = NONE;
     public static SampleColorTarget sampleColorTarget = ANY_COLOR;
-    public static IntakePivotState intakePivotState = TRANSFER;
+//    public static IntakePivotState intakePivotState = TRANSFER;
+    // TODO: make sure you make this transfer again for the real thing
+    public static IntakePivotState intakePivotState = INTAKE;
     public static IntakeMotorState intakeMotorState = STOP;
 
     public void init() {

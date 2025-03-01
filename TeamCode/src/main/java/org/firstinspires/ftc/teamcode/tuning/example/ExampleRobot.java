@@ -62,6 +62,7 @@ public class ExampleRobot {
 //        liftTop = new SolversDcMotorEx(hardwareMap.get(DcMotorEx.class, "liftTop"), 0.01);
 //        encoder = new MotorEx(hardwareMap, "liftTop").encoder;
 
+        intakeMotor.setDirection(DcMotor.Direction.REVERSE);
 //        liftTop.setDirection(DcMotorEx.Direction.REVERSE);
 //        encoder.setDirection(MotorEx.Direction.REVERSE);
 
