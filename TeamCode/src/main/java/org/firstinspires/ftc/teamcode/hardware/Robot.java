@@ -47,6 +47,11 @@ public class Robot {
     public SolversMotor leftBack;
     public SolversMotor rightBack;
 
+    public SolversServo FR;
+    public SolversServo FL;
+    public SolversServo BR;
+    public SolversServo BL;
+
     public SolversServo leftIntakePivot;
     public SolversServo rightIntakePivot;
 
@@ -54,12 +59,6 @@ public class Robot {
     public SolversServo rightDepositPivot;
     public SolversServo depositClaw;
     public SolversServo depositWrist;
-
-    public SolversServo gearboxSwitcher;
-    public SolversServo subPusher;
-
-    public SolversCRServo leftHang;
-    public SolversCRServo rightHang;
 
     public Motor.Encoder liftEncoder;
     public Motor.Encoder extensionEncoder;
@@ -137,14 +136,14 @@ public class Robot {
         rightDepositPivot = new SolversServo(hardwareMap.get(Servo.class, "rightDepositPivot"), 0.01);
         depositClaw = new SolversServo(hardwareMap.get(Servo.class, "depositClaw"), 0.01);
         depositWrist = new SolversServo(hardwareMap.get(Servo.class, "depositWrist"), 0.01);
-        leftHang = new SolversCRServo(hardwareMap.get(CRServo.class, "leftHang"), 0.01);
-        rightHang = new SolversCRServo(hardwareMap.get(CRServo.class, "rightHang"), 0.01);
-        gearboxSwitcher = new SolversServo(hardwareMap.get(Servo.class, "gearboxSwitcher"), 0.01);
-        subPusher = new SolversServo(hardwareMap.get(Servo.class, "subPusher"), 0.01);
+
+        FR = new SolversServo(hardwareMap.get(Servo.class, "FR"), 0.01);
+        FL = new SolversServo(hardwareMap.get(Servo.class, "FL"), 0.01);
+        BR = new SolversServo(hardwareMap.get(Servo.class, "BR"), 0.01);
+        BL = new SolversServo(hardwareMap.get(Servo.class, "BL"), 0.01);
 
         leftIntakePivot.setDirection(Servo.Direction.REVERSE);
         leftDepositPivot.setDirection(Servo.Direction.REVERSE);
-        rightHang.setDirection(CRServo.Direction.REVERSE);
         extension.setDirection(CRServo.Direction.REVERSE);
 
         colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");

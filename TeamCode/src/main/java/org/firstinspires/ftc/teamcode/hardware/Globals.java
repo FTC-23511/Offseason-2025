@@ -37,8 +37,8 @@ public class Globals {
 
 
     // Robot Width and Length (in inches)
-    public static double ROBOT_WIDTH = 11.5;
-    public static double ROBOT_LENGTH = 12.25;
+    public static double ROBOT_WIDTH = 13.5;
+    public static double ROBOT_LENGTH = 12.15;
 
     // Intake Motor
     public static double INTAKE_FORWARD_SPEED = 1.0;
@@ -109,18 +109,20 @@ public class Globals {
     public static double AUTO_ASCENT_HEIGHT = 800;
     public static double ENDGAME_ASCENT_HEIGHT = 1300;
 
-    // Hang Servos
-    public static double LEFT_HANG_FULL_POWER = 0.9;
-    public static double RIGHT_HANG_FULL_POWER = 1.0;
+    // Octocanum Servos
+    public static double FR_RETRACTED = 0.5;
+    public static double FR_EXTENDED = 0.5;
+    public static double FR_PTO_RETRACTED = 0.5;
+    public static double FL_RETRACTED = 0.5;
+    public static double FL_EXTENDED = 0.5;
+    public static double FL_PTO_RETRACTED = 0.5;
+    public static double BR_RETRACTED = 0.5;
+    public static double BR_EXTENDED = 0.5;
+    public static double BR_PTO_RETRACTED = 0.5;
+    public static double BL_RETRACTED = 0.5;
+    public static double BL_EXTENDED = 0.5;
+    public static double BL_PTO_RETRACTED = 0.5;
 
-    // Gearbox Switcher Servo
-    public static double HANG_GEAR_POS = 0.0;
-    public static double DEPOSIT_GEAR_POS = 0.0;
-
-    // Sub Pusher / Sweeper Servo
-    public static double SUB_PUSHER_OUT = 0.54;
-    public static double SUB_PUSHER_IN = 0.08;
-    public static double SUB_PUSHER_AUTO = 0.5;
 
     // command timeout
     public final static int MAX_COMMAND_RUN_TIME_MS = 3000;

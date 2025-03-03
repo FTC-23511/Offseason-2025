@@ -9,78 +9,40 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 public class Drive extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
 
-    public enum HangState {
-        RETRACT,
-        EXTEND,
-        STOP
+    public enum OctocanumServosState {
+        RETRACTED,
+        EXTENDED,
+        PTO_AND_RETRACTED
     }
 
-    public enum GearboxState {
-        HANG_GEAR,
-        DEPOSIT_GEAR
-    }
-
-    public enum SubPusherState {
-        IN,
-        OUT,
-        AUTO_PUSH
-    }
-
-    public static HangState hangState;
-    public static GearboxState gearboxState;
-    public static SubPusherState subPusherState = SubPusherState.IN;
+    public static OctocanumServosState octocanumServosState;
 
     public void init() {
-        setHang(HangState.STOP);
-        setGearbox(GearboxState.DEPOSIT_GEAR);
-        setSubPusher(SubPusherState.IN);
+        setOctocanumServos(OctocanumServosState.RETRACTED);
     }
 
-    public void setHang(HangState hangState) {
-        switch (hangState) {
-            case RETRACT:
-                robot.leftHang.setPower(-LEFT_HANG_FULL_POWER);
-                robot.rightHang.setPower(-RIGHT_HANG_FULL_POWER);
+    public void setOctocanumServos(OctocanumServosState state) {
+        switch (state) {
+            case RETRACTED:
+                robot.FR.setPosition(FR_RETRACTED);
+                robot.FL.setPosition(FL_RETRACTED);
+                robot.BR.setPosition(BR_RETRACTED);
+                robot.BR.setPosition(BL_RETRACTED);
                 break;
-            case EXTEND:
-                robot.leftHang.setPower(LEFT_HANG_FULL_POWER);
-                robot.rightHang.setPower(RIGHT_HANG_FULL_POWER);
+            case EXTENDED:
+                robot.FR.setPosition(FR_EXTENDED);
+                robot.FL.setPosition(FL_EXTENDED);
+                robot.BR.setPosition(BR_EXTENDED);
+                robot.BR.setPosition(BL_EXTENDED);
                 break;
-            case STOP:
-                robot.leftHang.setPower(0);
-                robot.rightHang.setPower(0);
+            case PTO_AND_RETRACTED:
+                robot.FR.setPosition(FR_PTO_RETRACTED);
+                robot.FL.setPosition(FL_PTO_RETRACTED);
+                robot.BR.setPosition(BR_PTO_RETRACTED);
+                robot.BR.setPosition(BL_PTO_RETRACTED);
                 break;
         }
 
-        Drive.hangState = hangState;
-    }
-
-    public void setGearbox(GearboxState gearboxState) {
-        switch (gearboxState) {
-            case HANG_GEAR:
-                robot.gearboxSwitcher.setPosition(HANG_GEAR_POS);
-                break;
-            case DEPOSIT_GEAR:
-                robot.gearboxSwitcher.setPosition(DEPOSIT_GEAR_POS);
-                break;
-        }
-
-        Drive.gearboxState = gearboxState;
-    }
-
-    public void setSubPusher(SubPusherState subPusherState) {
-        switch (subPusherState) {
-            case IN:
-                robot.subPusher.setPosition(SUB_PUSHER_IN);
-                break;
-            case OUT:
-                robot.subPusher.setPosition(SUB_PUSHER_OUT);
-                break;
-            case AUTO_PUSH:
-                robot.subPusher.setPosition(SUB_PUSHER_AUTO);
-                break;
-        }
-
-        Drive.subPusherState = subPusherState;
+        octocanumServosState = state;
     }
 }
