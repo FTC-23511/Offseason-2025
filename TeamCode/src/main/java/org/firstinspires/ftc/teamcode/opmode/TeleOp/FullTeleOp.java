@@ -98,14 +98,6 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.intake.setExtendoTarget(0))
         );
 
-        // TO-DO: need to make into 1 method in Drive.java
-        driver.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
-                new ConditionalCommand(
-                        new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.OUT)),
-                        new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.IN)),
-                        () -> Drive.subPusherState.equals(Drive.SubPusherState.IN))
-        );
-
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.TRANSFER))
         );
@@ -205,7 +197,6 @@ public class FullTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.OPTIONS).whenPressed(
                 new SequentialCommandGroup(
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.drive.setHang(Drive.HangState.RETRACT)),
                                 new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, ENDGAME_ASCENT_HEIGHT, false).withTimeout(1500),
                                 new WaitCommand(3000)
                         )
@@ -226,7 +217,8 @@ public class FullTeleOp extends CommandOpMode {
 
         // Hang
         operator.getGamepadButton(GamepadKeys.Button.PS).whenPressed(
-                new InstantCommand(() -> robot.drive.setHang(Drive.HangState.EXTEND))
+//                new InstantCommand(() -> robot.drive.setHang(Drive.HangState.EXTEND))
+                new InstantCommand()
         );
 
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
@@ -304,7 +296,7 @@ public class FullTeleOp extends CommandOpMode {
 
         // Hang
         if (gamepad2.left_trigger > 0.5) {
-            robot.drive.setHang(Drive.HangState.STOP);
+//            robot.drive.setHang(Drive.HangState.STOP);
         }
 
         // DO NOT REMOVE! Runs FTCLib Command Scheduler

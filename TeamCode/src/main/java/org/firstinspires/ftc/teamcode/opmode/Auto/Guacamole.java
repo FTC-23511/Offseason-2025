@@ -290,10 +290,10 @@ public class Guacamole extends CommandOpMode {
 
     public SequentialCommandGroup samplePush(int pathNum) {
         return new SequentialCommandGroup(
-                new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.AUTO_PUSH)),
+//                new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.AUTO_PUSH)),
                 new WaitCommand(300),
-                new FollowPathCommand(robot.follower, paths.get(pathNum)).setHoldEnd(true),
-                new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.IN))
+                new FollowPathCommand(robot.follower, paths.get(pathNum)).setHoldEnd(true)
+//                new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.IN))
         );
     }
 
