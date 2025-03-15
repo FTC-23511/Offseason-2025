@@ -22,8 +22,8 @@ import java.util.function.BooleanSupplier;
 public class ExampleIntake extends SubsystemBase {
     private final ExampleRobot robot = ExampleRobot.getInstance();
     private final ElapsedTime intakeTimer = new ElapsedTime();
-    private boolean pushSampleOut = false;
-    private boolean pushSampleIn = false;
+    public boolean pushSampleOut = false;
+    public boolean pushSampleIn = false;
 
     private final double divideConstant = 65.0;
     public double target;
@@ -108,11 +108,11 @@ public class ExampleIntake extends SubsystemBase {
                 case FORWARD:
                     if (hasSample()) {
                         if (pushSampleOut) {
-                            pushSampleOut = false;
-                            setActiveIntake(STOP);
+                            setActiveIntake(REVERSE);
                         } else if (pushSampleIn) {
                             pushSampleIn = false;
                             setActiveIntake(STOP);
+
                         }
                         else {
                             sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
@@ -124,8 +124,17 @@ public class ExampleIntake extends SubsystemBase {
                     break;
                 case REVERSE:
                     if (!hasSample()) {
-                        setActiveIntake(STOP);
+                        if(pushSampleOut) {
+                            setActiveIntake(FORWARD);
+                            pushSampleOut = false;
+                            pushSampleIn = true;
+
+                        }
+                        else {
+                            setActiveIntake(STOP);
+                        }
                     }
+
                     break;
                 case HOLD:
                     if (!correctSampleDetected() && hasSample() && ExampleIntake.intakePivotState.equals(INTAKE)) {

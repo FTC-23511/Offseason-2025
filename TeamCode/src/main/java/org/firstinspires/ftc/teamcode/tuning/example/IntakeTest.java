@@ -109,6 +109,9 @@ public class IntakeTest extends CommandOpMode {
         telemetryData.addData("intakePivotState", intakePivotState);
 
         telemetryData.addData("Sigma", "Oscar");
+        telemetryData.addData("pushSampleIn", robot.exampleIntake.pushSampleIn);
+        telemetryData.addData("pushSampleOut", robot.exampleIntake.pushSampleOut);
+
 
         telemetryData.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();
