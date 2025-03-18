@@ -52,6 +52,8 @@ public class Robot {
     public SolversServo BR;
     public SolversServo BL;
 
+    public SolversServo pto;
+
     public SolversServo leftIntakePivot;
     public SolversServo rightIntakePivot;
 
@@ -136,6 +138,7 @@ public class Robot {
         rightDepositPivot = new SolversServo(hardwareMap.get(Servo.class, "rightDepositPivot"), 0.01);
         depositClaw = new SolversServo(hardwareMap.get(Servo.class, "depositClaw"), 0.01);
         depositWrist = new SolversServo(hardwareMap.get(Servo.class, "depositWrist"), 0.01);
+        pto = new SolversServo(hardwareMap.get(Servo.class, "pto"), 0.01);
 
         FR = new SolversServo(hardwareMap.get(Servo.class, "FR"), 0.01);
         FL = new SolversServo(hardwareMap.get(Servo.class, "FL"), 0.01);

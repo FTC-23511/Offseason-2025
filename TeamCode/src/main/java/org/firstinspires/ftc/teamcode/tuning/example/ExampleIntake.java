@@ -24,6 +24,7 @@ public class ExampleIntake extends SubsystemBase {
     private final ElapsedTime intakeTimer = new ElapsedTime();
     public boolean pushSampleOut = false;
     public boolean pushSampleIn = false;
+    private final double EJECT_TIME = 200;
 
     private final double divideConstant = 65.0;
     public double target;
