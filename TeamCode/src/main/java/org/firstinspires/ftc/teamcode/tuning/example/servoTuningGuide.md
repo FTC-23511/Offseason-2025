@@ -7,7 +7,7 @@
 1. In `../TeamCode/tuning/servo/sample`, copy either `singleServoTester` or `doubleServoTester` based off whether your mechanism has either 1 or 2 servos.
    - If you are using `doubleServoTester`, make sure to reverse one of the servos if they are facing each other.
 2. Paste the file in `../TeamCode/tuning/servo`, and rename the file, ideally to something that has the mechanism/motor name in it.
-3. Rename the class name in the code, fix the package name, and change `ExampleRobot` to `Robot`. Then, rename servos as needed to fit your configuration. Finally, uncomment `@Photon`, `@Config`, and ``@TeleOp`
+3. Rename the class name in the code, fix the package name, and change `ExampleRobot` to `Robot`. Then, rename servos as needed to fit your configuration. Finally, uncomment `@Photon`, `@Config`, and `@TeleOp`
 
 ---
 
