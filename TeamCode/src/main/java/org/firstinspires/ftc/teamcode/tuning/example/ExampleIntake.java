@@ -6,6 +6,8 @@ import static org.firstinspires.ftc.teamcode.tuning.example.ExampleIntake.Sample
 import static org.firstinspires.ftc.teamcode.tuning.example.ExampleIntake.SampleColorTarget.*;
 import static org.firstinspires.ftc.teamcode.tuning.example.ExampleIntake.IntakeMotorState.*;
 
+import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.command.WaitCommand;
@@ -19,12 +21,13 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 import java.nio.file.Watchable;
 import java.util.function.BooleanSupplier;
 
+@Config
 public class ExampleIntake extends SubsystemBase {
     private final ExampleRobot robot = ExampleRobot.getInstance();
     private final ElapsedTime intakeTimer = new ElapsedTime();
     public boolean pushSampleOut = false;
     public boolean pushSampleIn = false;
-    private final double EJECT_TIME = 200;
+    public static double EJECT_TIME = 200;
 
     private final double divideConstant = 65.0;
     public double target;
@@ -82,10 +85,10 @@ public class ExampleIntake extends SubsystemBase {
                     break;
                 case REVERSE:
                     robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
-                    intakeTimer.reset();
                     break;
                 case STOP:
                     robot.intakeMotor.setPower(0);
+                    intakeTimer.reset();
                     break;
             }
             ExampleIntake.intakeMotorState = intakeMotorState;
@@ -108,38 +111,15 @@ public class ExampleIntake extends SubsystemBase {
             switch (intakeMotorState) {
                 case FORWARD:
                     if (hasSample()) {
-                        if (pushSampleOut) {
-                            setActiveIntake(REVERSE);
-                        } else if (pushSampleIn) {
-                            pushSampleIn = false;
-                            setActiveIntake(STOP);
-
-                        }
-                        else {
-                            sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
-                            if (correctSampleDetected()) {
-                                pushSampleOut = true;
-                            }
+                        sampleColor = sampleColorDetected(robot.colorSensor);
+                        if (correctSampleDetected()) {
+                            setActiveIntake(HOLD);
                         }
                     }
                     break;
                 case REVERSE:
                     if (!hasSample()) {
-                        if(pushSampleOut) {
-                            setActiveIntake(FORWARD);
-                            pushSampleOut = false;
-                            pushSampleIn = true;
-
-                        }
-                        else {
-                            setActiveIntake(STOP);
-                        }
-                    }
-
-                    break;
-                case HOLD:
-                    if (!correctSampleDetected() && hasSample() && ExampleIntake.intakePivotState.equals(INTAKE)) {
-                        setActiveIntake(REVERSE);
+                        setActiveIntake(STOP);
                     }
                     break;
                 // No point of setting intakeMotor to 0 again
@@ -149,7 +129,11 @@ public class ExampleIntake extends SubsystemBase {
         }
     }
 
-    public static SampleColorDetected sampleColorDetected(int red, int green, int blue) {
+    public static SampleColorDetected sampleColorDetected(RevColorSensorV3 colorSensor) {
+        int red = colorSensor.red();
+        int green = colorSensor.green();
+        int blue = colorSensor.blue();
+
         if (blue >= green && blue >= red) {
             return BLUE;
         } else if (green >= red) {
@@ -163,20 +147,24 @@ public class ExampleIntake extends SubsystemBase {
         switch (sampleColorTarget) {
             case ANY_COLOR:
                 if (sampleColor.equals(YELLOW) ||
-                        (sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BLUE) ||
-                                (sampleColor.equals(RED) && allianceColor.equals(AllianceColor.RED)))) {
+                        ((sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BLUE)) ||
+                            (sampleColor.equals(RED) && allianceColor.equals(AllianceColor.RED))
+                        )
+                ) {
                     return true;
                 }
                 break;
             case ALLIANCE_ONLY:
-                if (sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BLUE) ||
-                        (sampleColor.equals(RED) && allianceColor.equals(AllianceColor.RED))) {
+                if ((sampleColor.equals(BLUE) && allianceColor.equals(AllianceColor.BLUE)) ||
+                    (sampleColor.equals(RED) && allianceColor.equals(AllianceColor.RED))
+                ) {
                     return true;
                 }
                 break;
         }
         return false;
     }
+
     public boolean hasSample() {
         /* Color thresholding (not used)
         int red = robot.colorSensor.red();

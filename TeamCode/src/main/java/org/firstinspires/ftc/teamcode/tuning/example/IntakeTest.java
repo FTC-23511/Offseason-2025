@@ -98,17 +98,17 @@ public class IntakeTest extends CommandOpMode {
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();
 
-        telemetryData.addData("timer", timer.milliseconds());
-        telemetryData.addData("opModeType", opModeType.name());
+//        telemetryData.addData("timer", timer.milliseconds());
+//        telemetryData.addData("opModeType", opModeType.name());
 
         telemetryData.addData("hasSample()", robot.exampleIntake.hasSample());
         telemetryData.addData("colorSensor getDistance", robot.colorSensor.getDistance(DistanceUnit.CM));
         telemetryData.addData("Intake sampleColor", sampleColor);
         telemetryData.addData("correctSampleDetected", correctSampleDetected());
-        telemetryData.addData("intakeMotorState", intakeMotorState);
-        telemetryData.addData("intakePivotState", intakePivotState);
+//        telemetryData.addData("intakeMotorState", intakeMotorState);
+//        telemetryData.addData("intakePivotState", intakePivotState);
 
-        telemetryData.addData("Sigma", "Oscar");
+//        telemetryData.addData("Sigma", "Oscar");
         telemetryData.addData("pushSampleIn", robot.exampleIntake.pushSampleIn);
         telemetryData.addData("pushSampleOut", robot.exampleIntake.pushSampleOut);
 

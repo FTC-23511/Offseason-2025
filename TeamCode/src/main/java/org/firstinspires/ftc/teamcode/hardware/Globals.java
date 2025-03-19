@@ -43,7 +43,7 @@ public class Globals {
     // Intake Motor
     public static double INTAKE_FORWARD_SPEED = 1.0;
     public static double INTAKE_REVERSE_SPEED = -0.5;
-    public static double INTAKE_HOLD_SPEED = 0.15;
+    public static double INTAKE_HOLD_SPEED = -0.05;
     public static int REVERSE_TIME_MS = 300;
 
     // Intake Color Sensor
