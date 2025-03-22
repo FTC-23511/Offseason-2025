@@ -2,14 +2,12 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.configuration.ServoHubConfiguration;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.localization.PoseUpdater;
-import com.pedropathing.pathgen.BezierLine;
-import com.pedropathing.pathgen.PathChain;
-import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
@@ -30,6 +28,8 @@ import com.seattlesolvers.solverslib.solversHardware.SolversCRServo;
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 
+import org.firstinspires.ftc.teamcode.hardware.solversHardware.SolversDcMotor;
+import org.firstinspires.ftc.teamcode.hardware.solversHardware.SolversDcMotorEx;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 import com.pedropathing.follower.FollowerConstants;
@@ -37,15 +37,15 @@ import com.pedropathing.follower.FollowerConstants;
 import java.util.List;
 
 public class Robot {
-    public SolversMotor liftBottom;
-    public SolversMotor liftTop;
-    public SolversMotor extension;
-    public SolversMotor intakeMotor;
+    public SolversDcMotor liftBottom;
+    public SolversDcMotor liftTop;
+    public SolversDcMotor extension;
+    public SolversDcMotorEx intakeMotor;
 
-    public SolversMotor leftFront;
-    public SolversMotor rightFront;
-    public SolversMotor leftBack;
-    public SolversMotor rightBack;
+    public SolversDcMotor leftFront;
+    public SolversDcMotor rightFront;
+    public SolversDcMotor leftBack;
+    public SolversDcMotor rightBack;
 
     public SolversServo FR;
     public SolversServo FL;
@@ -95,15 +95,15 @@ public class Robot {
 
     // Make sure to run this after instance has been enabled/made
     public void init(HardwareMap hardwareMap) {
-        liftBottom = new SolversMotor(hardwareMap.get(DcMotor.class, "liftBottom"), 0.01);
-        liftTop = new SolversMotor(hardwareMap.get(DcMotor.class, "liftTop"), 0.01);
-        extension = new SolversMotor(hardwareMap.get(DcMotor.class, "extension"), 0.01);
-        intakeMotor = new SolversMotor(hardwareMap.get(DcMotor.class, "intakeMotor"), 0.01);
+        liftBottom = new SolversDcMotor(hardwareMap.get(DcMotor.class, "liftBottom"), 0.01);
+        liftTop = new SolversDcMotor(hardwareMap.get(DcMotor.class, "liftTop"), 0.01);
+        extension = new SolversDcMotor(hardwareMap.get(DcMotor.class, "extension"), 0.01);
+        intakeMotor = new SolversDcMotorEx(hardwareMap.get(DcMotorEx.class, "intakeMotor"), 0.01);
 
-        leftFront = new SolversMotor(hardwareMap.get(DcMotor.class, "FL"), 0.01);
-        rightFront = new SolversMotor(hardwareMap.get(DcMotor.class, "FR"), 0.01);
-        leftBack = new SolversMotor(hardwareMap.get(DcMotor.class, "BL"), 0.01);
-        rightBack = new SolversMotor(hardwareMap.get(DcMotor.class, "BR"), 0.01);
+        leftFront = new SolversDcMotor(hardwareMap.get(DcMotor.class, "FL"), 0.01);
+        rightFront = new SolversDcMotor(hardwareMap.get(DcMotor.class, "FR"), 0.01);
+        leftBack = new SolversDcMotor(hardwareMap.get(DcMotor.class, "BL"), 0.01);
+        rightBack = new SolversDcMotor(hardwareMap.get(DcMotor.class, "BR"), 0.01);
 
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
