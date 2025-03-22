@@ -9,8 +9,6 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 public class Drive extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
 
-    public boolean ptoEngaged = false;
-
     public enum OctocanumServosState {
         RETRACTED,
         EXTENDED,
@@ -46,16 +44,5 @@ public class Drive extends SubsystemBase {
         }
 
         octocanumServosState = state;
-    }
-
-    public void setPto(boolean engaged) {
-        // If the PTO is engaged, set the servos to the PTO position (you will need to create a public static double variable in Globals.java for this position)
-        // code goes here
-
-        // If the PTO is disengaged, set the servos to the retracted position (you will need to create another public static double variable in Globals.java for this position)
-        // code goes here
-
-        // Update the ptoEngaged variable to the new state
-        // code goes here
     }
 }

@@ -107,7 +107,8 @@ public class Globals {
     public static double BACK_HIGH_SPECIMEN_HEIGHT = 850;
     public static double BACK_HIGH_SPECIMEN_ATTACH_HEIGHT = 1400;
     public static double AUTO_ASCENT_HEIGHT = 800;
-    public static double ENDGAME_ASCENT_HEIGHT = 1300;
+    public static double ENDGAME_L2_ASCENT_HEIGHT = 900;
+    public static double ENDGAME_L3_ASCENT_HEIGHT = 1300;
 
     // Octocanum Servos
     public static double FR_RETRACTED = 0.5;

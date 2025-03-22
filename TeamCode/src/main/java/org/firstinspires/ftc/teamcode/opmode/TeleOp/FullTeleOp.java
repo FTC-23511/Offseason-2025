@@ -16,6 +16,7 @@ import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
 import com.seattlesolvers.solverslib.command.WaitCommand;
+import com.seattlesolvers.solverslib.command.WaitUntilCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -194,33 +195,33 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.deposit.setClawOpen(true))
         );
 
-        operator.getGamepadButton(GamepadKeys.Button.OPTIONS).whenPressed(
-                new SequentialCommandGroup(
-                        new ParallelCommandGroup(
-                                new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, ENDGAME_ASCENT_HEIGHT, false).withTimeout(1500),
-                                new WaitCommand(3000)
-                        )
-//                        ,
-//                        new InstantCommand(() -> robot.drive.setHang(Drive.HangState.STOP)),
-//                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, HIGH_BUCKET_HEIGHT, false),
-//                        new InstantCommand(() -> robot.drive.setHang(Drive.HangState.RETRACT)),
-//                        new WaitCommand(500),
-//                        new ParallelCommandGroup(
-//                                new SequentialCommandGroup(
-//                                        new InstantCommand(() -> robot.drive.setHang(Drive.HangState.EXTEND)),
-//                                        new InstantCommand(() -> robot.drive.setHang(Drive.HangState.STOP)).beforeStarting(new WaitCommand(3000))
-//                                ),
-//                                new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, 0, false)
-//                        )
+        // Level 2 Ascent Height
+        operator.getGamepadButton(GamepadKeys.Button.SHARE).whenPressed(
+                new UninterruptibleCommand(
+                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, ENDGAME_L2_ASCENT_HEIGHT, true).withTimeout(1500)
                 )
         );
 
         // Hang
-        operator.getGamepadButton(GamepadKeys.Button.PS).whenPressed(
-//                new InstantCommand(() -> robot.drive.setHang(Drive.HangState.EXTEND))
-                new InstantCommand()
+        operator.getGamepadButton(GamepadKeys.Button.OPTIONS).whenPressed(
+                new SequentialCommandGroup(
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> robot.drive.setOctocanumServos(Drive.OctocanumServosState.PTO_AND_RETRACTED)),
+                                new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, 0, false).withTimeout(1500)
+                        ),
+
+                        new WaitCommand(250),
+                        new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, ENDGAME_L3_ASCENT_HEIGHT, false).withTimeout(1500),
+                        new WaitCommand(250),
+
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> robot.drive.setOctocanumServos(Drive.OctocanumServosState.RETRACTED)),
+                                new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, 0, false).withTimeout(1500)
+                        )
+                )
         );
 
+        /* Untested TeleOp Automation
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new UninterruptibleCommand(
                         new SequentialCommandGroup(
@@ -241,6 +242,7 @@ public class FullTeleOp extends CommandOpMode {
                         new InstantCommand(() -> robot.follower.startTeleopDrive())
                 )
         );
+         */
 
         super.run();
     }
