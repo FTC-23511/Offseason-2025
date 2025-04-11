@@ -5,21 +5,19 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Limelight Color Detection")
+
+
+@TeleOp(name = "Limelight Multi-Color Detection")
 public class Limelight extends LinearOpMode {
 
     private Limelight3A limelight;
-    private int currentPipelineIndex = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
         telemetry.setMsTransmissionInterval(11);
-
-        currentPipelineIndex = 0; // 0 = Red detection pipeline
-        limelight.pipelineSwitch(currentPipelineIndex);
-
+        limelight.pipelineSwitch(1);
         limelight.start();
 
         waitForStart();
@@ -32,17 +30,21 @@ public class Limelight extends LinearOpMode {
                 double tx = result.getTx();
                 double ty = result.getTy();
 
-                double estimatedDistance = estimateDistance(ta);
 
-                telemetry.addData("Target Area (ta)", ta);
-                telemetry.addData("Horizontal Offset (tx)", tx);
-                telemetry.addData("Vertical Offset (ty)", ty);
-                telemetry.addData("Estimated Distance", estimatedDistance);
+                if (ta > 0) {
+                    double estimatedDistance = estimateDistance(ta);
 
-                String detectedColor = getDetectedColor(currentPipelineIndex);
-                telemetry.addData("Detected Color", detectedColor);
+                    telemetry.addLine("Detected Target");
+                    telemetry.addData("Area", ta);
+                    telemetry.addData("tx", tx);
+                    telemetry.addData("ty", ty);
+                    telemetry.addData("Estimated Distance", estimatedDistance);
+                    telemetry.addLine();
+                } else {
+                    telemetry.addLine("No valid targets detected.");
+                }
             } else {
-                telemetry.addLine("No valid targets detected.");
+                telemetry.addLine("No valid results.");
             }
 
             telemetry.update();
@@ -52,18 +54,5 @@ public class Limelight extends LinearOpMode {
     private double estimateDistance(double area) {
         if (area <= 0.0) return -1;
         return 1.0 / Math.sqrt(area);
-    }
-
-    private String getDetectedColor(int pipelineIndex) {
-        switch (pipelineIndex) {
-            case 0:
-                return "Red";
-            case 1:
-                return "Blue";
-            case 2:
-                return "Yellow";
-            default:
-                return "Unknown";
-        }
     }
 }
