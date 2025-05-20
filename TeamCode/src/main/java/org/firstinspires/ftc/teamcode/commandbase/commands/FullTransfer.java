@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.commandbase.commands;
 
-import static org.firstinspires.ftc.teamcode.hardware.Globals.SLIDES_PIVOT_READY_EXTENSION;
-
 import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.WaitCommand;
@@ -10,9 +8,9 @@ import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-public class RealTransfer extends SequentialCommandGroup {
+public class FullTransfer extends SequentialCommandGroup {
 
-    public RealTransfer(Robot robot) {
+    public FullTransfer(Robot robot) {
         addCommands(
                 new ParallelCommandGroup(
                         new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),

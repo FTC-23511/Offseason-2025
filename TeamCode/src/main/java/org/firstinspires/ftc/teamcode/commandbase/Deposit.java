@@ -30,7 +30,6 @@ public class Deposit extends SubsystemBase {
         FRONT_SPECIMEN_INTAKE,
         BACK_SPECIMEN_INTAKE,
         TRANSFER,
-        READY_TRANSFER,
         MIDDLE_HOLD,
         AUTO_TOUCH_BAR
     }
@@ -79,11 +78,11 @@ public class Deposit extends SubsystemBase {
         }
 
         if (slidesRetracted) {
-            robot.liftTop.setPower(0);
-            robot.liftBottom.setPower(0);
+            robot.liftLeft.setPower(0);
+            robot.liftRight.setPower(0);
         } else {
-            robot.liftTop.setPower(power);
-            robot.liftBottom.setPower(power);
+            robot.liftLeft.setPower(power);
+            robot.liftRight.setPower(power);
         }
     }
 
@@ -118,11 +117,6 @@ public class Deposit extends SubsystemBase {
                 robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
                 robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
                 robot.depositWrist.setPosition(WRIST_TRANSFER);
-                break;
-            case READY_TRANSFER:
-                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_READY_TRANSFER_POS);
-                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_READY_TRANSFER_POS);
-                robot.depositWrist.setPosition(WRIST_READY_TRANSFER);
                 break;
             case FRONT_SPECIMEN_INTAKE:
                 robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS);

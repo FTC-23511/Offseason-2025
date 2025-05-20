@@ -307,8 +307,8 @@ public class specimenautotester extends CommandOpMode {
         telemetry.addData("depositPivotState", depositPivotState);
 
         telemetry.addData("UndoTransfer", CommandScheduler.getInstance().isScheduled(new UndoTransfer(robot)));
-        telemetry.addData("liftTop.getPower()", robot.liftTop.getPower());
-        telemetry.addData("liftBottom.getPower()", robot.liftBottom.getPower());
+        telemetry.addData("liftTop.getPower()", robot.liftLeft.getPower());
+        telemetry.addData("liftBottom.getPower()", robot.liftRight.getPower());
 
         telemetry.addData("deposit target", robot.deposit.target);
         telemetry.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());

@@ -214,7 +214,7 @@ public class Burrito extends CommandOpMode {
                                 new WaitUntilCommand(Intake::correctSampleDetected),
                                 new WaitCommand(2000)
                         ),
-                        new RealTransfer(robot),
+                        new FullTransfer(robot),
                         new WaitCommand(250),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
                         new FollowPathCommand(robot.follower, paths.get(2)),
@@ -234,7 +234,7 @@ public class Burrito extends CommandOpMode {
                                 new WaitUntilCommand(Intake::correctSampleDetected),
                                 new WaitCommand(2000)
                         ),
-                        new RealTransfer(robot),
+                        new FullTransfer(robot),
                         new WaitCommand(250),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
                         new FollowPathCommand(robot.follower, paths.get(4)),
@@ -254,7 +254,7 @@ public class Burrito extends CommandOpMode {
                                 new WaitUntilCommand(Intake::correctSampleDetected),
                                 new WaitCommand(2000)
                         ),
-                        new RealTransfer(robot),
+                        new FullTransfer(robot),
                         new WaitCommand(250),
                         new SetDeposit(robot, Deposit.DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
                         new FollowPathCommand(robot.follower, paths.get(6)),
@@ -295,8 +295,8 @@ public class Burrito extends CommandOpMode {
         telemetry.addData("depositPivotState", depositPivotState);
 
         telemetry.addData("UndoTransfer", CommandScheduler.getInstance().isScheduled(new UndoTransfer(robot)));
-        telemetry.addData("liftTop.getPower()", robot.liftTop.getPower());
-        telemetry.addData("liftBottom.getPower()", robot.liftBottom.getPower());
+        telemetry.addData("liftTop.getPower()", robot.liftLeft.getPower());
+        telemetry.addData("liftBottom.getPower()", robot.liftRight.getPower());
 
         telemetry.addData("deposit target", robot.deposit.target);
         telemetry.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());

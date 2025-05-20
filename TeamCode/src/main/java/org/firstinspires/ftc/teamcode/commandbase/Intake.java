@@ -13,11 +13,8 @@ import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import com.seattlesolvers.solverslib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
+import org.firstinspires.ftc.teamcode.commandbase.commands.FullTransfer;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-
-import java.nio.file.Watchable;
-import java.util.function.BooleanSupplier;
 
 public class Intake extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
@@ -180,7 +177,7 @@ public class Intake extends SubsystemBase {
                                 setActiveIntake(HOLD);
                                 if (opModeType.equals(OpModeType.TELEOP)) {
                                     if (sampleColorTarget.equals(ANY_COLOR)) {
-                                        new RealTransfer(robot).beforeStarting(
+                                        new FullTransfer(robot).beforeStarting(
                                                 new WaitCommand(125)
                                         ).schedule(false);
                                     } else {

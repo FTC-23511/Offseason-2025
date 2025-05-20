@@ -2,10 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.Auto;
 
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.DepositPivotState;
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.depositPivotState;
-import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState;
-import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakePivotState;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.intakePivotState;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.BACK_HIGH_SPECIMEN_ATTACH_HEIGHT;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.FRONT_HIGH_SPECIMEN_HEIGHT;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.SLIDES_PIVOT_READY_EXTENSION;
@@ -25,25 +22,15 @@ import com.pedropathing.util.Drawing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
-import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
-import com.seattlesolvers.solverslib.command.ParallelRaceGroup;
 import com.seattlesolvers.solverslib.command.RunCommand;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.WaitCommand;
-import com.seattlesolvers.solverslib.command.WaitUntilCommand;
 import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.commandbase.Deposit;
-import org.firstinspires.ftc.teamcode.commandbase.Drive;
-import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.commandbase.commands.SetDeposit;
-import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
-import org.firstinspires.ftc.teamcode.commandbase.commands.UndoTransfer;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-import org.firstinspires.ftc.teamcode.hardware.TelemetryData;
 
 import java.util.ArrayList;
 
@@ -440,8 +427,8 @@ public class Guacamole extends CommandOpMode {
         telemetry.addData("intakePivotState", intakePivotState);
         telemetry.addData("depositPivotState", depositPivotState);
 
-        telemetry.addData("liftTop.getPower()", robot.liftTop.getPower());
-        telemetry.addData("liftBottom.getPower()", robot.liftBottom.getPower());
+        telemetry.addData("liftTop.getPower()", robot.liftLeft.getPower());
+        telemetry.addData("liftBottom.getPower()", robot.liftRight.getPower());
 
         telemetry.addData("deposit target", robot.deposit.target);
         telemetry.addData("liftEncoder.getPosition()", robot.liftEncoder.getPosition());

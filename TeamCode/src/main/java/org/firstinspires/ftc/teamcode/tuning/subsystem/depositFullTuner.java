@@ -74,8 +74,8 @@ public class depositFullTuner extends OpMode {
         double maxPower = (f * motorPos) + maxPowerConstant;
         double power = Range.clip(slidePIDF.calculate(motorPos, setPoint), -maxPower, maxPower);
 
-        robot.liftBottom.setPower(power);
-        robot.liftTop.setPower(power);
+        robot.liftRight.setPower(power);
+        robot.liftLeft.setPower(power);
 
         robot.leftDepositPivot.setPosition(CENTER_SERVO_POS);
         robot.rightDepositPivot.setPosition(CENTER_SERVO_POS);

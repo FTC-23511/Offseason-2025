@@ -10,16 +10,8 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
-import com.seattlesolvers.solverslib.command.WaitCommand;
-import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
-import com.seattlesolvers.solverslib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
-import org.firstinspires.ftc.teamcode.hardware.Robot;
-
-import java.nio.file.Watchable;
-import java.util.function.BooleanSupplier;
 
 @Config
 public class ExampleIntake extends SubsystemBase {
