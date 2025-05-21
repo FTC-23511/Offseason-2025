@@ -160,7 +160,6 @@ public class tester extends CommandOpMode {
         telemetry.addData("extendoReached", robot.intake.extendoReached);
         telemetry.addData("slidesRetracted", robot.deposit.slidesRetracted);
         telemetry.addData("slidesReached", robot.deposit.slidesReached);
-        telemetry.addData("robotState", Robot.robotState);
 
         telemetry.addData("intakePivotState", intakePivotState);
         telemetry.addData("depositPivotState", depositPivotState);

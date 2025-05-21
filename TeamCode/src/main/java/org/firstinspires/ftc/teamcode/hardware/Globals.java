@@ -68,11 +68,11 @@ public class Globals {
     public static double MAX_EXTENDO_EXTENSION = 500;
 
     // Deposit Pivot
-    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.94;
+    public static double DEPOSIT_PIVOT_TRANSFER_POS = 0.6;
     public static double DEPOSIT_PIVOT_READY_TRANSFER_POS = 0.90;
-    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.985;
+    public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.55;
     public static double DEPOSIT_PIVOT_AUTO_BAR_POS = 0.35;
-    public static double DEPOSIT_PIVOT_SCORING_POS = 0.3;
+    public static double DEPOSIT_PIVOT_SCORING_POS = 0.12;
     public static double DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS = 0.03;
     public static double DEPOSIT_PIVOT_SPECIMEN_BACK_INTAKE_POS = 0.83;
     public static double DEPOSIT_PIVOT_SPECIMEN_FRONT_SCORING_POS = 0.20;
@@ -84,18 +84,18 @@ public class Globals {
     public static double INTAKE_PIVOT_MOVEMENT_TIME = 497 + 200; // 200 milliseconds of buffer
 
     // Deposit Claw
-    public static double DEPOSIT_CLAW_OPEN_POS = 0.43;
-    public static double DEPOSIT_CLAW_CLOSE_POS = 0.14;
+    public static double DEPOSIT_CLAW_OPEN_POS = 0.74;
+    public static double DEPOSIT_CLAW_CLOSE_POS = 0.49;
 
     // Deposit Wrist
-    public static double WRIST_SCORING = 0.37;
+    public static double WRIST_SCORING = 0.7;
     public static double WRIST_AUTO_BAR = 0.3;
     public static double WRIST_FRONT_SPECIMEN_SCORING = 0.60;
     public static double WRIST_BACK_SPECIMEN_SCORING = 0.43;
     public static double WRIST_FRONT_SPECIMEN_INTAKE = 0.3;
     public static double WRIST_BACK_SPECIMEN_INTAKE = 0.485;
-    public static double WRIST_TRANSFER = 0.38;
-    public static double WRIST_MIDDLE_HOLD = 0.33;
+    public static double WRIST_TRANSFER = 0.33;
+    public static double WRIST_MIDDLE_HOLD = 0.3;
     public static double WRIST_READY_TRANSFER = 0.22;
 
     // Deposit Slides

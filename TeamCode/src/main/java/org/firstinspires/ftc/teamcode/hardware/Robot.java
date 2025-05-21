@@ -92,8 +92,8 @@ public class Robot {
 
     // Make sure to run this after instance has been enabled/made
     public void init(HardwareMap hardwareMap) {
-        liftRight = new SolversDcMotor(hardwareMap.get(DcMotor.class, "liftBottom"), 0.01);
-        liftLeft = new SolversDcMotor(hardwareMap.get(DcMotor.class, "liftTop"), 0.01);
+        liftRight = new SolversDcMotor(hardwareMap.get(DcMotor.class, "liftRight"), 0.01);
+        liftLeft = new SolversDcMotor(hardwareMap.get(DcMotor.class, "liftLeft"), 0.01);
         extension = new SolversDcMotor(hardwareMap.get(DcMotor.class, "extension"), 0.01);
         intakeMotor = new SolversDcMotorEx(hardwareMap.get(DcMotorEx.class, "intakeMotor"), 0.01);
 
@@ -127,7 +127,7 @@ public class Robot {
         liftEncoder = new Motor(hardwareMap, "liftLeft").encoder;
         extensionEncoder = new Motor(hardwareMap, "extension").encoder;
         liftEncoder.setDirection(Motor.Direction.REVERSE);
-        extensionEncoder.setDirection(Motor.Direction.REVERSE);
+//        extensionEncoder.setDirection(Motor.Direction.REVERSE);
 
         leftIntakePivot = new SolversServo(hardwareMap.get(Servo.class, "leftIntakePivot"), 0.01);
         rightIntakePivot = new SolversServo(hardwareMap.get(Servo.class, "rightIntakePivot"), 0.01);
@@ -143,7 +143,6 @@ public class Robot {
 
         leftIntakePivot.setDirection(Servo.Direction.REVERSE);
         leftDepositPivot.setDirection(Servo.Direction.REVERSE);
-        extension.setDirection(CRServo.Direction.REVERSE);
 
         colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
 

@@ -413,7 +413,6 @@ public class Guacamole extends CommandOpMode {
         telemetry.addData("extendoReached", robot.intake.extendoReached);
         telemetry.addData("slidesRetracted", robot.deposit.slidesRetracted);
         telemetry.addData("slidesReached", robot.deposit.slidesReached);
-        telemetry.addData("robotState", Robot.robotState);
 
 //        telemetry.addData("hasSample()", robot.intake.hasSample());
 //        telemetry.addData("colorSensor getDistance", robot.colorSensor.getDistance(DistanceUnit.CM));
