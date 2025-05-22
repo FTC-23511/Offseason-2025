@@ -6,6 +6,7 @@
         <LynxModule name="Control Hub" port="173">
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             <goBILDA5202SeriesMotor name="extension" port="0"/>-->
             <goBILDA5202SeriesMotor name="intakeMotor" port="1"/>-->
             <goBILDA5202SeriesMotor name="liftRight" port="2"/>-->
@@ -52,6 +53,18 @@
 
             <ControlHubImuBHI260AP name="imu" port="0" bus="0"/>
             <RevColorSensorV3 name="colorSensor" port="0" bus="1"/>
+=======
+            <Servo name="rightIntakePivot" port="3"/>
+            <Servo name="leftIntakePivot" port="5"/>
+
+            <goBILDA5202SeriesMotor name="extension" port="0"/>-->
+            <goBILDA5202SeriesMotor name="intakeMotor" port="1"/>-->
+            <goBILDA5202SeriesMotor name="rightSlideMotor" port="2"/>-->
+            <goBILDA5202SeriesMotor name="leftSlideMotor" port="3"/>-->
+
+            <ControlHubImuBHI260AP name="imu" port="0" bus="0"/>
+            <RevColorSensorV3 name="colorSensor" port="0" bus="1"/>
+>>>>>>> Stashed changes
             <goBILDAPinpoint name="pinpoint" port="0" bus="0"/>
 
         </LynxModule>
@@ -76,6 +89,9 @@
             <ContinuousRotationServo name="leftIntakePivot" port="1"/>
             <Servo name="frontRight" port="4"/>
             <ContinuousRotationServo name="backRight" port="5"/>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         </ServoHub>
     </LynxUsbDevice>
