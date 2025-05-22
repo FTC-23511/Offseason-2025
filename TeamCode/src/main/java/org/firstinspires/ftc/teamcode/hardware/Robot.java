@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.hardware;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.configuration.ServoHubConfiguration;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
@@ -22,9 +21,9 @@ import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.commandbase.Drive;
-import com.seattlesolvers.solverslib.solversHardware.SolversMotor;
+
 import com.seattlesolvers.solverslib.solversHardware.SolversServo;
-import com.seattlesolvers.solverslib.solversHardware.SolversCRServo;
+
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
 
@@ -37,8 +36,8 @@ import com.pedropathing.follower.FollowerConstants;
 import java.util.List;
 
 public class Robot {
-    public SolversDcMotor liftBottom;
-    public SolversDcMotor liftTop;
+    public SolversDcMotor liftRight;
+    public SolversDcMotor liftLeft;
     public SolversDcMotor extension;
     public SolversDcMotorEx intakeMotor;
 
@@ -51,8 +50,6 @@ public class Robot {
     public SolversServo FL;
     public SolversServo BR;
     public SolversServo BL;
-
-    public SolversServo pto;
 
     public SolversServo leftIntakePivot;
     public SolversServo rightIntakePivot;
@@ -95,8 +92,8 @@ public class Robot {
 
     // Make sure to run this after instance has been enabled/made
     public void init(HardwareMap hardwareMap) {
-        liftBottom = new SolversDcMotor(hardwareMap.get(DcMotor.class, "liftBottom"), 0.01);
-        liftTop = new SolversDcMotor(hardwareMap.get(DcMotor.class, "liftTop"), 0.01);
+        liftRight = new SolversDcMotor(hardwareMap.get(DcMotor.class, "liftRight"), 0.01);
+        liftLeft = new SolversDcMotor(hardwareMap.get(DcMotor.class, "liftLeft"), 0.01);
         extension = new SolversDcMotor(hardwareMap.get(DcMotor.class, "extension"), 0.01);
         intakeMotor = new SolversDcMotorEx(hardwareMap.get(DcMotorEx.class, "intakeMotor"), 0.01);
 
@@ -109,8 +106,8 @@ public class Robot {
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        liftBottom.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        liftTop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         extension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -119,18 +116,18 @@ public class Robot {
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extension.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        liftBottom.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        liftTop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        liftTop.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        liftEncoder = new Motor(hardwareMap, "liftTop").encoder;
+        liftEncoder = new Motor(hardwareMap, "liftLeft").encoder;
         extensionEncoder = new Motor(hardwareMap, "extension").encoder;
         liftEncoder.setDirection(Motor.Direction.REVERSE);
-        extensionEncoder.setDirection(Motor.Direction.REVERSE);
+//        extensionEncoder.setDirection(Motor.Direction.REVERSE);
 
         leftIntakePivot = new SolversServo(hardwareMap.get(Servo.class, "leftIntakePivot"), 0.01);
         rightIntakePivot = new SolversServo(hardwareMap.get(Servo.class, "rightIntakePivot"), 0.01);
@@ -138,7 +135,6 @@ public class Robot {
         rightDepositPivot = new SolversServo(hardwareMap.get(Servo.class, "rightDepositPivot"), 0.01);
         depositClaw = new SolversServo(hardwareMap.get(Servo.class, "depositClaw"), 0.01);
         depositWrist = new SolversServo(hardwareMap.get(Servo.class, "depositWrist"), 0.01);
-        pto = new SolversServo(hardwareMap.get(Servo.class, "pto"), 0.01);
 
         FR = new SolversServo(hardwareMap.get(Servo.class, "FR"), 0.01);
         FL = new SolversServo(hardwareMap.get(Servo.class, "FL"), 0.01);
@@ -147,7 +143,6 @@ public class Robot {
 
         leftIntakePivot.setDirection(Servo.Direction.REVERSE);
         leftDepositPivot.setDirection(Servo.Direction.REVERSE);
-        extension.setDirection(CRServo.Direction.REVERSE);
 
         colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
 
@@ -177,8 +172,6 @@ public class Robot {
         Constants.setConstants(FConstants.class, LConstants.class);
 
         follower = new Follower(hardwareMap);
-
-
         FollowerConstants.useBrakeModeInTeleOp = true;
 
         poseUpdater = new PoseUpdater(hardwareMap);
@@ -200,23 +193,6 @@ public class Robot {
         deposit.init();
         intake.init();
         drive.init();
-
-        robotState = RobotState.MIDDLE_RESTING;
-    }
-
-
-    public double getYawDegrees() {
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-    }
-    public double getPitchDegrees() {
-        return imu.getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES);
-    }
-    public double getRollDegrees() {
-        return imu.getRobotYawPitchRollAngles().getRoll(AngleUnit.DEGREES);
-    }
-
-    public void resetYaw() {
-        imu.resetYaw();
     }
 
     public void initializeImu(HardwareMap hardwareMap) {
@@ -227,16 +203,4 @@ public class Robot {
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
     }
-
-    public enum RobotState {
-        MIDDLE_RESTING,
-        TRANSFERRED,
-        SCORING,
-        INTAKING,
-        EJECTING,
-        SPECIMEN_INTAKING,
-        SPECIMEN_SCORING
-    }
-
-    public static RobotState robotState;
 }

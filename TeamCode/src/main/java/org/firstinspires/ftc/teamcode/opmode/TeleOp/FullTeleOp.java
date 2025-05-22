@@ -6,20 +6,17 @@ import static org.firstinspires.ftc.teamcode.commandbase.Intake.*;
 
 import com.pedropathing.localization.Pose;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
-import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.ConditionalCommand;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
 import com.seattlesolvers.solverslib.command.WaitCommand;
-import com.seattlesolvers.solverslib.command.WaitUntilCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.Drive;
@@ -115,7 +112,7 @@ public class FullTeleOp extends CommandOpMode {
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
                 new UninterruptibleCommand(
-                        new RealTransfer(robot)
+                        new FullTransfer(robot)
                 )
         );
 
@@ -315,8 +312,8 @@ public class FullTeleOp extends CommandOpMode {
         telemetryData.addData("correctSampleDetected", Intake.correctSampleDetected());
         telemetryData.addData("intakeMotorState", Intake.intakeMotorState);
 
-        telemetryData.addData("liftTop.getPower()", robot.liftTop.getPower());
-        telemetryData.addData("liftBottom.getPower()", robot.liftBottom.getPower());
+        telemetryData.addData("liftTop.getPower()", robot.liftLeft.getPower());
+        telemetryData.addData("liftBottom.getPower()", robot.liftRight.getPower());
         telemetryData.addData("extension.getPower()", robot.extension.getPower());
 
         telemetryData.addData("getExtendoScaledPosition()", robot.intake.getExtendoScaledPosition());

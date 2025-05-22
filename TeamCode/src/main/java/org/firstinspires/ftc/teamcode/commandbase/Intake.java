@@ -13,11 +13,8 @@ import org.firstinspires.ftc.teamcode.commandbase.commands.SetIntake;
 import com.seattlesolvers.solverslib.controller.PIDFController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.commandbase.commands.RealTransfer;
+import org.firstinspires.ftc.teamcode.commandbase.commands.FullTransfer;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
-
-import java.nio.file.Watchable;
-import java.util.function.BooleanSupplier;
 
 public class Intake extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
@@ -25,6 +22,9 @@ public class Intake extends SubsystemBase {
     private boolean waitingForReverse = false;
     private final ElapsedTime colorDetectionTimer = new ElapsedTime();
     private boolean readyForColorDetection = false;
+
+    private boolean partialReverseAfterCorrectSample = false;
+
 
     private final double divideConstant = 65.0;
     public double target;
@@ -177,10 +177,14 @@ public class Intake extends SubsystemBase {
 
                             sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
                             if (correctSampleDetected()) {
-                                setActiveIntake(HOLD);
+
+                                setActiveIntake(REVERSE);
+                                reverseIntakeTimer.reset();
+                                partialReverseAfterCorrectSample = true;
+
                                 if (opModeType.equals(OpModeType.TELEOP)) {
                                     if (sampleColorTarget.equals(ANY_COLOR)) {
-                                        new RealTransfer(robot).beforeStarting(
+                                        new FullTransfer(robot).beforeStarting(
                                                 new WaitCommand(125)
                                         ).schedule(false);
                                     } else {
@@ -188,13 +192,29 @@ public class Intake extends SubsystemBase {
                                     }
                                 }
                             } else {
-                                reverseIntakeTimer.reset();
                                 setActiveIntake(REVERSE);
+                                reverseIntakeTimer.reset();
+                                waitingForReverse = true;
                             }
                         }
                     }
                     break;
                 case REVERSE:
+                    if (partialReverseAfterCorrectSample && reverseIntakeTimer.milliseconds() > 150) {
+                        partialReverseAfterCorrectSample = false;
+
+                        if (opModeType.equals(OpModeType.TELEOP)) {
+                            if (sampleColorTarget.equals(ANY_COLOR)) {
+                                new FullTransfer(robot).schedule(false);
+                            } else {
+                                new SetIntake(robot, TRANSFER_READY, HOLD, 0, false).schedule(false);
+                            }
+                        }
+
+                        setActiveIntake(HOLD);
+                        break;
+                    }
+
                     if (!hasSample() && !waitingForReverse) {
                         reverseIntakeTimer.reset();
                         waitingForReverse = true;

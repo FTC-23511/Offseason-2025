@@ -45,13 +45,13 @@ public class resetEncoders extends CommandOpMode {
         // DO NOT REMOVE! Runs FTCLib Command Scheduler
         super.run();
 
-        robot.liftTop.setPower(gamepad1.left_stick_x);
-        robot.liftBottom.setPower(gamepad1.left_stick_x);
+        robot.liftLeft.setPower(gamepad1.left_stick_x);
+        robot.liftRight.setPower(gamepad1.left_stick_x);
 
         robot.extension.setPower(gamepad1.right_stick_x);
 
-        robot.liftTop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.liftTop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.liftLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.liftLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         robot.extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.extension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
