@@ -23,6 +23,9 @@ public class Intake extends SubsystemBase {
     private final ElapsedTime colorDetectionTimer = new ElapsedTime();
     private boolean readyForColorDetection = false;
 
+    private boolean partialReverseAfterCorrectSample = false;
+
+
     private final double divideConstant = 65.0;
     public double target;
     public boolean extendoReached;
@@ -174,7 +177,11 @@ public class Intake extends SubsystemBase {
 
                             sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
                             if (correctSampleDetected()) {
-                                setActiveIntake(HOLD);
+
+                                setActiveIntake(REVERSE);
+                                reverseIntakeTimer.reset();
+                                partialReverseAfterCorrectSample = true;
+
                                 if (opModeType.equals(OpModeType.TELEOP)) {
                                     if (sampleColorTarget.equals(ANY_COLOR)) {
                                         new FullTransfer(robot).beforeStarting(
@@ -185,13 +192,29 @@ public class Intake extends SubsystemBase {
                                     }
                                 }
                             } else {
-                                reverseIntakeTimer.reset();
                                 setActiveIntake(REVERSE);
+                                reverseIntakeTimer.reset();
+                                waitingForReverse = true;
                             }
                         }
                     }
                     break;
                 case REVERSE:
+                    if (partialReverseAfterCorrectSample && reverseIntakeTimer.milliseconds() > 150) {
+                        partialReverseAfterCorrectSample = false;
+
+                        if (opModeType.equals(OpModeType.TELEOP)) {
+                            if (sampleColorTarget.equals(ANY_COLOR)) {
+                                new FullTransfer(robot).schedule(false);
+                            } else {
+                                new SetIntake(robot, TRANSFER_READY, HOLD, 0, false).schedule(false);
+                            }
+                        }
+
+                        setActiveIntake(HOLD);
+                        break;
+                    }
+
                     if (!hasSample() && !waitingForReverse) {
                         reverseIntakeTimer.reset();
                         waitingForReverse = true;
