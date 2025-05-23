@@ -123,6 +123,7 @@ public class Robot {
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        extension.setDirection(DcMotorSimple.Direction.REVERSE);
 
         liftEncoder = new Motor(hardwareMap, "liftLeft").encoder;
         extensionEncoder = new Motor(hardwareMap, "extension").encoder;
