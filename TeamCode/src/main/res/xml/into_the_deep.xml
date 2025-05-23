@@ -1,6 +1,6 @@
 <Robot type="FirstInspires-FTC">
     <!-- Config for main 2024 Robot -->
-<!--    <EthernetDevice name="limelight" serialNumber="EthernetOverUsb:eth0:172.29.0.31" port="0" ipAddress="172.29.0.1" />-->
+    <!--    <EthernetDevice name="limelight" serialNumber="EthernetOverUsb:eth0:172.29.0.31" port="0" ipAddress="172.29.0.1" />-->
 
     <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
         <LynxModule name="Control Hub" port="173">
