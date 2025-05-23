@@ -62,7 +62,7 @@ public class Intake extends SubsystemBase {
     public static SampleColorTarget sampleColorTarget = ANY_COLOR;
     public static IntakePivotState intakePivotState = TRANSFER;
     public static IntakeMotorState intakeMotorState = STOP;
-    private static final PIDFController extendoPIDF = new PIDFController(0.0245,0,0.0003, 0);
+    private static final PIDFController extendoPIDF = new PIDFController(0.016,0,0, 0.001);
 
     public void init() {
         setPivot(TRANSFER);
