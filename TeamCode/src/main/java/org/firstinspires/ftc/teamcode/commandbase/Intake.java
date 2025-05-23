@@ -35,9 +35,7 @@ public class Intake extends SubsystemBase {
     // Whether the claw is open or not in the current state of the claw
     public enum IntakePivotState {
         INTAKE,
-        INTAKE_READY,
         TRANSFER,
-        TRANSFER_READY,
         HOVER
     }
 
@@ -108,19 +106,9 @@ public class Intake extends SubsystemBase {
                 robot.rightIntakePivot.setPosition(INTAKE_PIVOT_TRANSFER_POS);
                 break;
 
-            case TRANSFER_READY:
-                robot.leftIntakePivot.setPosition(INTAKE_PIVOT_READY_TRANSFER_POS);
-                robot.rightIntakePivot.setPosition(INTAKE_PIVOT_READY_TRANSFER_POS);
-                break;
-
             case INTAKE:
                 robot.leftIntakePivot.setPosition(INTAKE_PIVOT_INTAKE_POS);
                 robot.rightIntakePivot.setPosition(INTAKE_PIVOT_INTAKE_POS);
-                break;
-
-            case INTAKE_READY:
-                robot.leftIntakePivot.setPosition(INTAKE_PIVOT_READY_INTAKE_POS);
-                robot.rightIntakePivot.setPosition(INTAKE_PIVOT_READY_INTAKE_POS);
                 break;
 
             case HOVER:
@@ -136,7 +124,7 @@ public class Intake extends SubsystemBase {
         if (intakeMotorState.equals(HOLD)) {
             robot.intakeMotor.setPower(INTAKE_HOLD_SPEED);
             Intake.intakeMotorState = intakeMotorState;
-        } else if (intakePivotState.equals(INTAKE) || intakePivotState.equals(INTAKE_READY)) {
+        } else if (intakePivotState.equals(INTAKE)) {
             switch (intakeMotorState) {
                 case FORWARD:
                     robot.intakeMotor.setPower(INTAKE_FORWARD_SPEED);
@@ -154,7 +142,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void toggleActiveIntake(SampleColorTarget sampleColorTarget) {
-        if (intakePivotState.equals(INTAKE) || intakePivotState.equals(INTAKE_READY)) {
+        if (intakePivotState.equals(INTAKE)) {
             if (intakeMotorState.equals(FORWARD)) {
                 setActiveIntake(STOP);
             } else if (intakeMotorState.equals(STOP) || intakeMotorState.equals(HOLD)) {
@@ -165,7 +153,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void autoUpdateActiveIntake() {
-        if (intakePivotState.equals(INTAKE) || intakePivotState.equals(INTAKE_READY)) {
+        if (intakePivotState.equals(INTAKE)) {
             switch (intakeMotorState) {
                 case FORWARD:
                     if (hasSample()) {
@@ -188,7 +176,7 @@ public class Intake extends SubsystemBase {
                                                 new WaitCommand(125)
                                         ).schedule(false);
                                     } else {
-                                        new SetIntake(robot, TRANSFER_READY, HOLD, 0, false).schedule(false);
+                                        new SetIntake(robot, TRANSFER, HOLD, 0, false).schedule(false);
                                     }
                                 }
                             } else {
@@ -207,7 +195,7 @@ public class Intake extends SubsystemBase {
                             if (sampleColorTarget.equals(ANY_COLOR)) {
                                 new FullTransfer(robot).schedule(false);
                             } else {
-                                new SetIntake(robot, TRANSFER_READY, HOLD, 0, false).schedule(false);
+                                new SetIntake(robot, TRANSFER, HOLD, 0, false).schedule(false);
                             }
                         }
 
@@ -234,7 +222,7 @@ public class Intake extends SubsystemBase {
                     break;
                 // No point of setting intakeMotor to 0 again
             }
-        } else if (intakePivotState.equals(TRANSFER) || intakePivotState.equals(TRANSFER_READY)) {
+        } else if (intakePivotState.equals(TRANSFER)) {
             setActiveIntake(HOLD);
         }
     }

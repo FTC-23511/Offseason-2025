@@ -70,21 +70,13 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ALLIANCE_ONLY))
         );
 
-        driver.getGamepadButton(GamepadKeys.Button.SQUARE).whenPressed(
-                new SetIntake(robot, IntakePivotState.INTAKE_READY, IntakeMotorState.HOLD, MAX_EXTENDO_EXTENSION/2, true)
-        );
-
-        driver.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenPressed(
-                new SetIntake(robot, IntakePivotState.INTAKE_READY, intakeMotorState, MAX_EXTENDO_EXTENSION, true)
-        );
-
         driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new InstantCommand(() -> robot.follower.setPose(new Pose(0, 0, 0)))
         );
 
         driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new SequentialCommandGroup(
-                        new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.INTAKE_READY)),
+                        new InstantCommand(() -> robot.intake.setPivot(IntakePivotState.INTAKE)),
                         new InstantCommand(() -> robot.intake.setActiveIntake(IntakeMotorState.HOLD))
                 )
         );

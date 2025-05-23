@@ -32,7 +32,6 @@ public class ExampleIntake extends SubsystemBase {
         INTAKE,
         INTAKE_READY,
         TRANSFER,
-        TRANSFER_READY,
         HOVER
     }
 
@@ -105,18 +104,33 @@ public class ExampleIntake extends SubsystemBase {
                     if (hasSample()) {
                         sampleColor = sampleColorDetected(robot.colorSensor);
                         if (correctSampleDetected()) {
-                            setActiveIntake(HOLD);
+                            if (pushSampleIn && intakeTimer.milliseconds() > 350) {
+                                pushSampleIn = false;
+                                setActiveIntake(STOP);
+                            } else {
+                                intakeTimer.reset();
+                                if (!pushSampleOut) {
+                                    pushSampleOut = true;
+                                }
+                                setActiveIntake(REVERSE);
+                            }
                         }
                     }
                     break;
                 case REVERSE:
+                    if (pushSampleOut && intakeTimer.milliseconds() > 350) {
+                        setActiveIntake(FORWARD);
+                        pushSampleOut = false;
+                        pushSampleIn = true;
+                        intakeTimer.reset();
+                    }
                     if (!hasSample()) {
                         setActiveIntake(STOP);
                     }
                     break;
                 // No point of setting intakeMotor to 0 again
             }
-        } else if (intakePivotState.equals(TRANSFER) || intakePivotState.equals(TRANSFER_READY)) {
+        } else if (intakePivotState.equals(TRANSFER)) {
             setActiveIntake(HOLD);
         }
     }

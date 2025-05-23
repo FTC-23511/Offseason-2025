@@ -18,6 +18,12 @@ apply from: '../build.dependencies.gradle'
 android {
     namespace = 'org.firstinspires.ftc.teamcode'
 
+    compileSdk 35
+
+    defaultConfig {
+        minSdk 24
+    }
+
     packagingOptions {
         jniLibs {
             pickFirsts += ['**/*.so']
@@ -39,9 +45,6 @@ repositories {
     maven {
         url= "https://repo.dairy.foundation/releases"
     }
-    maven {
-        url= "https://mymaven.bylazar.com/releases"
-    }
 }
 
 dependencies {
@@ -52,7 +55,7 @@ dependencies {
 //    implementation "com.acmerobotics.roadrunner:core:1.0.0"
 //    implementation "com.acmerobotics.roadrunner:actions:1.0.0"
     implementation "com.acmerobotics.dashboard:dashboard:0.4.16"
-//    implementation "com.bylazar:ftcontrol:0.2.6"
+    implementation "com.bylazar:ftcontrol:0.2.6"
 
     // Pedro Pathing
     implementation 'com.pedropathing:pedro:1.0.8'

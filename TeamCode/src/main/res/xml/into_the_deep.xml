@@ -16,8 +16,8 @@
         </LynxModule>
 
         <ServoHub name="Servo Hub 3" port="3">
-            <Servo name="rightIntakePivot" port="1"/>
-            <Servo name="leftIntakePivot" port="2"/>
+            <Servo name="rightIntakePivot" port="0"/>
+            <Servo name="leftIntakePivot" port="1"/>
             <Servo name="FR" port="4"/>
             <Servo name="BR" port="5"/>
         </ServoHub>
