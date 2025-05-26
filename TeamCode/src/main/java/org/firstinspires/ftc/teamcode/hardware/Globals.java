@@ -58,9 +58,9 @@ public class Globals {
     public static int BLUE_EDGE_CASE_THRESHOLD = 675;
 
     // Intake Pivot
-    public static double INTAKE_PIVOT_TRANSFER_POS = 0.95;
-    public static double INTAKE_PIVOT_INTAKE_POS = 0.55;
-    public static double INTAKE_PIVOT_HOVER_INTAKE_POS = 0.55;
+    public static double INTAKE_PIVOT_TRANSFER_POS = 0.05;
+    public static double INTAKE_PIVOT_INTAKE_POS = 0.45;
+    public static double INTAKE_PIVOT_HOVER_INTAKE_POS = 0.45;
 
     // Intake Extendo
     public static double MAX_EXTENDO_EXTENSION = 500;

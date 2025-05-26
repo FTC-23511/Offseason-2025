@@ -70,6 +70,14 @@ public class FullTeleOp extends CommandOpMode {
                 new InstantCommand(() -> robot.intake.toggleActiveIntake(SampleColorTarget.ALLIANCE_ONLY))
         );
 
+        driver.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenPressed(
+                new SetIntake(robot, IntakePivotState.TRANSFER, IntakeMotorState.STOP, MAX_EXTENDO_EXTENSION, false)
+        );
+
+        driver.getGamepadButton(GamepadKeys.Button.SQUARE).whenPressed(
+                new InstantCommand(() -> robot.drive.setOctocanumServos(Drive.octocanumServosState == Drive.OctocanumServosState.RETRACTED ? Drive.OctocanumServosState.EXTENDED : Drive.OctocanumServosState.RETRACTED))
+        );
+
         driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new InstantCommand(() -> robot.follower.setPose(new Pose(0, 0, 0)))
         );
@@ -271,7 +279,11 @@ public class FullTeleOp extends CommandOpMode {
 
         // Pinpoint Field Centric Code
         double speedMultiplier = 0.35 + (1 - 0.35) * gamepad1.left_trigger;
-        robot.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y * speedMultiplier, -gamepad1.left_stick_x * speedMultiplier, -gamepad1.right_stick_x * speedMultiplier, false);
+        if (Drive.octocanumServosState == Drive.OctocanumServosState.RETRACTED) {
+            robot.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y * speedMultiplier, -gamepad1.left_stick_x * speedMultiplier, -gamepad1.right_stick_x * speedMultiplier, false);
+        } else {
+            robot.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y * speedMultiplier, 0, -gamepad1.right_stick_x * speedMultiplier, true);
+        }
         robot.follower.update();
 
         // Manual control of extendo
@@ -316,7 +328,7 @@ public class FullTeleOp extends CommandOpMode {
 
         telemetryData.addData("intakePivotState", intakePivotState);
         telemetryData.addData("depositPivotState", depositPivotState);
-        telemetryData.addData("Sigma", "Oscar");
+        telemetryData.addData("Sigma", "Veer Nahar");
 
         telemetryData.update(); // DO NOT REMOVE! Needed for telemetry
         timer.reset();
