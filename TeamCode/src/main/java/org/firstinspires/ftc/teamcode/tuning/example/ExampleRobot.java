@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.tuning.example;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 
 import com.seattlesolvers.solverslib.solversHardware.SolversMotor;
+import com.seattlesolvers.solverslib.solversHardware.SolversMotorEx;
 import com.seattlesolvers.solverslib.solversHardware.SolversServo;
 
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
@@ -21,7 +23,7 @@ public class ExampleRobot {
     public SolversServo rightServo;
     public SolversServo intakeClaw;
     public SolversMotor centerMotor;
-    public SolversMotor intakeMotor;
+    public SolversMotorEx intakeMotor;
     public SolversMotor leftMotor;
     public SolversMotor rightMotor;
     public RevColorSensorV3 colorSensor;
@@ -29,7 +31,7 @@ public class ExampleRobot {
     public SolversMotor liftTop;
     public Motor.Encoder encoder;
 
-    public ExampleIntake exampleIntake  ;
+    public ExampleIntake exampleIntake;
 
     private static ExampleRobot instance = null;
     public boolean enabled;
@@ -54,7 +56,7 @@ public class ExampleRobot {
         colorSensor = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
 //        leftServo.setDirection(Servo.Direction.REVERSE);
 
-        intakeMotor = new SolversMotor(hardwareMap.get(DcMotor.class, "intakeMotor"), 0.01);
+        intakeMotor = new SolversMotorEx(hardwareMap.get(DcMotorEx.class, "intakeMotor"), 0.01);
 //        leftMotor = new SolversDcMotorEx(hardwareMap.get(DcMotorEx.class, "leftMotor"), 0.01); // Motor Slot 1 on Control Hub
 //        rightMotor = new SolversDcMotorEx(hardwareMap.get(DcMotorEx.class, "rightMotor"), 0.01); // Motor Slot 2 on Control Hub
 

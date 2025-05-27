@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.TelemetryData;
 
@@ -110,6 +111,7 @@ public class IntakeTest extends CommandOpMode {
 
 //        telemetryData.addData("Sigma", "Oscar");
         telemetryData.addData("pushSampleIn", robot.exampleIntake.pushSampleIn);
+        telemetryData.addData("current (amps)", robot.intakeMotor.getCurrent(CurrentUnit.AMPS));
         telemetryData.addData("pushSampleOut", robot.exampleIntake.pushSampleOut);
 
 
