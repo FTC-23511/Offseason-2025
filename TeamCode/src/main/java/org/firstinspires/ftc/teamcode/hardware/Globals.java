@@ -43,7 +43,7 @@ public class Globals {
     // Intake Motor
     public static double INTAKE_FORWARD_SPEED = 1.0;
     public static double INTAKE_REVERSE_SPEED = -0.5;
-    public static double INTAKE_HOLD_SPEED = -0.05;
+    public static double INTAKE_HOLD_SPEED = 0;
     public static int REVERSE_TIME_MS = 300;
 
     // Intake Color Sensor
@@ -59,7 +59,7 @@ public class Globals {
 
     // Intake Pivot
     public static double INTAKE_PIVOT_TRANSFER_POS = 0.05;
-    public static double INTAKE_PIVOT_INTAKE_POS = 0.45;
+    public static double INTAKE_PIVOT_INTAKE_POS = 0.4;
     public static double INTAKE_PIVOT_HOVER_INTAKE_POS = 0.45;
 
     // Intake Extendo
@@ -97,30 +97,30 @@ public class Globals {
     public static double WRIST_READY_TRANSFER = 0.22;
 
     // Deposit Slides
-    public static double MAX_SLIDES_EXTENSION = 2000;
+    public static double MAX_SLIDES_EXTENSION = 1650;
     public static double SLIDES_PIVOT_READY_EXTENSION = 450;
     public static double LOW_BUCKET_HEIGHT = 450;
-    public static double HIGH_BUCKET_HEIGHT = 1900;
+    public static double HIGH_BUCKET_HEIGHT = 1550;
     public static double FRONT_HIGH_SPECIMEN_HEIGHT = 1065;
     public static double BACK_HIGH_SPECIMEN_HEIGHT = 850;
-    public static double BACK_HIGH_SPECIMEN_ATTACH_HEIGHT = 1400;
+    public static double BACK_HIGH_SPECIMEN_ATTACH_HEIGHT = 1000;
     public static double AUTO_ASCENT_HEIGHT = 800;
     public static double ENDGAME_L2_ASCENT_HEIGHT = 900;
     public static double ENDGAME_L3_ASCENT_HEIGHT = 1300;
 
     // Octocanum Servos
-    public static double FR_RETRACTED = 0.5;
+    public static double FR_RETRACTED = 0;
     public static double FR_EXTENDED = 0.5;
-    public static double FR_PTO_RETRACTED = 0.5;
-    public static double FL_RETRACTED = 0.5;
+    public static double FR_PTO_RETRACTED = 1;
+    public static double FL_RETRACTED = 1;
     public static double FL_EXTENDED = 0.5;
-    public static double FL_PTO_RETRACTED = 0.5;
+    public static double FL_PTO_RETRACTED = 0;
     public static double BR_RETRACTED = 0.5;
-    public static double BR_EXTENDED = 0.5;
-    public static double BR_PTO_RETRACTED = 0.5;
-    public static double BL_RETRACTED = 0.5;
+    public static double BR_EXTENDED = 0;
+    public static double BR_PTO_RETRACTED = BR_RETRACTED;
+    public static double BL_RETRACTED = 0;
     public static double BL_EXTENDED = 0.5;
-    public static double BL_PTO_RETRACTED = 0.5;
+    public static double BL_PTO_RETRACTED = BL_RETRACTED;
 
 
     // command timeout

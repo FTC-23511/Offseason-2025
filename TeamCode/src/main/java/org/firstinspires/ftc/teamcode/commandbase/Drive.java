@@ -27,19 +27,19 @@ public class Drive extends SubsystemBase {
                 robot.FR.setPosition(FR_RETRACTED);
                 robot.FL.setPosition(FL_RETRACTED);
                 robot.BR.setPosition(BR_RETRACTED);
-                robot.BR.setPosition(BL_RETRACTED);
+                robot.BL.setPosition(BL_RETRACTED);
                 break;
             case EXTENDED:
                 robot.FR.setPosition(FR_EXTENDED);
                 robot.FL.setPosition(FL_EXTENDED);
                 robot.BR.setPosition(BR_EXTENDED);
-                robot.BR.setPosition(BL_EXTENDED);
+                robot.BL.setPosition(BL_EXTENDED);
                 break;
             case PTO_AND_RETRACTED:
                 robot.FR.setPosition(FR_PTO_RETRACTED);
                 robot.FL.setPosition(FL_PTO_RETRACTED);
                 robot.BR.setPosition(BR_PTO_RETRACTED);
-                robot.BR.setPosition(BL_PTO_RETRACTED);
+                robot.BL.setPosition(BL_PTO_RETRACTED);
                 break;
         }
 

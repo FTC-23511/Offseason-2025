@@ -149,7 +149,7 @@ public class Robot {
 
 //        limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
-        initializeImu(hardwareMap);
+//        initializeImu(hardwareMap);
 
         // Bulk reading enabled!
         // AUTO mode will bulk read by default and will redo and clear cache once the exact same read is done again

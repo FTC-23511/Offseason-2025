@@ -31,9 +31,6 @@ public class IntakeTest extends CommandOpMode {
 
     private final ExampleRobot robot = ExampleRobot.getInstance();
 
-    private boolean endgame = false;
-    private boolean frontSpecimenScoring = false;
-
     @Override
     public void initialize() {
         // Must have for all opModes

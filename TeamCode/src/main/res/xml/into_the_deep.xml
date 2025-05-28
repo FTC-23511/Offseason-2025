@@ -10,9 +10,8 @@
             <goBILDA5202SeriesMotor name="liftRight" port="2"/>-->
             <goBILDA5202SeriesMotor name="liftLeft" port="3"/>-->
 
-            <ControlHubImuBHI260AP name="imu" port="0" bus="0"/>
-            <RevColorSensorV3 name="colorSensor" port="0" bus="1"/>
-            <goBILDAPinpoint name="pinpoint" port="0" bus="2"/>
+            <RevColorSensorV3 name="colorSensor" port="2" bus="2"/>
+            <goBILDAPinpoint name="pinpoint" port="0" bus="0"/>
         </LynxModule>
 
         <ServoHub name="Servo Hub 3" port="3">
@@ -36,8 +35,8 @@
         </LynxModule>
 
         <ServoHub name="Servo Hub 3" port="3">
-            <Servo name="FL" port="1"/>
-            <Servo name="BL" port="2"/>
+            <Servo name="BL" port="1"/>
+            <Servo name="FL" port="2"/>
             <Servo name="leftDepositPivot" port="3"/>
             <Servo name="rightDepositPivot" port="4"/>
         </ServoHub>
