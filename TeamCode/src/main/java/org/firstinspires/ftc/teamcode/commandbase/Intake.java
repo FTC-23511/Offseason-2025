@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.commandbase.Intake.SampleColorDetec
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.SampleColorTarget.*;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.IntakeMotorState.*;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.command.WaitCommand;
@@ -16,15 +17,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.commands.FullTransfer;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
+@Config
 public class Intake extends SubsystemBase {
     private final Robot robot = Robot.getInstance();
     private final ElapsedTime timer = new ElapsedTime();
-    private boolean waitingForReverse = false;
-    private final ElapsedTime colorDetectionTimer = new ElapsedTime();
-    private boolean readyForColorDetection = false;
-    private boolean transferring = false;
-    private boolean partialReverseAfterCorrectSample = false;
-
+    public static boolean transferring = false;
     private final double divideConstant = 65.0;
     public double target;
     public boolean extendoReached;
@@ -120,24 +117,22 @@ public class Intake extends SubsystemBase {
     }
 
     public void setActiveIntake(IntakeMotorState intakeMotorState) {
-        if (intakeMotorState.equals(HOLD)) {
-            robot.intakeMotor.setPower(INTAKE_HOLD_SPEED);
-            Intake.intakeMotorState = intakeMotorState;
-        } else if (intakeMotorState.equals(STOP)) {
-            robot.intakeMotor.setPower(0);
-            Intake.intakeMotorState = intakeMotorState;
-        } else if (intakePivotState.equals(INTAKE)) {
-            switch (intakeMotorState) {
-                case FORWARD:
-                    robot.intakeMotor.setPower(INTAKE_FORWARD_SPEED);
-                    break;
-                case REVERSE:
-                    robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
-                    timer.reset();
-                    break;
-            }
-            Intake.intakeMotorState = intakeMotorState;
+        switch (intakeMotorState) {
+            case FORWARD:
+                robot.intakeMotor.setPower(INTAKE_FORWARD_SPEED);
+                break;
+            case REVERSE:
+                robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
+                timer.reset();
+                break;
+            case HOLD:
+                robot.intakeMotor.setPower(INTAKE_HOLD_SPEED);
+                break;
+            case STOP:
+                robot.intakeMotor.setPower(0);
+                break;
         }
+        Intake.intakeMotorState = intakeMotorState;
     }
 
     public void toggleActiveIntake(SampleColorTarget sampleColorTarget) {
@@ -156,33 +151,25 @@ public class Intake extends SubsystemBase {
             switch (intakeMotorState) {
                 case FORWARD:
                     if (hasSample()) {
-                        if (!readyForColorDetection) {
-                            colorDetectionTimer.reset();
-                            readyForColorDetection = true;
-                        } else if (readyForColorDetection && colorDetectionTimer.milliseconds() > 50) {
-                            readyForColorDetection = false;
-                            sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
-                            if (correctSampleDetected()) {
-                                if (Deposit.depositPivotState.equals(Deposit.DepositPivotState.TRANSFER)) {
-                                    if (robot.deposit.clawOpen) {
-                                        // Allow the intake to keep pushing the sample up
-                                    } else {
-                                        // Once claw has closed there is no point in continuing to push the sample up
-                                        setActiveIntake(STOP);
-                                    }
+                        sampleColor = sampleColorDetected(robot.colorSensor.red(), robot.colorSensor.green(), robot.colorSensor.blue());
+                        if (correctSampleDetected()) {
+                            if (transferring) {
+                                if (robot.deposit.clawOpen) {
+                                    // Allow the intake to keep pushing the sample up
                                 } else {
-                                    setActiveIntake(REVERSE);
-                                    timer.reset();
-                                    partialReverseAfterCorrectSample = true;
+                                    // Once claw has closed there is no point in continuing to push the sample up
+                                    setActiveIntake(STOP);
+                                }
+                            } else {
+                                setActiveIntake(REVERSE);
 
-                                    if (opModeType.equals(OpModeType.TELEOP)) {
-                                        if (sampleColorTarget.equals(ANY_COLOR)) {
-                                            new FullTransfer(robot).beforeStarting(
-                                                    new WaitCommand(125)
-                                            ).schedule(false);
-                                        } else {
-                                            new SetIntake(robot, TRANSFER, HOLD, 0, false).schedule(false);
-                                        }
+                                if (opModeType.equals(OpModeType.TELEOP)) {
+                                    if (sampleColorTarget.equals(ANY_COLOR)) {
+                                        new FullTransfer(robot).beforeStarting(
+                                                new WaitCommand(125)
+                                        ).schedule(false);
+                                    } else {
+                                        new SetIntake(robot, TRANSFER, HOLD, 0, false).schedule(false);
                                     }
                                 }
                             }
@@ -191,7 +178,6 @@ public class Intake extends SubsystemBase {
                     break;
                 case REVERSE:
                     if (timer.milliseconds() > 150) {
-                        partialReverseAfterCorrectSample = false;
                         setActiveIntake(HOLD);
                         break;
                     }

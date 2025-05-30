@@ -18,6 +18,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commandbase.Drive;
 import org.firstinspires.ftc.teamcode.commandbase.Intake;
@@ -311,6 +312,8 @@ public class FullTeleOp extends CommandOpMode {
         telemetryData.addData("opModeType", opModeType.name());
 
         telemetryData.addData("hasSample()", robot.intake.hasSample());
+        telemetryData.addData("transferring", robot.intake.transferring);
+        telemetryData.addData("Intake Motor Current Draw", robot.intakeMotor.getCurrent(CurrentUnit.AMPS));
         telemetryData.addData("colorSensor getDistance", robot.colorSensor.getDistance(DistanceUnit.CM));
         telemetryData.addData("Intake sampleColor", Intake.sampleColor);
         telemetryData.addData("correctSampleDetected", Intake.correctSampleDetected());

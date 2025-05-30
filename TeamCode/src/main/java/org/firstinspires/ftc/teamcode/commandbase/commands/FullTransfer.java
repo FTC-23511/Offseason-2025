@@ -10,19 +10,20 @@ import org.firstinspires.ftc.teamcode.commandbase.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 public class FullTransfer extends SequentialCommandGroup {
-    private final Robot robot;
-
     public FullTransfer(Robot robot) {
-        this.robot = robot;
         addCommands(
                 new ParallelCommandGroup(
-                        new SetDeposit(robot, Deposit.DepositPivotState.MIDDLE_HOLD, 0, true),
+                        new SetDeposit(robot, Deposit.DepositPivotState.TRANSFER, 0, true),
                         new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.HOLD, 0, false)
                 ),
-                new ParallelCommandGroup(
-                        new ServoOnlyTransfer(robot),
-                        new SetIntake(robot, Intake.IntakePivotState.TRANSFER, Intake.IntakeMotorState.FORWARD, 0, false).beforeStarting(new WaitCommand(200))
-                )
+                new InstantCommand(() -> Intake.transferring = true),
+                new ServoOnlyTransfer(robot)
         );
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        Intake.transferring = false;
+        super.end(interrupted);
     }
 }

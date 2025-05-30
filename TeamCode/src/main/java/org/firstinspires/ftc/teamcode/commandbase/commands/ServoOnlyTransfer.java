@@ -32,7 +32,8 @@ public class ServoOnlyTransfer extends CommandBase {
 
     @Override
     public void execute() {
-        if (index == 1 && timer.milliseconds() > 400) {
+        robot.intake.setActiveIntake(Intake.IntakeMotorState.FORWARD);
+        if (index == 1 && timer.milliseconds() > 150) {
             robot.deposit.setClawOpen(false);
             timer.reset();
             index = 2;
