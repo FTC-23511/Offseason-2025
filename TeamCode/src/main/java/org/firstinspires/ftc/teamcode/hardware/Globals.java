@@ -41,6 +41,9 @@ public class Globals {
     public static double ROBOT_WIDTH = 13.5;
     public static double ROBOT_LENGTH = 12.15;
 
+    // Weight (in kg)
+    public static double ROBOT_MASS = 12.2;
+
     // Intake Motor
     public static double INTAKE_FORWARD_SPEED = 1.0;
     public static double INTAKE_REVERSE_SPEED = -0.5;

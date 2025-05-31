@@ -275,15 +275,6 @@ public class Guacamole extends CommandOpMode {
                         .setConstantHeadingInterpolation(Math.toRadians(0)).build());
     }
 
-    public SequentialCommandGroup samplePush(int pathNum) {
-        return new SequentialCommandGroup(
-//                new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.AUTO_PUSH)),
-                new WaitCommand(300),
-                new FollowPathCommand(robot.follower, paths.get(pathNum)).setHoldEnd(true)
-//                new InstantCommand(() -> robot.drive.setSubPusher(Drive.SubPusherState.IN))
-        );
-    }
-
     public SequentialCommandGroup intakeSpecimenCycleHalf(int pathNum) {
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
@@ -351,11 +342,15 @@ public class Guacamole extends CommandOpMode {
                                 ),
                                 new FollowPathCommand(robot.follower, paths.get(1)).setHoldEnd(true)
                         ),
-                        samplePush(2),
+                        new FollowPathCommand(robot.follower, paths.get(2)).setHoldEnd(true).beforeStarting(
+                                new WaitCommand(300)
+                        ),
 
                         // Sample 2
                         new FollowPathCommand(robot.follower, paths.get(3)).setHoldEnd(true),
-                        samplePush(4),
+                        new FollowPathCommand(robot.follower, paths.get(4)).setHoldEnd(true).beforeStarting(
+                            new WaitCommand(300)
+                        ),
 
                         // Sample 3
                         new FollowPathCommand(robot.follower, paths.get(5)).setHoldEnd(true),
