@@ -10,6 +10,7 @@ import com.seattlesolvers.solverslib.command.ConditionalCommand;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
+import com.seattlesolvers.solverslib.command.WaitCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -100,7 +101,11 @@ public class FullTeleOp extends CommandOpMode {
                                 () -> robot.deposit.target == INTAKE_SPECIMEN_HEIGHT
                         ),
                         new ConditionalCommand(
-                                new SetDeposit(robot, DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false),
+                                new SetDeposit(robot, DepositPivotState.SCORING, HIGH_BUCKET_HEIGHT, false)
+                                        .beforeStarting(
+                                                new InstantCommand(() -> robot.deposit.setClawOpen(true))
+                                                .andThen(new WaitCommand(250))
+                                        ),
                                 new SetDeposit(robot, DepositPivotState.MIDDLE_HOLD, 0, true),
                                 () -> robot.deposit.target == 0
                         ),
@@ -109,12 +114,10 @@ public class FullTeleOp extends CommandOpMode {
         );
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
-                new SequentialCommandGroup(
-                        new ConditionalCommand(
-                                new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.FORWARD, robot.intake.target, false),
-                                new SetIntake(robot, IntakePivotState.TRANSFER, IntakeMotorState.FULL_REVERSE, robot.intake.target, true),
-                                () -> Intake.intakePivotState.equals(IntakePivotState.TRANSFER)
-                        )
+                new ConditionalCommand(
+                        new SetIntake(robot, IntakePivotState.INTAKE, IntakeMotorState.FORWARD, robot.intake.target, false),
+                        new SetIntake(robot, IntakePivotState.TRANSFER, IntakeMotorState.FULL_REVERSE, robot.intake.target, true),
+                        () -> Intake.intakePivotState.equals(IntakePivotState.TRANSFER)
                 )
         );
 
