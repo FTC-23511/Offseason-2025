@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode.Auto;
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.DepositPivotState;
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.depositPivotState;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.intakePivotState;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.FRONT_HIGH_SPECIMEN_HEIGHT;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_SPECIMEN_HEIGHT;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.SLIDES_PIVOT_READY_EXTENSION;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.autoEndPose;
@@ -288,7 +288,7 @@ public class Guacamole extends CommandOpMode {
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new FollowPathCommand(robot.follower, paths.get(pathNum)),
-                        new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, 0, true)
+                        new SetDeposit(robot, DepositPivotState.SPECIMEN_INTAKE, 0, true)
                 ).withTimeout(4000),
 
                 new FollowPathCommand(robot.follower, paths.get(8)).setHoldEnd(true).withTimeout(500),
@@ -300,7 +300,7 @@ public class Guacamole extends CommandOpMode {
     public SequentialCommandGroup scoreSpecimenCycleHalf(int pathNum) {
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
-                        new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, FRONT_HIGH_SPECIMEN_HEIGHT, false).withTimeout(1000),
+                        new SetDeposit(robot, DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false).withTimeout(1000),
                         new FollowPathCommand(robot.follower, paths.get(pathNum)).setHoldEnd(true)
                 ),
                 new InstantCommand(() -> robot.deposit.setClawOpen(true)),
@@ -311,7 +311,7 @@ public class Guacamole extends CommandOpMode {
     @Override
     public void initialize() {
         opModeType = OpModeType.AUTO;
-        depositInit = DepositPivotState.FRONT_SPECIMEN_SCORING;
+        depositInit = DepositPivotState.SPECIMEN_SCORING;
 
         timer = new ElapsedTime();
         timer.reset();
@@ -338,7 +338,7 @@ public class Guacamole extends CommandOpMode {
                 new SequentialCommandGroup(
                         // Specimen 1
                         new ParallelCommandGroup(
-                                new SetDeposit(robot, DepositPivotState.FRONT_SPECIMEN_SCORING, FRONT_HIGH_SPECIMEN_HEIGHT, false).withTimeout(1000),
+                                new SetDeposit(robot, DepositPivotState.SPECIMEN_SCORING, HIGH_SPECIMEN_HEIGHT, false).withTimeout(1000),
                                 new FollowPathCommand(robot.follower, paths.get(0))
                         ),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true)),
@@ -347,7 +347,7 @@ public class Guacamole extends CommandOpMode {
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(200),
-                                        new SetDeposit(robot, DepositPivotState.BACK_SPECIMEN_INTAKE, 0, true)
+                                        new SetDeposit(robot, DepositPivotState.SPECIMEN_INTAKE, 0, true)
                                 ),
                                 new FollowPathCommand(robot.follower, paths.get(1)).setHoldEnd(true)
                         ),

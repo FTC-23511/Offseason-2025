@@ -28,6 +28,7 @@ public class Globals {
     public static Deposit.DepositPivotState depositInit;
 
     public static OpModeType opModeType;
+    public static boolean specimenTeleop = false;
     public static AllianceColor allianceColor;
     public static PoseLocationName poseLocationName;
 
@@ -71,10 +72,8 @@ public class Globals {
     public static double DEPOSIT_PIVOT_MIDDLE_POS = 0.55;
     public static double DEPOSIT_PIVOT_AUTO_BAR_POS = 0.35;
     public static double DEPOSIT_PIVOT_SCORING_POS = 0.12;
-    public static double DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS = 0.03;
-    public static double DEPOSIT_PIVOT_SPECIMEN_BACK_INTAKE_POS = 0.83;
-    public static double DEPOSIT_PIVOT_SPECIMEN_FRONT_SCORING_POS = 0.20;
-    public static double DEPOSIT_PIVOT_SPECIMEN_BACK_SCORING_POS = 0.71;
+    public static double DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS = 1.00;
+    public static double DEPOSIT_PIVOT_SPECIMEN_SCORING_POS = 0.55;
 
     // 0.84 sec/360° -> 0.828 sec/355° -> 828 milliseconds/355°
     public static double DEPOSIT_PIVOT_MOVEMENT_TIME = 828 + 200; // 200 milliseconds of buffer
@@ -83,27 +82,25 @@ public class Globals {
 
     // Deposit Claw
     public static double DEPOSIT_CLAW_OPEN_POS = 0.74;
-    public static double DEPOSIT_CLAW_CLOSE_POS = 0.49;
+    public static double DEPOSIT_CLAW_CLOSE_POS = 0.47;
 
     // Deposit Wrist
     public static double WRIST_SCORING = 0.7;
     public static double WRIST_AUTO_BAR = 0.3;
-    public static double WRIST_FRONT_SPECIMEN_SCORING = 0.60;
-    public static double WRIST_BACK_SPECIMEN_SCORING = 0.43;
-    public static double WRIST_FRONT_SPECIMEN_INTAKE = 0.3;
-    public static double WRIST_BACK_SPECIMEN_INTAKE = 0.485;
+    public static double WRIST_SPECIMEN_SCORING = 0.42;
+    public static double WRIST_SPECIMEN_INTAKE = 0.32;
     public static double WRIST_TRANSFER = 0.33;
     public static double WRIST_MIDDLE_HOLD = 0.3;
-    public static double WRIST_READY_TRANSFER = 0.22;
 
     // Deposit Slides
     public static double MAX_SLIDES_EXTENSION = 1650;
     public static double SLIDES_PIVOT_READY_EXTENSION = 450;
     public static double LOW_BUCKET_HEIGHT = 450;
     public static double HIGH_BUCKET_HEIGHT = 1550;
-    public static double FRONT_HIGH_SPECIMEN_HEIGHT = 1065;
-    public static double BACK_HIGH_SPECIMEN_HEIGHT = 850;
-    public static double BACK_HIGH_SPECIMEN_ATTACH_HEIGHT = 1000;
+    public static double HIGH_SPECIMEN_HEIGHT = 850;
+
+    public static double HIGH_SPECIMEN_ATTACH_HEIGHT = HIGH_SPECIMEN_HEIGHT + 200;
+    public static double INTAKE_SPECIMEN_HEIGHT = 400;
     public static double AUTO_ASCENT_HEIGHT = 800;
     public static double ENDGAME_L2_ASCENT_HEIGHT = 900;
     public static double ENDGAME_L3_ASCENT_HEIGHT = 1300;

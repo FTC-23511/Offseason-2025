@@ -25,10 +25,8 @@ public class Deposit extends SubsystemBase {
 
     public enum DepositPivotState {
         SCORING,
-        FRONT_SPECIMEN_SCORING,
-        BACK_SPECIMEN_SCORING,
-        FRONT_SPECIMEN_INTAKE,
-        BACK_SPECIMEN_INTAKE,
+        SPECIMEN_SCORING,
+        SPECIMEN_INTAKE,
         TRANSFER,
         MIDDLE_HOLD,
         AUTO_TOUCH_BAR
@@ -59,15 +57,8 @@ public class Deposit extends SubsystemBase {
     }
 
     public void autoUpdateSlides() {
-        if (this.target == BACK_HIGH_SPECIMEN_ATTACH_HEIGHT && !slidesReached) {
-            slidePIDF.setP(0.01);
-        } else {
-            slidePIDF.setP(0.007);
-        }
-
         double power = slidePIDF.calculate(getLiftScaledPosition(), target);
         slidesReached = slidePIDF.atSetPoint()
-                        || (target == 0 && getLiftScaledPosition() < 15)
                         || (getLiftScaledPosition() >= target && target == HIGH_BUCKET_HEIGHT)
                         || (target == SLIDES_PIVOT_READY_EXTENSION + 50 && getLiftScaledPosition() > SLIDES_PIVOT_READY_EXTENSION && getLiftScaledPosition() < SLIDES_PIVOT_READY_EXTENSION + 65);
         slidesRetracted = (target <= 0) && slidesReached;
@@ -75,6 +66,8 @@ public class Deposit extends SubsystemBase {
         // Just make sure it gets to fully retracted if target is 0
         if (target == 0 && !slidesReached) {
             power -= 0.1;
+        } else if (target == HIGH_SPECIMEN_ATTACH_HEIGHT && !slidesReached) {
+            power += 0.3;
         }
 
         if (slidesRetracted) {
@@ -103,30 +96,20 @@ public class Deposit extends SubsystemBase {
                 robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SCORING_POS);
                 robot.depositWrist.setPosition(WRIST_SCORING);
                 break;
-            case FRONT_SPECIMEN_SCORING:
-                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_FRONT_SCORING_POS);
-                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_FRONT_SCORING_POS);
-                robot.depositWrist.setPosition(WRIST_FRONT_SPECIMEN_SCORING);
-                break;
-            case BACK_SPECIMEN_SCORING:
-                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_BACK_SCORING_POS);
-                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_BACK_SCORING_POS);
-                robot.depositWrist.setPosition(WRIST_BACK_SPECIMEN_SCORING);
+            case SPECIMEN_SCORING:
+                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_SCORING_POS);
+                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_SCORING_POS);
+                robot.depositWrist.setPosition(WRIST_SPECIMEN_SCORING);
                 break;
             case TRANSFER:
                 robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
                 robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_TRANSFER_POS);
                 robot.depositWrist.setPosition(WRIST_TRANSFER);
                 break;
-            case FRONT_SPECIMEN_INTAKE:
-                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS);
-                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_FRONT_INTAKE_POS);
-                robot.depositWrist.setPosition(WRIST_FRONT_SPECIMEN_INTAKE);
-                break;
-            case BACK_SPECIMEN_INTAKE:
-                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_BACK_INTAKE_POS);
-                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_BACK_INTAKE_POS);
-                robot.depositWrist.setPosition(WRIST_BACK_SPECIMEN_INTAKE);
+            case SPECIMEN_INTAKE:
+                robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS);
+                robot.rightDepositPivot.setPosition(DEPOSIT_PIVOT_SPECIMEN_INTAKE_POS);
+                robot.depositWrist.setPosition(WRIST_SPECIMEN_INTAKE);
                 break;
             case MIDDLE_HOLD:
                 robot.leftDepositPivot.setPosition(DEPOSIT_PIVOT_MIDDLE_POS);

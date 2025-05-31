@@ -21,10 +21,10 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 public class depositFullTuner extends OpMode {
     private final Robot robot = Robot.getInstance();
 
-    public static double p = 0.005; // Old: 0.011
+    public static double p = 0.006; // Old: 0.005
     public static double i = 0;
-    public static double d = 0.00017; // Old: 0.0002
-    public static double f = 0.00023; // Old: 0.00016
+    public static double d = 0.00016; // Old: 0.00017
+    public static double f = 0.00032; // Old: 0.00023
 
     public static int setPoint = 0;
     public static double maxPowerConstant = 1.0;

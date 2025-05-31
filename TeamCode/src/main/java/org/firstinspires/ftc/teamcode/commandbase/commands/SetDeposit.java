@@ -3,11 +3,7 @@ package org.firstinspires.ftc.teamcode.commandbase.commands;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.seattlesolvers.solverslib.command.CommandBase;
-import com.seattlesolvers.solverslib.command.CommandScheduler;
-import com.seattlesolvers.solverslib.command.ConditionalCommand;
-import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.seattlesolvers.solverslib.command.UninterruptibleCommand;
 
 import org.firstinspires.ftc.teamcode.commandbase.Deposit;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
@@ -48,7 +44,7 @@ public class SetDeposit extends CommandBase {
                 robot.deposit.setSlideTarget(target);
 
                 // Index for moving the arm
-                if (pivotState.equals(Deposit.DepositPivotState.FRONT_SPECIMEN_SCORING) || pivotState.equals(Deposit.DepositPivotState.BACK_SPECIMEN_SCORING)) {
+                if (pivotState.equals(Deposit.DepositPivotState.SPECIMEN_SCORING)) {
                     index = 0.5;
                 } else {
                     index = 1;

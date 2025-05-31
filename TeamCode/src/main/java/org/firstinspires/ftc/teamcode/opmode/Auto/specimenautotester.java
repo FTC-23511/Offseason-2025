@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode.Auto;
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.DepositPivotState;
 import static org.firstinspires.ftc.teamcode.commandbase.Deposit.depositPivotState;
 import static org.firstinspires.ftc.teamcode.commandbase.Intake.intakePivotState;
-import static org.firstinspires.ftc.teamcode.hardware.Globals.BACK_HIGH_SPECIMEN_ATTACH_HEIGHT;
+import static org.firstinspires.ftc.teamcode.hardware.Globals.HIGH_SPECIMEN_ATTACH_HEIGHT;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.OpModeType;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.autoEndPose;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.depositInit;
@@ -237,7 +237,7 @@ public class specimenautotester extends CommandOpMode {
     @Override
     public void initialize() {
         opModeType = OpModeType.AUTO;
-        depositInit = DepositPivotState.FRONT_SPECIMEN_SCORING;
+        depositInit = DepositPivotState.SPECIMEN_SCORING;
 
         timer = new ElapsedTime();
         timer.reset();
@@ -257,7 +257,7 @@ public class specimenautotester extends CommandOpMode {
         generatePath();
 
         ParallelCommandGroup attachSpecimen = new ParallelCommandGroup(
-                new SetDeposit(robot, Deposit.depositPivotState, BACK_HIGH_SPECIMEN_ATTACH_HEIGHT, false),
+                new SetDeposit(robot, Deposit.depositPivotState, HIGH_SPECIMEN_ATTACH_HEIGHT, false),
                 new SequentialCommandGroup(
                         new WaitCommand(300),
                         new InstantCommand(() -> robot.deposit.setClawOpen(true))

@@ -37,6 +37,7 @@ public class Intake extends SubsystemBase {
 
     public enum IntakeMotorState {
         REVERSE,
+        FULL_REVERSE,
         STOP,
         FORWARD,
         HOLD
@@ -125,6 +126,10 @@ public class Intake extends SubsystemBase {
                 robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED);
                 timer.reset();
                 break;
+            case FULL_REVERSE:
+                robot.intakeMotor.setPower(INTAKE_REVERSE_SPEED*100);
+                timer.reset();
+                break;
             case HOLD:
                 robot.intakeMotor.setPower(INTAKE_HOLD_SPEED);
                 break;
@@ -133,17 +138,6 @@ public class Intake extends SubsystemBase {
                 break;
         }
         Intake.intakeMotorState = intakeMotorState;
-    }
-
-    public void toggleActiveIntake(SampleColorTarget sampleColorTarget) {
-        if (intakePivotState.equals(INTAKE)) {
-            if (intakeMotorState.equals(FORWARD)) {
-                setActiveIntake(STOP);
-            } else if (intakeMotorState.equals(STOP) || intakeMotorState.equals(HOLD)) {
-                setActiveIntake(FORWARD);
-            }
-            Intake.sampleColorTarget = sampleColorTarget;
-        }
     }
 
     public void autoUpdateActiveIntake() {
@@ -158,7 +152,7 @@ public class Intake extends SubsystemBase {
                                     // Allow the intake to keep pushing the sample up
                                 } else {
                                     // Once claw has closed there is no point in continuing to push the sample up
-                                    setActiveIntake(STOP);
+                                    setActiveIntake(HOLD);
                                 }
                             } else {
                                 setActiveIntake(REVERSE);
@@ -178,6 +172,15 @@ public class Intake extends SubsystemBase {
                     break;
                 case REVERSE:
                     if (timer.milliseconds() > 150) {
+                        setActiveIntake(HOLD);
+                        break;
+                    }
+                    break;
+                case FULL_REVERSE:
+                    if (hasSample()) {
+                        timer.reset();
+                    }
+                    if (timer.milliseconds() > 350) {
                         setActiveIntake(HOLD);
                         break;
                     }

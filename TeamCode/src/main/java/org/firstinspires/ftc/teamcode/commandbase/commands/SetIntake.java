@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.commandbase.commands;
 
-import static org.firstinspires.ftc.teamcode.commandbase.Intake.intakePivotState;
 import static org.firstinspires.ftc.teamcode.hardware.Globals.*;
 
 import com.seattlesolvers.solverslib.command.CommandBase;
@@ -71,8 +70,12 @@ public class SetIntake extends CommandBase {
                             || (Intake.correctSampleDetected() && robot.intake.hasSample());
                 case REVERSE:
                     return (robot.intake.extendoReached &&
-                            (timer.milliseconds() > Math.abs(previousServoPos - currentServoPos) * INTAKE_PIVOT_MOVEMENT_TIME + REVERSE_TIME_MS))
+                            (timer.milliseconds() > Math.abs(previousServoPos - currentServoPos) * INTAKE_PIVOT_MOVEMENT_TIME))
                             || !robot.intake.hasSample();
+                case FULL_REVERSE:
+                    return (robot.intake.extendoReached &&
+                            (timer.milliseconds() > Math.abs(previousServoPos - currentServoPos) * INTAKE_PIVOT_MOVEMENT_TIME))
+                            || (!robot.intake.hasSample() && Intake.intakeMotorState.equals(Intake.IntakeMotorState.HOLD));
             }
         }
 
