@@ -6,8 +6,10 @@ import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.commandbase.Drive;
 import org.firstinspires.ftc.teamcode.hardware.Globals;
 import org.firstinspires.ftc.teamcode.hardware.Globals.AllianceColor;
+import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 import java.util.List;
 
@@ -45,6 +47,9 @@ public class Limelight extends LinearOpMode {
         limelight.start();
 
         Globals.allianceColor = AllianceColor.RED;
+
+        Robot.getInstance().drive.setOctocanumServos(Drive.OctocanumServosState.RETRACTED);
+
 
         telemetry.addLine("Alliance Selection");
         telemetry.addLine("Press CROSS for RED Alliance");
@@ -135,10 +140,50 @@ public class Limelight extends LinearOpMode {
                         }
 
                         telemetry.addData("Position", String.format("X: %.2f, Y: %.2f", xPos, yPos));
+
+                        double KP_TURN = 0.02;
+                        double KP_DRIVE = 0.05;
+                        double MIN_TURN_CMD = 0.05;
+                        double DESIRED_DISTANCE = 6.0;
+                        double MAX_DRIVE = 0.4;
+
+                        double distance = calculateDistanceFromCalibration(area);
+                        double headingError = -xPos;
+                        double distanceError = distance - DESIRED_DISTANCE;
+
+                        double turnCmd = KP_TURN * headingError;
+                        if (Math.abs(headingError) > 2.0) {
+                            if (headingError > 0) {
+                                turnCmd -= MIN_TURN_CMD;
+                            } else {
+                                turnCmd += MIN_TURN_CMD;
+                            }
+                        } else {
+                            turnCmd = 0;
+                        }
+
+                        double driveCmd = KP_DRIVE * distanceError;
+                        driveCmd = Math.max(-MAX_DRIVE, Math.min(MAX_DRIVE, driveCmd));
+
+                        Robot robot = Robot.getInstance();
+
+                        double leftPower = driveCmd + turnCmd;
+                        double rightPower = driveCmd - turnCmd;
+
+                        robot.leftFront.setPower(leftPower);
+                        robot.leftBack.setPower(leftPower);
+                        robot.rightFront.setPower(rightPower);
+                        robot.rightBack.setPower(rightPower);
+
                     } else {
                         telemetry.addLine("No samples matching alliance color found");
                         telemetry.addLine("Current alliance: " + Globals.allianceColor);
                         telemetry.addLine("Check detector results in debug section");
+                        Robot robot = Robot.getInstance();
+                        robot.leftFront.setPower(0);
+                        robot.leftBack.setPower(0);
+                        robot.rightFront.setPower(0);
+                        robot.rightBack.setPower(0);
                     }
 
                     telemetry.addData("Alliance", Globals.allianceColor.toString());
@@ -146,9 +191,19 @@ public class Limelight extends LinearOpMode {
                     telemetry.addData("Calibration mode", calibrationMode ? "ON" : "OFF");
                 } else {
                     telemetry.addLine("No targets detected");
+                    Robot robot = Robot.getInstance();
+                    robot.leftFront.setPower(0);
+                    robot.leftBack.setPower(0);
+                    robot.rightFront.setPower(0);
+                    robot.rightBack.setPower(0);
                 }
             } else {
                 telemetry.addLine("No valid results from Limelight");
+                Robot robot = Robot.getInstance();
+                robot.leftFront.setPower(0);
+                robot.leftBack.setPower(0);
+                robot.rightFront.setPower(0);
+                robot.rightBack.setPower(0);
             }
 
             telemetry.update();
